@@ -1,0 +1,21 @@
+{
+  "name": "codeceptjs-testbook",
+  "version": "1.0.0",
+  "description": "Web based console and test runner for codeceptjs tests",
+  "main": "server.js",
+  "bin": {
+    "testbook": "./bin/testbook.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "codeceptjs": "^0.4.13",
+    "express": "^4.14.0",
+    "resolve": "^1.2.0",
+    "socketio": "^1.0.0"
+  },
+  "devDependencies": {}
+}
