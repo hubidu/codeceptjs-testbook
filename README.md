@@ -13,7 +13,7 @@ x Provide humanized step name and args
 x Add actor name to step
 x Extract tags from titles
 x Add a time stamp to suite, test and steps
-- Save screenshot after each test
+x Save screenshot after each test
 - Create a separate directory for every test run
 - Show actual/expected result nicely formatted
 - Sort tests

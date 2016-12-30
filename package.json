@@ -16,6 +16,5 @@
     "express": "^4.14.0",
     "resolve": "^1.2.0",
     "socketio": "^1.0.0"
-  },
-  "devDependencies": {}
+  }
 }
