@@ -14,9 +14,14 @@ x Add actor name to step
 x Extract tags from titles
 x Add a time stamp to suite, test and steps
 x Save screenshot after each test
-- Create a separate directory for every test run
+x Make screenshot sticky to the page
+x Reverse step list
+- Use font-awesome icons
+- Run a single test
 - Show actual/expected result nicely formatted
+- Make header sticky
 - Sort tests
+- Create a separate directory for every test run
 - BUG No events fired when error in Before Hook
 - Use vue ui library
 - Run only specific test from the UI
