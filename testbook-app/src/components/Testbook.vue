@@ -1,32 +1,43 @@
 <template>
   <div class="Testbook">
-    <nav class="nav has-shadow">
+    <nav class="Testbook-navigation nav has-shadow">
       <div class="nav-left">
         <h1 class="nav-item title">
-          <strong>
-            codeceptjs
-          </strong>
+          <i class="fa fa-book"></i>
           &nbsp;
-          Testbook
+          <strong>
+            &lt;testbook&gt;
+          </strong>
         </h1>
       </div>
-      <span class="nav-item">
-        <button class="button is-primary" type="button" v-on:click="runAllTests()">Run All</button>
-      </span>
-    </nav>
 
-    <nav class="level" v-if="suites.length > 0">
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Passed</p>
-          <p class="title">{{stats.passed}}</p>
-        </div>
+      <div class="nav-center">
+          <a class="nav-item">
+              <span class="u-passed">{{stats.passed}}</span>
+              &nbsp;
+              Passed
+          </a>
+          <a class="nav-item">
+            <span class="u-failed">{{stats.failed}}</span>
+            &nbsp;
+            Failed
+          </a>
+          <a class="nav-item" v-if="state.state === 'running'">
+            <i class="fa fa-refresh fa-spin"></i>
+          </a>
       </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Failed</p>
-          <p class="title">{{stats.failed}}</p>
-        </div>
+
+      <div class="nav-right">
+        <a class="nav-item" v-if="state.state === undefined">
+          <button class="button is-primary" type="button" v-on:click="runAllTests()">Run All</button>
+        </a>
+        <a class="nav-item">
+          <button class="button is-secondary" type="button" v-on:click="stopTestRun()">
+            <i class="fa fa-stop u-failed"></i>
+            &nbsp;
+            Stop
+          </button>
+        </a>
       </div>
     </nav>
 
@@ -41,7 +52,6 @@
 
     </section>
 
-
     <section class="section">
       <div class="container is-fluid">
 
@@ -51,40 +61,43 @@
             <aside class="menu">
               <div v-for="suite in suites">
                 <p class="menu-label">
-                  <span class="u-passed" v-if="suite.state === 'passed'">
-                    &#10004;
-                  </span>
-                  <span class="u-failed" v-if="suite.state === 'failed'">
-                    &#x2717;
-                  </span>
-                  <span v-if="suite.state === undefined">
-                    <a class="button is-loading">...</a>
-                  </span>
-
                   {{ suite.title }}
                 </p>
                 <ul class="menu-list" v-for="test in suite.tests">
                   <li>
                     <a v-bind:class="{ 'is-active': isSelectedTest(test) }" v-on:click="selectTest(test)">
                       <span class="u-passed" v-if="test.state === 'passed'">
-                        &#10004;
+                        <i class="fa fa-check"></i>
                       </span>
                       <span class="u-failed" v-if="test.state === 'failed'">
-                        &#x2717;
+                        <i class="fa fa-times"></i>
+                      </span>
+                      <span v-if="test.state === 'aborted'">
+                        <i class="fa fa-unlink"></i>
                       </span>
                       <span v-if="test.state === undefined">
-                        <a class="button is-loading">...</a>
+                        <i class="fa fa-refresh fa-spin"></i>
                       </span>
 
                       {{test.title}}
                     </a>
 
                       <ul v-if="isSelectedTest(test)">
+                        <li>
+                          <button class="button is-secondary is-small pull-right" v-on:click="runTest(test)">
+                            Run
+                          </button>
+                        </li>
+
                         <li v-if="selectedTest.err">
+                          {{ selectedTest.file }}
+
                           <div class="message is-danger">
                             <div class="message-body">
                               {{ selectedTest.err.message }}
-                              <img class="Testbook-screenshot" v-bind:src="screenshotUrl(selectedTest.screenshot)" alt="error screenshot">
+
+                              {{ selectedTest.err.actual }}
+                              {{ selectedTest.err.expected }}
                             </div>
                           </div>
                         </li>
@@ -137,6 +150,7 @@ export default {
     'codecept.start': function (evt) {
       evt.type = 'codecept.start'
       this.suiteName = evt.name
+      suiteService.startTestRun()
     },
     'codecept.suite': function (evt) {
       evt.type = 'codecept.suite'
@@ -168,6 +182,8 @@ export default {
       selectedStep: undefined,
       selectedTest: undefined,
       suiteName: undefined,
+
+      state: suiteService.state(),
       suites: suiteService.suites(),
       stats: suiteService.stats()
     }
@@ -204,6 +220,12 @@ export default {
       this.selectedStep = undefined
       suiteService.reset()
       this.$socket.emit('cmd.run', {})
+    },
+    runTest: function (test) {
+      this.$socket.emit('cmd.run', { grep: test.title })
+    },
+    stopTestRun: function () {
+      this.$socket.emit('cmd.stop', {})
     }
   }
 }
@@ -211,6 +233,17 @@ export default {
 
 <style lang="scss" scoped>
   @import '~bulma/sass/utilities/variables';
+
+  .Testbook {
+    margin-top: 3em;
+  }
+
+  .Testbook-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 
   .Testbook-suites, .Testbook-tests {
     list-style-type: none;
@@ -256,17 +289,17 @@ export default {
     margin-left: 1em;
   }
   .u-passed {
-    color: green;
+    color: $green;
   }
 
   .u-failed {
-    color: red;
+    color: $red;
   }
 
   .u-rel-time {
     display: inline-block;
     width: 5em;
-    color: #ccc;
+    color: $grey-lighter;
   }
   .u-rel-time::before {
     content: 'at';

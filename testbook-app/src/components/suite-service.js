@@ -3,6 +3,9 @@ const stats = {
   passed: 0,
   failed: 0
 }
+const state = {
+  state: undefined
+}
 
 const updateStats = () => {
   stats.passed = suites.reduce((sum, suite) => {
@@ -21,6 +24,9 @@ export default {
   },
 
   addSuiteFromEvent: (evt) => {
+    const suite = suites.find(suite => suite.id === evt.id)
+    if (suite) return
+
     const unfinishedSuites = suites.filter(suite => suite.state === undefined)
     // Finish running suites
     unfinishedSuites.map(suite => (suite.state = 'passed'))
@@ -39,16 +45,25 @@ export default {
     const suite = suites.find(suite => suite.id === suiteId)
     if (!suite) return
 
-    suite.tests.push({
+    const newTest = {
       t: evt.t,
       id: evt.id,
       title: evt.title,
       state: undefined,
       err: undefined,
       screenshot: undefined,
+      file: undefined,
       steps: [],
       stepsReverse: []
-    })
+    }
+
+    let test = suite.tests.find(test => test.id === evt.id)
+    if (test) {
+      test = newTest
+      test.steps.length = 0
+    } else {
+      suite.tests.push(newTest)
+    }
 
     updateStats()
   },
@@ -85,6 +100,7 @@ export default {
     const test = suite.tests.find(test => test.id === evt.id)
     test.state = 'failed'
     test.err = evt.err
+    test.file = evt.file
     test.screenshot = evt.screenshot
 
     // Add an artificial step
@@ -101,15 +117,27 @@ export default {
 
   reset: () => {
     suites.length = 0
+    state.state = undefined
   },
 
   stats: () => stats,
 
+  state: () => state,
+
+  startTestRun: () => {
+    state.state = 'running'
+  },
+
   endTestRun: () => {
     suites.forEach(suite => {
       if (!suite.state) {
-        suite.state = 'passed'
+        suite.state = 'aborted'
+        suite.tests.forEach(test => {
+          if (!test.state) test.state = 'aborted'
+        })
       }
     })
+
+    state.state = undefined
   }
 }

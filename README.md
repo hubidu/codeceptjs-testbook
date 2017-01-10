@@ -25,8 +25,11 @@ x Show steps of failed test highlighting failed command
 - Show actual/expected result nicely formatted
 - Filter tests/suites by tags
 - Show test stats (passed/failed) on tags
-- Create a separate directory for every test run
+- Create a separate directory for every test run (and collect test artifacts like screenshots there)
 - Filter suites/tests by search text (simple)
+- Send an email notification when tests fail
+- Run testbook app and server in a docker container
+- Show test/suite source code
 - Make header sticky
 - Sort tests
 - BUG No events fired when error in Before Hook
@@ -37,8 +40,7 @@ x Show steps of failed test highlighting failed command
 - Send email when tests fail
 - Show all features and scenarios in book form
 - Show step context (i. e. page object method)
-- Collect results of test runs in separate directories
-- Use environment when running tests
+- Run a test in different environments
 - Show actual/expected results in failed tests
 - Show detailed report of a scenario execution
 - Link to scenario source code

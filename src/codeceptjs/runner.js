@@ -1,5 +1,6 @@
 const util  = require('util'),
-    spawn = require('child_process').spawn;
+    spawn = require('child_process').spawn,
+    exec = require('child_process').exec;
 const fsPath = require('path');
 
 /**
@@ -26,6 +27,7 @@ const CODECEPT_OPTS = [
  */
 const sockets = {};
 let isRunning = false;
+let testrun;
 
 /**
  * Pass on reporter output to subscribed websockets
@@ -45,16 +47,22 @@ module.exports = {
     delete sockets[socket.id];
   },
 
-  run: () => {
+  run: (options) => {
     if (isRunning) return;
 
     isRunning = true;
     // TODO return a promise
     fireEvent('codecept.start_run');
 
-    let testrun;
+    const opts = CODECEPT_OPTS.slice();
+
+    if (options.grep) {
+      opts.push('--grep');
+      opts.push(options.grep);
+    }
+
     try {
-      testrun = spawn(CODECEPT_CMD, CODECEPT_OPTS);
+      testrun = spawn(CODECEPT_CMD, opts, { detached: true });
     } catch (err) {
       isRunning = false;
       console.log();
@@ -83,12 +91,27 @@ module.exports = {
 
     testrun.on('exit', function (code) {
       fireEvent('codecept.finish_run', { code });
+
+      testrun = undefined;
       isRunning = false;
     });
 
     testrun.on('end', function (code) {
       fireEvent('codecept.finish_run', { code });
+
+      testrun = undefined;
       isRunning = false;
     });
+  },
+
+  stop: () => {
+    if (!testrun) return;
+
+    const os = require('os');
+    if(os.platform() === 'win32'){
+        exec('taskkill /pid ' + testrun.pid + ' /T /F')
+    }else{
+        ps.kill();
+    }    // process.kill(-testrun.pid, 'SIGINT');
   }
 }

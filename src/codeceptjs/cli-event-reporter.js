@@ -96,6 +96,15 @@ function saveCurrentScreenshot(stepScreenshot, suiteId, testId) {
 }
 
 /**
+ * Strip current working directory from file path
+ * @param  {[type]} filePath [description]
+ * @return {[type]}          [description]
+ */
+function stripCwd(filePath) {
+  return filePath.replace(process.cwd(), '');
+}
+
+/**
  * Create a mocha runner instance which listens for test events
  * and passes them to a websocket
  */
@@ -161,7 +170,7 @@ function reporterFactoryFn(runner, opts) {
         },
         steps: test.steps.map(step => ({ name: step.name })),
         screenshot: screenshot,
-        file: test.file,
+        file: stripCwd(test.file),
         suiteId: hash(currentSuite.fullTitle())
       }, parseTestTitle(test.title)));
     } else {

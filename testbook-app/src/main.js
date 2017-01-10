@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import VueSocketio from 'vue-socket.io'
 
+import 'font-awesome/css/font-awesome.min.css'
+
+// TODO: Make configurable
 Vue.use(VueSocketio, 'http://localhost:3000')
 
 import App from './App'
