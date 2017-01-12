@@ -2,6 +2,7 @@ const util  = require('util'),
     spawn = require('child_process').spawn,
     exec = require('child_process').exec;
 const fsPath = require('path');
+const shortid = require('shortid');
 
 /**
  * Run codeceptjs out-of-process and read events from stdout
@@ -51,8 +52,8 @@ module.exports = {
     if (isRunning) return;
 
     isRunning = true;
-    // TODO return a promise
-    fireEvent('codecept.start_run');
+    // TODO return a promise from this function
+    fireEvent('codecept.start_run', Object.assign(options, { id: shortid.generate() }));
 
     const opts = CODECEPT_OPTS.slice();
 

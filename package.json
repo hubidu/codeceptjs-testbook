@@ -15,6 +15,7 @@
     "codeceptjs": "^0.4.13",
     "express": "^4.14.0",
     "resolve": "^1.2.0",
-    "socketio": "^1.0.0"
+    "socketio": "^1.0.0",
+    "shortid": "^2.2.6"
   }
 }
