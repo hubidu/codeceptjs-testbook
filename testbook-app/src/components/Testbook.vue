@@ -72,7 +72,7 @@
                       <span class="u-failed" v-if="test.state === 'failed'">
                         <i class="fa fa-times"></i>
                       </span>
-                      <span v-if="test.state === 'aborted'">
+                      <span class="u-warning" v-if="test.state === 'aborted'">
                         <i class="fa fa-unlink"></i>
                       </span>
                       <span v-if="test.state === undefined">
@@ -84,14 +84,14 @@
 
                       <ul v-if="isSelectedTest(test)">
                         <li>
+                          {{ selectedTest.file }}
+
                           <button class="button is-secondary is-small pull-right" v-on:click="runTest(test)">
                             Run
                           </button>
                         </li>
 
                         <li v-if="selectedTest.err">
-                          {{ selectedTest.file }}
-
                           <div class="message is-danger">
                             <div class="message-body">
                               {{ selectedTest.err.message }}
@@ -222,6 +222,7 @@ export default {
       this.$socket.emit('cmd.run', {})
     },
     runTest: function (test) {
+      this.stopTestRun()
       this.$socket.emit('cmd.run', { grep: test.title })
     },
     stopTestRun: function () {
@@ -288,12 +289,17 @@ export default {
     top: 10em;
     margin-left: 1em;
   }
+
   .u-passed {
     color: $green;
   }
 
   .u-failed {
     color: $red;
+  }
+
+  .u-warning {
+    color: $yellow;
   }
 
   .u-rel-time {

@@ -19,20 +19,22 @@ x Reverse step list
 x Use vue ui library
 x Show screenshot of failed tests
 x Show steps of failed test highlighting failed command
-- Use font-awesome icons
+x Use font-awesome icons
+x Stop a test run
+x Make header sticky
 - Run a single test
-- Stop a test run
 - Show actual/expected result nicely formatted
 - Filter tests/suites by tags
+- Run test in environment
 - Show test stats (passed/failed) on tags
 - Create a separate directory for every test run (and collect test artifacts like screenshots there)
 - Filter suites/tests by search text (simple)
 - Send an email notification when tests fail
 - Run testbook app and server in a docker container
 - Show test/suite source code
-- Make header sticky
 - Sort tests
 - BUG No events fired when error in Before Hook
+- BUG Cannot grep for test if scenario contains ''
 - Run only specific test from the UI
 - Record detailed test statistics (e. g. show success statistics per test)
 - Watch test files and run (only changed) tests automatically

@@ -52,15 +52,14 @@ export default {
       state: undefined,
       err: undefined,
       screenshot: undefined,
-      file: undefined,
+      file: evt.file,
       steps: [],
       stepsReverse: []
     }
 
     let test = suite.tests.find(test => test.id === evt.id)
     if (test) {
-      test = newTest
-      test.steps.length = 0
+      test = Object.assign(test, newTest)
     } else {
       suite.tests.push(newTest)
     }
@@ -137,6 +136,8 @@ export default {
         })
       }
     })
+
+    updateStats()
 
     state.state = undefined
   }
