@@ -101,7 +101,7 @@ function saveCurrentScreenshot(stepScreenshot, suiteId, testId) {
  * @return {[type]}          [description]
  */
 function stripCwd(filePath) {
-  return filePath.replace(process.cwd(), '');
+  return '.' + filePath.replace(process.cwd(), '');
 }
 
 /**
@@ -182,7 +182,7 @@ function reporterFactoryFn(runner, opts) {
         },
         steps: test.steps.map(step => ({ name: step.name })),
         screenshot: screenshot,
-        file: test.file,
+        file: stripCwd(test.file),
         suiteId: hash(currentSuite.fullTitle())
       }, parseTestTitle(test.title)));
     }
@@ -191,7 +191,7 @@ function reporterFactoryFn(runner, opts) {
   runner.on('pending', function (test) {
     log('codecept.pending', Object.assign({
       t: Date.now(),
-      file: test.file,
+      file: stripCwd(test.file),
       steps: test.steps.map(step => ({ name: step.name })),
       suiteId: hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)));
@@ -200,7 +200,7 @@ function reporterFactoryFn(runner, opts) {
   runner.on('pass', function (test) {
     log('codecept.pass', Object.assign({
       t: Date.now(),
-      file: test.file,
+      file: stripCwd(test.file),
       steps: test.steps.map(step => ({ name: step.name })),
       suiteId: hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)));
@@ -210,7 +210,7 @@ function reporterFactoryFn(runner, opts) {
     currentTest = test;
     log('codecept.test', Object.assign({
       t: Date.now(),
-      file: test.file,
+      file: stripCwd(test.file),
       steps: test.steps.map(step => ({ name: step.name })),
       suiteId: hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)));

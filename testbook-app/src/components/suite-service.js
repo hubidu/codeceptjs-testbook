@@ -1,7 +1,8 @@
 const suites = []
 const stats = {
   passed: 0,
-  failed: 0
+  failed: 0,
+  tags: {}
 }
 const state = {
   state: undefined
@@ -16,6 +17,12 @@ const updateStats = () => {
     sum += suite.tests.filter(test => test.state === 'failed').length
     return sum
   }, 0)
+  stats.tags = suites.reduce((aggTags, suite) => {
+    suite.tags.forEach(tag => {
+      aggTags[tag] === undefined ? aggTags[tag] = [suite] : aggTags[tag].push(suite)
+    }, aggTags)
+    return aggTags
+  }, {})
 }
 
 export default {

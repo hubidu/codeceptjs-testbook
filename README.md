@@ -22,9 +22,11 @@ x Show steps of failed test highlighting failed command
 x Use font-awesome icons
 x Stop a test run
 x Make header sticky
-- Run a single test
-- Show actual/expected result nicely formatted
+x Run a single test
 - Filter tests/suites by tags
+- In 'I am on page' command format the parameter as link
+- Link to test source file
+- Show actual/expected result nicely formatted
 - Run test in environment
 - Show test stats (passed/failed) on tags
 - Create a separate directory for every test run (and collect test artifacts like screenshots there)

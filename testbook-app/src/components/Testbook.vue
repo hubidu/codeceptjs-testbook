@@ -53,6 +53,14 @@
     </section>
 
     <section class="section">
+      <ul>
+        <li v-for="(suites, tag) in stats.tags">
+          {{tag}} {{suites.length}}
+        </li>
+      </ul>
+    </section>
+
+    <section class="section">
       <div class="container is-fluid">
 
         <div class="columns">
@@ -84,11 +92,13 @@
 
                       <ul v-if="isSelectedTest(test)">
                         <li>
-                          {{ selectedTest.file }}
+                          <div class="tile">
+                            {{ selectedTest.file }}
 
-                          <button class="button is-secondary is-small pull-right" v-on:click="runTest(test)">
-                            Run
-                          </button>
+                            <button class="button is-secondary is-small pull-right" v-on:click="runTest(test)">
+                              Run
+                            </button>
+                          </div>
                         </li>
 
                         <li v-if="selectedTest.err">
