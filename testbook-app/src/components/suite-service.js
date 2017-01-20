@@ -2,7 +2,8 @@ const suites = []
 const stats = {
   passed: 0,
   failed: 0,
-  tags: {}
+  tags: {},
+  env: {}
 }
 const state = {
   state: undefined
@@ -124,14 +125,17 @@ export default {
   reset: () => {
     suites.length = 0
     state.state = undefined
+    updateStats()
   },
 
   stats: () => stats,
 
   state: () => state,
 
-  startTestRun: () => {
+  startTestRun: (evt) => {
     state.state = 'running'
+    stats.env.environment = evt.environment
+    stats.env.device = evt.device
   },
 
   endTestRun: () => {

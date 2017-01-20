@@ -17,5 +17,11 @@
     "resolve": "^1.2.0",
     "socketio": "^1.0.0",
     "shortid": "^2.2.6"
+  },
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1"
   }
 }

@@ -13,6 +13,12 @@
 
       <div class="nav-center">
           <a class="nav-item">
+              {{stats.env.environment}}
+          </a>
+          <a class="nav-item">
+              {{stats.env.device}}
+          </a>
+          <a class="nav-item">
               <span class="u-passed">{{stats.passed}}</span>
               &nbsp;
               Passed
@@ -157,11 +163,18 @@ export default {
     connect: function () {
       console.log('socket connected')
     },
+    'codecept.start_run': function (evt) {
+      evt.type = 'codecept.start_run'
+      // this.suiteName = evt.name
+      suiteService.startTestRun(evt)
+    },
+    /*
     'codecept.start': function (evt) {
       evt.type = 'codecept.start'
       this.suiteName = evt.name
-      suiteService.startTestRun()
+      suiteService.startTestRun(evt)
     },
+    */
     'codecept.suite': function (evt) {
       evt.type = 'codecept.suite'
       suiteService.addSuiteFromEvent(evt)
