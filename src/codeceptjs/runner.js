@@ -9,7 +9,7 @@ const shortid = require('shortid')
 const opts = JSON.stringify({
   helpers: {
     TestbookHelper: {
-      require: fsPath.join(__dirname, './testbook-helper.js').replace(/\\/g, '\\\\')
+      require: fsPath.join(__dirname, './screenshot-helper.js').replace(/\\/g, '\\\\')
     }
   }
 })
@@ -22,10 +22,9 @@ const CODECEPT_CMD = 'sh'
 const CODECEPT_OPTS = [
   './node_modules/.bin/codeceptjs',
   'run',
-  // '--reporter', fsPath.join(__dirname, './null-reporter.js').replace(/\\/g, '\\\\'),
+  '--reporter', fsPath.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
   '-o',
-  opts,
-  '--debug'
+  opts
 ]
 
 /**

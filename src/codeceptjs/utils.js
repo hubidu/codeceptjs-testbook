@@ -32,7 +32,7 @@ function parseTags (str) {
   tags = tags.map(t => t.trim()).map(t => t.replace('@', ''))
 
   let title = str
-  tags.forEach(t => (title = title.replace(`@${t}`, '')))
+  tags.forEach(t => (title = title.replace(`@${t}`, '').trim()))
 
   return {
     tags,

@@ -25,6 +25,7 @@ x Make header sticky
 x Run a single test
 x Report test environment in run event
 x Report device in run event
+- Implement conditional tags (NotProduction, NotIntegration)
 - Report before/after suite events
 - Send the base url with every suite/test event (in order to create a url in I am on page step)
 - Filter tests/suites by tags

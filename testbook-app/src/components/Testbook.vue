@@ -59,11 +59,21 @@
     </section>
 
     <section class="section">
-      <ul>
-        <li v-for="(suites, tag) in stats.tags">
-          {{tag}} {{suites.length}}
-        </li>
-      </ul>
+      <div class="tabs is-toggle">
+        <ul>
+          <li class="is-active" v-for="(suites, tag) in stats.tags">
+            <a href="#">
+              <span class="tag is-light">
+                {{suites.length}}
+              </span>
+              &nbsp;
+              <span>
+                {{tag}}
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </section>
 
     <section class="section">
@@ -108,12 +118,19 @@
                         </li>
 
                         <li v-if="selectedTest.err">
+                          <div class="notification is-danger">
+                            {{ selectedTest.err.message.message }}
+                          </div>
+                          <div class="message is-success">
+                            <div class="message-body">
+                              <strong>Expected</strong>
+                              {{ selectedTest.err.message.expected }}
+                            </div>
+                          </div>
                           <div class="message is-danger">
                             <div class="message-body">
-                              {{ selectedTest.err.message }}
-
-                              {{ selectedTest.err.actual }}
-                              {{ selectedTest.err.expected }}
+                              <strong>Actual</strong>
+                              {{ selectedTest.err.message.actual }}
                             </div>
                           </div>
                         </li>
