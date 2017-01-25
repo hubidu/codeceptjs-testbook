@@ -86,7 +86,9 @@ export default {
       actor: evt.actor,
       name: evt.humanizedName,
       args: evt.humanizedArgs,
-      screenshot: evt.screenshot
+      screenshot: evt.screenshot,
+      pageTitle: evt.pageTitle,
+      pageUrl: evt.pageUrl
     }
     test.steps.push(step)
     test.stepsReverse.splice(0, 0, step)
@@ -116,7 +118,9 @@ export default {
       actor: 'I',
       name: 'failed here',
       args: '',
-      screenshot: evt.screenshot
+      screenshot: evt.screenshot,
+      pageUrl: undefined,
+      pageTitle: undefined
     }
     test.steps.push(step)
     test.stepsReverse.splice(0, 0, step)

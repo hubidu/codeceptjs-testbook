@@ -158,7 +158,12 @@
 
           </div>
           <div class="column is-7 Step-preview">
-            <img class="Step-screenshot" v-if="selectedStep" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
+            <div v-if="selectedStep">
+              <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl}}</a>
+              <h3>{{selectedStep.pageTitle}}</h3>
+              <hr>
+              <img class="Step-screenshot" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
+            </div>
           </div>
         </div>
 
@@ -325,8 +330,8 @@ export default {
   }
 
   .Step-screenshot {
-    position: fixed;
-    top: 10em;
+    // position: fixed;
+    // top: 10em;
     margin-left: 1em;
   }
 

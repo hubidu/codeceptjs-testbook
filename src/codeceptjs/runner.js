@@ -8,8 +8,11 @@ const shortid = require('shortid')
  */
 const opts = JSON.stringify({
   helpers: {
-    TestbookHelper: {
+    ScreenshotHelper: {
       require: fsPath.join(__dirname, './screenshot-helper.js').replace(/\\/g, '\\\\')
+    },
+    MetaHelper: {
+      require: fsPath.join(__dirname, './meta-helper.js').replace(/\\/g, '\\\\')
     }
   }
 })

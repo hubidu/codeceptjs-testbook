@@ -35,7 +35,9 @@ function mapStep (step) {
     humanizedArgs: step.humanizeArgs(),
     helper: step.helper.constructor.name,
     actor: step.actor,
-    screenshot: step.screenshot
+    screenshot: step.screenshot,
+    pageTitle: step._title,
+    pageUrl: step._url
   }
 }
 
