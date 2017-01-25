@@ -27,14 +27,16 @@ x Report test environment in run event
 x Report device in run event
 x Retrieve current url for each step and return it in events
 - Implement conditional tags (NotProduction, NotIntegration)
-- Report before/after suite events
-- Send the base url with every suite/test event (in order to create a url in I am on page step)
+- Start phantom in bootstrap/teardown
+- Report before/after suite events using test.started/test.after events
+- Show tags in scenarios
 - Filter tests/suites by tags
 - In 'I am on page' command format the parameter as link
 - Link to test source file
 - Show actual/expected result nicely formatted
 - Run test in environment
 - Show test stats (passed/failed) on tags
+- Send the base url with every suite/test event (in order to create a url in I am on page step)
 - Create a separate directory for every test run (and collect test artifacts like screenshots there)
 - Filter suites/tests by search text (simple)
 - Send an email notification when tests fail

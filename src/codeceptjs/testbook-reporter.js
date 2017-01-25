@@ -104,6 +104,14 @@ function reporterFactoryFn (runner, opts) {
     }, parseTestTitle(test.title)))
   })
 
+  event.dispatcher.on(event.test.started, function (step) {
+    console.log('TEST.START')
+  })
+
+  event.dispatcher.on(event.test.after, function (step) {
+    console.log('TEST.AFTER')
+  })
+
   runner.on('test', function (test) {
     if (!currentSuite) throw new Error('Expected to have a suite')
 
