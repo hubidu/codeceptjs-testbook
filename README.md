@@ -26,9 +26,21 @@ x Run a single test
 x Report test environment in run event
 x Report device in run event
 x Retrieve current url for each step and return it in events
+x Report before/after suite events using test.started/test.after events
+
+## BETA 1
+
+- FIX Find reason for before hook failures
+- FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
+- Start/Stop phantomjs before testrun
+- Run tests for all devices
+- Run tests continuously
+- Send an email notification when tests fail
+- Run testbook app and server in a docker container
+
+## BACKLOG
+- Add line number to steps
 - Implement conditional tags (NotProduction, NotIntegration)
-- Start phantom in bootstrap/teardown
-- Report before/after suite events using test.started/test.after events
 - Show tags in scenarios
 - Filter tests/suites by tags
 - In 'I am on page' command format the parameter as link
@@ -39,8 +51,6 @@ x Retrieve current url for each step and return it in events
 - Send the base url with every suite/test event (in order to create a url in I am on page step)
 - Create a separate directory for every test run (and collect test artifacts like screenshots there)
 - Filter suites/tests by search text (simple)
-- Send an email notification when tests fail
-- Run testbook app and server in a docker container
 - Show test/suite source code
 - Sort tests
 - BUG No events fired when error in Before Hook

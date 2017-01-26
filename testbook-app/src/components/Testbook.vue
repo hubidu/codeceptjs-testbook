@@ -47,71 +47,57 @@
       </div>
     </nav>
 
-    <section class="section" v-if="suites.length === 0" >
-
-      <blockquote class="has-text-centered">
-        <strong>
-          No test results are yet available.
-          <a href="#" v-on:click="runAllTests()">Start a test run now!</a>
-        </strong>
-      </blockquote>
-
-    </section>
 
     <section class="section">
-      <div class="tabs is-toggle">
-        <ul>
-          <li class="is-active" v-for="(suites, tag) in stats.tags">
-            <a href="#">
-              <span class="tag is-light">
-                {{suites.length}}
-              </span>
-              &nbsp;
-              <span>
-                {{tag}}
-              </span>
-            </a>
-          </li>
-        </ul>
-      </div>
+      <span class="tag is-info" v-for="(suites, tag) in stats.tags">
+          {{tag}}
+          &nbsp;
+          {{suites.length}}
+      </span>
     </section>
 
-    <section class="section">
-      <div class="container is-fluid">
+    <section class="section Testbook-features">
 
-        <div class="columns">
-          <div class="column is-5">
+            <blockquote class="has-text-centered" v-if="suites.length === 0">
+              <strong>
+                No test results are yet available.
+                <a href="#" v-on:click="runAllTests()">Start a test run now!</a>
+              </strong>
+            </blockquote>
 
-            <aside class="menu">
-              <div v-for="suite in suites">
-                <p class="menu-label">
+            <aside>
+              <div class="Testbook-feature box content" v-for="suite in suites">
+                <h4 class="title">
                   {{ suite.title }}
-                </p>
-                <ul class="menu-list" v-for="test in suite.tests">
+                </h4>
+                <ul v-for="test in suite.tests">
                   <li>
-                    <a v-bind:class="{ 'is-active': isSelectedTest(test) }" v-on:click="selectTest(test)">
-                      <span class="u-passed" v-if="test.state === 'passed'">
-                        <i class="fa fa-check"></i>
-                      </span>
-                      <span class="u-failed" v-if="test.state === 'failed'">
-                        <i class="fa fa-times"></i>
-                      </span>
-                      <span class="u-warning" v-if="test.state === 'aborted'">
-                        <i class="fa fa-unlink"></i>
-                      </span>
-                      <span v-if="test.state === undefined">
-                        <i class="fa fa-refresh fa-spin"></i>
-                      </span>
+                    <div class="Testbook-test" v-bind:class="{ 'is-active': isSelectedTest(test) }" v-on:click="selectTest(test)">
+                      <h5 class="subtitle">
+                        <span class="u-passed" v-if="test.state === 'passed'">
+                          <i class="fa fa-check"></i>
+                        </span>
+                        <span class="u-failed" v-if="test.state === 'failed'">
+                          <i class="fa fa-times"></i>
+                        </span>
+                        <span class="u-warning" v-if="test.state === 'aborted'">
+                          <i class="fa fa-unlink"></i>
+                        </span>
+                        <span v-if="test.state === undefined">
+                          <i class="fa fa-refresh fa-spin"></i>
+                        </span>
 
-                      {{test.title}}
-                    </a>
+                        {{test.title}}
+                      </h5>
 
-                      <ul v-if="isSelectedTest(test)">
+                    </div>
+
+                      <ul class="Testbook-steps" v-if="isSelectedTest(test)">
                         <li>
-                          <div class="tile">
+                          <div class="Testbook-step_cmdbar">
                             {{ selectedTest.file }}
 
-                            <button class="button is-secondary is-small pull-right" v-on:click="runTest(test)">
+                            <button class="button is-primary is-outlined is-small pull-right" v-on:click="runTest(test)">
                               Run
                             </button>
                           </div>
@@ -138,9 +124,11 @@
                         <li class="Step" v-bind:class="{ 'Step--active': isSelectedStep(step) }"
                           v-for="step in selectedTest.stepsReverse"
                           v-on:click="selectStep(step)">
+                          <!--
                           <span class="u-rel-time">
                             {{relativeTime(selectedTest, step)}}
                           </span>
+                          -->
                           <strong>
                             {{step.actor}} {{step.name}}
                           </strong>
@@ -156,19 +144,16 @@
               </div>
             </aside>
 
-          </div>
-          <div class="column is-7 Step-preview">
-            <div v-if="selectedStep">
-              <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl}}</a>
-              <h3>{{selectedStep.pageTitle}}</h3>
-              <hr>
-              <img class="Step-screenshot" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
-            </div>
-          </div>
-        </div>
-
-      </div>
     </section>
+
+    <div class="Step-preview">
+      <div v-if="selectedStep">
+        <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl}}</a>
+        <h3>{{selectedStep.pageTitle}}</h3>
+        <hr>
+        <img class="Step-screenshot" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
+      </div>
+    </div>
 
 
 
@@ -204,6 +189,10 @@ export default {
     'codecept.step': function (evt) {
       evt.type = 'codecept.step'
       suiteService.addStepToTest(evt.suiteId, evt.testId, evt)
+    },
+    'codecept.test.start': function (evt) {
+      evt.type = 'codecept.test.start'
+      suiteService.markTestStart(evt.suiteId, evt.testId, evt)
     },
     'codecept.test': function (evt) {
       evt.type = 'codecept.test'
@@ -291,8 +280,31 @@ export default {
     width: 100%;
   }
 
-  .Testbook-suites, .Testbook-tests {
+  .Testbook-features {
+    position:absolute;
+    height: 100%;
+    width: 33%;
+    overflow-y: scroll;
+  }
+
+  .Testbook-feature {
+    > ul {
+      list-style-type: none;
+      margin-left: 0;
+    }
+  }
+
+  .Testbook-test {
+    cursor: pointer;
+  }
+
+  .Testbook-steps {
     list-style-type: none;
+  }
+
+  .Testbook-step_cmdbar {
+    color: $grey_light;
+    padding-bottom: 20px;
   }
 
   .Testbook-screenshot {
@@ -327,6 +339,9 @@ export default {
   }
 
   .Step-preview {
+    float: right;
+    padding: 10px;
+    margin-left: 33%;
   }
 
   .Step-screenshot {

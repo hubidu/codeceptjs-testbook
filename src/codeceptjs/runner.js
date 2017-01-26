@@ -27,7 +27,8 @@ const CODECEPT_OPTS = [
   'run',
   '--reporter', fsPath.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
   '-o',
-  opts
+  opts,
+  '--sort'
 ]
 
 /**

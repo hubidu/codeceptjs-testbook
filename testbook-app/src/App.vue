@@ -21,7 +21,10 @@ export default {
 @import '~bulma/sass/utilities/variables';
 @import '~bulma/sass/utilities/mixins';
 
-#app {
+html, body, #app {
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 </style>

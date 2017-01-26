@@ -80,6 +80,10 @@ export default {
     if (!suite) return
 
     const test = suite.tests.find(test => test.id === testId)
+    if (!test) {
+      console.error('Failed to find test', evt)
+      return
+    }
 
     const step = {
       t: evt.t,
@@ -94,11 +98,35 @@ export default {
     test.stepsReverse.splice(0, 0, step)
   },
 
+  markTestStart: (suiteId, testId, evt) => {
+    const suite = suites.find(suite => suite.id === suiteId)
+    if (!suite) return
+
+    const test = suite.tests.find(test => test.id === testId)
+    if (!test) {
+      console.error('Failed to find test', evt)
+      return
+    }
+
+    const step = {
+      t: evt.t,
+      actor: '---',
+      name: '',
+      args: ''
+    }
+    test.steps.push(step)
+    test.stepsReverse.splice(0, 0, step)
+  },
+
   markTestPassed: (suiteId, evt) => {
     const suite = suites.find(suite => suite.id === suiteId)
     if (!suite) return
 
     const test = suite.tests.find(test => test.id === evt.id)
+    if (!test) {
+      console.error('Failed to find test', evt)
+      return
+    }
     test.state = 'passed'
   },
 
@@ -107,6 +135,10 @@ export default {
     suite.state = 'failed'
 
     const test = suite.tests.find(test => test.id === evt.id)
+    if (!test) {
+      console.error('Failed to find test', evt)
+      return
+    }
     test.state = 'failed'
     test.err = evt.err
     test.file = evt.file

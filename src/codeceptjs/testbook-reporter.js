@@ -74,12 +74,12 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('fail', function (test, err) {
-    console.log('TEST.FAIL', test)
     utils.log('codecept.fail', Object.assign({
       t: Date.now(),
       err: {
         message: test.err
       },
+      testType: test.type,
       steps: test.steps ? test.steps.map(mapStep) : undefined,
       screenshot: testrun.captureErrorScreenshot(test),
       file: utils.stripCwd(test.file),
@@ -88,7 +88,6 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('pending', function (test) {
-    console.log('TEST.PENDING')
     utils.log('codecept.pending', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
@@ -98,7 +97,6 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('pass', function (test) {
-    console.log('TEST.PASS')
     utils.log('codecept.pass', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
@@ -107,16 +105,23 @@ function reporterFactoryFn (runner, opts) {
     }, parseTestTitle(test.title)))
   })
 
-  event.dispatcher.on(event.test.started, function (step) {
-    console.log('TEST.START')
+  event.dispatcher.on(event.test.started, function (test) {
+    utils.log('codecept.test.start', Object.assign({
+      t: Date.now(),
+      suiteId: utils.hash(currentSuite.fullTitle()),
+      testId: utils.hash(currentTest.title)
+    }, parseTestTitle(currentTest.title)))
   })
 
-  event.dispatcher.on(event.test.after, function (step) {
-    console.log('TEST.AFTER')
+  event.dispatcher.on(event.test.after, function (test) {
+    utils.log('codecept.test.after', Object.assign({
+      t: Date.now(),
+      suiteId: utils.hash(currentSuite.fullTitle()),
+      testId: utils.hash(currentTest.title)
+    }, parseTestTitle(currentTest.title)))
   })
 
   runner.on('test', function (test) {
-    console.log('TEST')
     if (!currentSuite) throw new Error('Expected to have a suite')
 
     currentTest = test
@@ -130,8 +135,6 @@ function reporterFactoryFn (runner, opts) {
   })
 
   event.dispatcher.on(event.step.started, function (step) {
-    console.log('STEP:STARTED')
-
     const suiteId = utils.hash(currentSuite.fullTitle())
     const testId = utils.hash(currentTest.title)
 
