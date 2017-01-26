@@ -21,6 +21,8 @@ function hash (str) {
  * @return {[type]}          [description]
  */
 function stripCwd (filePath) {
+  if (!filePath) return undefined
+
   return '.' + filePath.replace(process.cwd(), '')
 }
 

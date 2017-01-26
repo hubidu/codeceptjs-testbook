@@ -74,12 +74,13 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('fail', function (test, err) {
+    console.log('TEST.FAIL', test)
     utils.log('codecept.fail', Object.assign({
       t: Date.now(),
       err: {
         message: test.err
       },
-      steps: test.steps.map(mapStep),
+      steps: test.steps ? test.steps.map(mapStep) : undefined,
       screenshot: testrun.captureErrorScreenshot(test),
       file: utils.stripCwd(test.file),
       suiteId: utils.hash(currentSuite.fullTitle())
@@ -87,19 +88,21 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('pending', function (test) {
+    console.log('TEST.PENDING')
     utils.log('codecept.pending', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
-      steps: test.steps.map(mapStep),
+      steps: test.steps ? test.steps.map(mapStep) : undefined,
       suiteId: utils.hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)))
   })
 
   runner.on('pass', function (test) {
+    console.log('TEST.PASS')
     utils.log('codecept.pass', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
-      steps: test.steps.map(mapStep),
+      steps: test.steps ? test.steps.map(mapStep) : undefined,
       suiteId: utils.hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)))
   })
@@ -113,6 +116,7 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('test', function (test) {
+    console.log('TEST')
     if (!currentSuite) throw new Error('Expected to have a suite')
 
     currentTest = test
@@ -126,6 +130,8 @@ function reporterFactoryFn (runner, opts) {
   })
 
   event.dispatcher.on(event.step.started, function (step) {
+    console.log('STEP:STARTED')
+
     const suiteId = utils.hash(currentSuite.fullTitle())
     const testId = utils.hash(currentTest.title)
 
