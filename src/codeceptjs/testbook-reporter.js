@@ -1,4 +1,3 @@
-const fs = require('fs')
 const path = require('path')
 
 const utils = require('./utils')
@@ -23,11 +22,28 @@ function parseSuiteTitle (title) {
   return Object.assign({ id: utils.hash(title) }, utils.parseTags(title))
 }
 
+function extractFileLineMethod (stack) {
+  if (!stack) return
+
+  const pageAndFeatureFiles = stack.split('\n').filter(l => l.indexOf('.page.js') >= 0 || l.indexOf('.feature.js') >= 0)
+  if (pageAndFeatureFiles.length === 0) return
+
+  const codeLine = pageAndFeatureFiles[0]
+  const fileAndLine = codeLine.match(/\((.+):([0-9]+):([0-9]+)\)/)
+  const method = codeLine.match(/at ([A-Za-z\.]+) \(/)
+  return {
+    file: fileAndLine ? fileAndLine[1] : undefined,
+    fileName: fileAndLine ? path.basename(fileAndLine[1]) : undefined,
+    lineNo: fileAndLine ? fileAndLine[2] : undefined,
+    method: method ? method[1] : undefined
+  }
+}
+
 /**
  * The step title could contain tags (denoted by @)
  */
 function mapStep (step) {
-  return {
+  return Object.assign({
     t: Date.now(),
     name: step.name,
     args: step.args,
@@ -38,7 +54,7 @@ function mapStep (step) {
     screenshot: step.screenshot,
     pageTitle: step._title,
     pageUrl: step._url
-  }
+  }, extractFileLineMethod(step.stack))
 }
 
 /**

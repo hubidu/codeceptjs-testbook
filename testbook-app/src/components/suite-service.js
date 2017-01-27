@@ -92,7 +92,11 @@ export default {
       args: evt.humanizedArgs,
       screenshot: evt.screenshot,
       pageTitle: evt.pageTitle,
-      pageUrl: evt.pageUrl
+      pageUrl: evt.pageUrl,
+      file: evt.file,
+      fileName: evt.fileName,
+      lineNo: evt.lineNo,
+      method: evt.method
     }
     test.steps.push(step)
     test.stepsReverse.splice(0, 0, step)

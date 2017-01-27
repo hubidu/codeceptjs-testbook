@@ -10,6 +10,10 @@ class ScreenshotHelper extends Helper {
 
   _beforeStep (step) {
     let client = this._getI().browser
+    if (!client) {
+      console.log('WARN Browser not yet initialized - Can not get meta data')
+      return
+    }
 
     return Promise.all([
       client.getTitle(),

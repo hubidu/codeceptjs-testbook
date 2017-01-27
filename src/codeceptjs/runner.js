@@ -28,7 +28,10 @@ const CODECEPT_OPTS = [
   '--reporter', fsPath.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
   '-o',
   opts,
-  '--sort'
+  '--sort',
+  '--debug',
+
+  // '--grep', 'it should convert my anonymous'
 ]
 
 /**
@@ -44,6 +47,10 @@ let testrun
 function fireEvent (type, payload = {}) {
   console.log('EVT', type, payload)
   Object.keys(sockets).forEach(k => sockets[k].emit(type, payload))
+}
+
+function escapeRegExp (str) {
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
 }
 
 module.exports = {
@@ -80,7 +87,7 @@ module.exports = {
     // Use grep to only run a specific test
     if (options.grep) {
       opts.push('--grep')
-      opts.push(options.grep)
+      opts.push(escapeRegExp(options.grep))
     }
 
     try {

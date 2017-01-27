@@ -135,6 +135,23 @@
                           <em>
                             {{step.args}}
                           </em>
+
+                          <blockquote v-if="isSelectedStep(step)">
+                            <div>
+                              in
+                              <em>
+                                {{step.method}}
+                              </em>
+                              at line
+                              <em>
+                                {{step.lineNo}}
+                              </em>
+                              of
+                              <strong>
+                                {{step.fileName}}
+                              </strong>
+                            </div>
+                          </blockquote>
                         </li>
 
                       </ul>
