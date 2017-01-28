@@ -17,10 +17,12 @@ class ScreenshotHelper extends Helper {
 
     return Promise.all([
       client.getTitle(),
-      client.getUrl()
+      client.getUrl(),
+      client.getSource()
     ]).then(values => {
       step._title = values[0]
-      step._url = values[1]
+      step._url = values[1],
+      step._source = values[2]
     })
   }
 }

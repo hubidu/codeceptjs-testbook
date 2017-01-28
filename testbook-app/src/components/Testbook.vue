@@ -105,20 +105,22 @@
 
                         <li v-if="selectedTest.err">
                           <div class="notification is-danger">
-                            {{ selectedTest.err.message.message }}
+                            {{ selectedTest.errorMessage }}
                           </div>
-                          <div class="message is-success">
+                          
+                          <div class="message is-success" v-if="selectedTest.err.message">
                             <div class="message-body">
                               <strong>Expected</strong>
                               {{ selectedTest.err.message.expected }}
                             </div>
                           </div>
-                          <div class="message is-danger">
+                          <div class="message is-danger" v-if="selectedTest.err.message">
                             <div class="message-body">
                               <strong>Actual</strong>
                               {{ selectedTest.err.message.actual }}
                             </div>
                           </div>
+                          
                         </li>
 
                         <li class="Step" v-bind:class="{ 'Step--active': isSelectedStep(step) }"
@@ -169,6 +171,12 @@
         <h3>{{selectedStep.pageTitle}}</h3>
         <hr>
         <img class="Step-screenshot" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
+
+        <pre>
+          <code>
+            {{selectedStep.pageSource}}
+          </code>
+        </pre>
       </div>
     </div>
 

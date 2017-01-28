@@ -58,6 +58,7 @@ export default {
       id: evt.id,
       title: evt.title,
       state: undefined,
+      errorMessage: undefined,
       err: undefined,
       screenshot: undefined,
       file: evt.file,
@@ -144,6 +145,7 @@ export default {
       return
     }
     test.state = 'failed'
+    test.errorMessage = evt.errorMessage
     test.err = evt.err
     test.file = evt.file
     test.screenshot = evt.screenshot

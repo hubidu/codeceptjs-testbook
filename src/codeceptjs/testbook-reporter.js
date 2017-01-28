@@ -8,6 +8,7 @@ const testrun = require('./testrun')
 const TEST_ROOT = process.cwd()
 const codeceptUtils = require(path.join(TEST_ROOT, 'node_modules/codeceptjs/lib/command/utils'))
 const event = require(path.join(TEST_ROOT, 'node_modules/codeceptjs/lib/event'))
+const AssertionFailedError = require(path.join(TEST_ROOT, 'node_modules/codeceptjs/lib/assert/error'))
 
 /**
  * The test title could contain tags (denoted by @).
@@ -53,7 +54,8 @@ function mapStep (step) {
     actor: step.actor,
     screenshot: step.screenshot,
     pageTitle: step._title,
-    pageUrl: step._url
+    pageUrl: step._url,
+    // pageSource: step._source // Must somehow encode the html source otherwise it breaks the event system
   }, extractFileLineMethod(step.stack))
 }
 
@@ -90,11 +92,15 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('fail', function (test, err) {
+    let msg = err.message;
+    if (err instanceof AssertionFailedError) {
+      msg = err.message = err.inspect();
+    }
+
     utils.log('codecept.fail', Object.assign({
       t: Date.now(),
-      err: {
-        message: test.err
-      },
+      errorMessage: msg,
+      err: test.err,
       testType: test.type,
       steps: test.steps ? test.steps.map(mapStep) : undefined,
       screenshot: testrun.captureErrorScreenshot(test),
