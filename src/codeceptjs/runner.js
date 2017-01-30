@@ -31,7 +31,7 @@ const CODECEPT_OPTS = [
   '--sort',
   '--debug',
 
-  '--grep', '@UserConvert'
+  // '--grep', '@UserConvert'
 ]
 
 /**
@@ -87,7 +87,10 @@ module.exports = {
     // Use grep to only run a specific test
     if (options.grep) {
       opts.push('--grep')
-      opts.push(escapeRegExp(options.grep))
+      const escapedGrep = escapeRegExp(options.grep)
+      opts.push(escapedGrep)
+
+      console.log('Running with grep', options.grep)
     }
 
     try {
@@ -97,7 +100,7 @@ module.exports = {
       })
     } catch (err) {
       isRunning = false
-      console.log()
+      console.log('Failed to run codeceptjs', err)
       return
     }
 

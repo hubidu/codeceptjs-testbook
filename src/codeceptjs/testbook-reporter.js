@@ -55,7 +55,7 @@ function mapStep (step) {
     screenshot: step.screenshot,
     pageTitle: step._title,
     pageUrl: step._url,
-    // pageSource: step._source // Must somehow encode the html source otherwise it breaks the event system
+    htmlSource: step._htmlSource
   }, extractFileLineMethod(step.stack))
 }
 
@@ -161,6 +161,7 @@ function reporterFactoryFn (runner, opts) {
     const testId = utils.hash(currentTest.title)
 
     step.screenshot = testrun.captureCurrentScreenshot()
+    step._htmlSource = testrun.captureCurrentHtml()
 
     utils.log('codecept.step', Object.assign({
       suiteId,

@@ -44,6 +44,24 @@ module.exports = {
   },
 
   /**
+   * Move current html snapshot to the testrun output directory
+   */
+  captureCurrentHtml: () => {
+    const screenshotPath = path.join(global.output_dir, 'source.current.html')
+    const destHtmlSource = `source-${shortid.generate()}.html`
+    const destHtmlSourcePath = path.join(OUTPUT_DIR, runId, destHtmlSource)
+
+    try {
+      if (fs.existsSync(screenshotPath)) {
+        fs.renameSync(screenshotPath, destHtmlSourcePath)
+      }
+    } catch (err) {
+      console.log('Error capturing HTML source', err)
+    }
+    return [runId, destHtmlSource].join('/')
+  },
+
+  /**
    * Move the error screenshot which codeceptjs created to the output directory
    */
   captureErrorScreenshot: (test) => {
@@ -51,7 +69,7 @@ module.exports = {
       return path.join(global.output_dir, test.title.replace(/ /g, '_') + '.failed.png')
     }
     const destScreenshotName = `screenshot-${shortid.generate()}.png`
-    const destScreenshotPath = path.join(OUTPUT_DIR, runId, destScreenshotName)
+    const destHtmlSourcePath = path.join(OUTPUT_DIR, runId, destScreenshotName)
 
     try {
       if (fs.existsSync(codeceptErrorScreenshot(test))) {

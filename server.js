@@ -4,13 +4,8 @@ const commands = require('./src/commands')
 
 var app = require('express')()
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html')
-})
-
-app.get('/screenshots/:runId/:fileName', function (req, res) {
-  res.sendFile(path.join(process.cwd(), '.testbook', req.params.runId, req.params.fileName))
-})
+// Add routes
+require('./src/api')(app)
 
 /**
  * Start the web server

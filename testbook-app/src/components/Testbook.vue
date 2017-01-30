@@ -67,8 +67,7 @@
 
             <aside>
               <div class="Testbook-feature box content" v-for="suite in suites">
-                <h4 class="title">
-                  {{ suite.title }}
+                <h4 class="title" v-html="formatMarkdown(suite.title)">
                 </h4>
                 <ul v-for="test in suite.tests">
                   <li>
@@ -108,18 +107,24 @@
                             {{ selectedTest.errorMessage }}
                           </div>
                           
-                          <div class="message is-success" v-if="selectedTest.err.message">
-                            <div class="message-body">
-                              <strong>Expected</strong>
-                              {{ selectedTest.err.message.expected }}
+                          <div v-if="selectedTest.err.message"> 
+
+                            <div class="message is-success" v-if="selectedTest.err.message.expected">
+                              <div class="message-body">
+                                <strong>Expected</strong>
+                                {{ selectedTest.err.message.expected }}
+                              </div>
                             </div>
-                          </div>
-                          <div class="message is-danger" v-if="selectedTest.err.message">
-                            <div class="message-body">
-                              <strong>Actual</strong>
-                              {{ selectedTest.err.message.actual }}
+                            <div class="message is-danger" v-if="selectedTest.err.message.actual">
+                              <div class="message-body">
+                                <strong>Actual</strong>
+                                {{ selectedTest.err.message.actual }}
+                              </div>
                             </div>
+
                           </div>
+
+
                           
                         </li>
 
@@ -132,10 +137,10 @@
                           </span>
                           -->
                           <strong>
-                            {{step.actor}} {{step.name}}
+                            {{step.actor}} {{step.humanizedName}}
                           </strong>
                           <em>
-                            {{step.args}}
+                            {{step.humanizedArgs}}
                           </em>
 
                           <blockquote v-if="isSelectedStep(step)">
@@ -167,8 +172,12 @@
 
     <div class="Step-preview">
       <div v-if="selectedStep">
-        <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl}}</a>
-        <h3>{{selectedStep.pageTitle}}</h3>
+        <h2>{{selectedStep.pageTitle}}</h2>
+
+        <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl | truncate 50}}</a>
+        
+        <a target="_blank" v-bind:href="htmlSourceUrl(selectedStep)">HTMLSource</a>
+        
         <hr>
         <img class="Step-screenshot" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
 
@@ -187,6 +196,7 @@
 </template>
 
 <script>
+import marked from 'marked'
 import suiteService from './suite-service'
 
 export default {
@@ -248,9 +258,27 @@ export default {
     }
   },
   methods: {
+    formatMarkdown: function (markdownString) {
+      return marked(markdownString)
+    },
+
     screenshotUrl: function (screenshot) {
       return `http://localhost:3000/screenshots/${screenshot}`
     },
+
+    htmlSourceUrl: function (step) {
+      let selector
+      if (step.name === 'waitForElement') {
+        selector = step.args[0]
+      } else if (step.name === 'click') {
+        selector = step.args[0]
+      } else if (step.name === 'see' && step.args.length === 2) {
+        selector = step.args[1]
+      }
+      selector = encodeURIComponent(selector)
+      return `http://localhost:3000/html-source/${step.htmlSource}?selector=${selector}`
+    },
+
     relativeTime: function (test, step) {
       return ((step.t - test.t) / 1000).toFixed(3)
     },
@@ -287,7 +315,14 @@ export default {
     stopTestRun: function () {
       this.$socket.emit('cmd.stop', {})
     }
+  },
+
+  filters: {
+    truncate: function (string, value) {
+      return string.substring(0, value) + '...'
+    }
   }
+
 }
 </script>
 
@@ -370,8 +405,6 @@ export default {
   }
 
   .Step-screenshot {
-    // position: fixed;
-    // top: 10em;
     margin-left: 1em;
   }
 

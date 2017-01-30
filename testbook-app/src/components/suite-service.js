@@ -89,9 +89,12 @@ export default {
     const step = {
       t: evt.t,
       actor: evt.actor,
-      name: evt.humanizedName,
-      args: evt.humanizedArgs,
+      name: evt.name,
+      humanizedName: evt.humanizedName,
+      args: evt.args,
+      humanizedArgs: evt.humanizedArgs,
       screenshot: evt.screenshot,
+      htmlSource: evt.htmlSource,
       pageTitle: evt.pageTitle,
       pageUrl: evt.pageUrl,
       file: evt.file,
@@ -154,9 +157,10 @@ export default {
     const step = {
       t: evt.t,
       actor: 'I',
-      name: 'failed here',
+      humanizedName: 'failed here',
       args: '',
       screenshot: evt.screenshot,
+      htmlSource: evt.htmlSource,
       pageUrl: undefined,
       pageTitle: undefined
     }
