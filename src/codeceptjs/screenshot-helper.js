@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 let Helper = codecept_helper // eslint-disable-line
 
 /**
@@ -21,7 +23,13 @@ class ScreenshotHelper extends Helper {
       return
     }
 
-    return this._getI().saveScreenshot('screenshot.current.png')
+    Promise.all([
+      this._getI().saveScreenshot('screenshot.current.png'),
+      client.getSource()
+    ]).then(values => {
+      // TODO: Experimental - save current html source
+      fs.writeFile('./output/source.current.html', values[1])
+    })  
   }
 }
 

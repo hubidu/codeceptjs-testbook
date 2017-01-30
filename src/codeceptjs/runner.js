@@ -21,7 +21,7 @@ const opts = JSON.stringify({
  * Run codeceptjs out-of-process and read events from stdout
  */
 // TODO Actually I would rather invoke codeceptjs directly
-const CODECEPT_CMD = 'sh'
+const CODECEPT_CMD = 'node'
 const CODECEPT_OPTS = [
   './node_modules/.bin/codeceptjs',
   'run',

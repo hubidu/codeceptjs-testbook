@@ -30,8 +30,8 @@ x Report before/after suite events using test.started/test.after events
 
 ## BETA 1
 
-x FIX Find reason for before hook failures
-x FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
+- DONE FIX Find reason for before hook failures
+- FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - Record test runs on the server
 - Store test runs in a database
 - Start/Stop phantomjs before testrun
@@ -39,6 +39,10 @@ x FIX Codeceptjs grep does not work if test title contains () (same for / and I 
 - Run tests continuously
 - Send an email notification when tests fail
 - Run testbook app and server in a docker container
+
+- Use and display markdown in feature and scenario titles
+- Link to html source of step
+- Show test source code
 
 ## BACKLOG
 - When a test fails show possibly related changes in source code (e. g. using a correlation service which uses the tags to find changes in related projects)
