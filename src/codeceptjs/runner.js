@@ -23,15 +23,15 @@ const opts = JSON.stringify({
 // TODO Actually I would rather invoke codeceptjs directly
 const CODECEPT_CMD = 'node'
 const CODECEPT_OPTS = [
-  './node_modules/.bin/codeceptjs',
+  './node_modules/codeceptjs/bin/codecept.js',
   'run',
   '--reporter', fsPath.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
   '-o',
   opts,
   '--sort',
-  '--debug'
+  '--debug',
 
-  // '--grep', 'it should convert my anonymous'
+  '--grep', '@UserConvert'
 ]
 
 /**
