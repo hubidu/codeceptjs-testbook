@@ -29,7 +29,7 @@ const CODECEPT_OPTS = [
   '-o',
   opts,
   '--sort',
-  '--debug',
+  '--debug'
 
   // '--grep', 'it should convert my anonymous'
 ]

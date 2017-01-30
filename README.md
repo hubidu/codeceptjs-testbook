@@ -30,8 +30,8 @@ x Report before/after suite events using test.started/test.after events
 
 ## BETA 1
 
-- FIX Find reason for before hook failures
-- FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
+x FIX Find reason for before hook failures
+x FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - Record test runs on the server
 - Store test runs in a database
 - Start/Stop phantomjs before testrun
