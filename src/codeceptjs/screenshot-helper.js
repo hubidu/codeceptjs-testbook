@@ -1,4 +1,8 @@
 const fs = require('fs')
+const path = require('path')
+
+const TEST_ROOT = process.cwd()
+const event = require(path.join(TEST_ROOT, 'node_modules/codeceptjs/lib/event'))
 
 let Helper = codecept_helper // eslint-disable-line
 
@@ -28,8 +32,15 @@ class ScreenshotHelper extends Helper {
       client.getSource()
     ]).then(values => {
       // TODO: Experimental - save current html source
-      fs.writeFile('./output/source.current.html', values[1])
-    })  
+      return new Promise((resolve, reject) => {
+        fs.writeFile('./output/source.current.html', values[1], (err, val) => {
+          if (err) return reject(err)
+          resolve(val)
+        })
+      })
+    }).then(val => {
+      event.dispatcher.emit('step.after.custom', step)
+    })
   }
 }
 

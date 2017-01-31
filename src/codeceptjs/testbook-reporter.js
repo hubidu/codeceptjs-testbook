@@ -156,7 +156,7 @@ function reporterFactoryFn (runner, opts) {
     }, parseTestTitle(test.title)))
   })
 
-  event.dispatcher.on(event.step.started, function (step) {
+  event.dispatcher.on('step.after.custom', function (step) {
     const suiteId = utils.hash(currentSuite.fullTitle())
     const testId = utils.hash(currentTest.title)
 

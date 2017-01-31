@@ -31,8 +31,10 @@ x Report before/after suite events using test.started/test.after events
 ## BETA 1
 
 - DONE FIX Find reason for before hook failures (restart and manualStart must be false)
-- Save html source for each step
-- Link to htm source in frontend
+- DONE Save html source for each step
+- DONE Link to htm source in frontend
+- FIX Error screenshot is broken
+- Need to convert relative (local) js/css links in html source to absolute links
 - Record test runs on the server
 - FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - Store test runs in a database
@@ -43,8 +45,6 @@ x Report before/after suite events using test.started/test.after events
 - Run testbook app and server in a docker container
 
 - Use and display markdown in feature and scenario titles
-- Link to html source of step
-- Show test source code
 
 ## BACKLOG
 - When a test fails show possibly related changes in source code (e. g. using a correlation service which uses the tags to find changes in related projects)
