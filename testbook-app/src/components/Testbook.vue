@@ -67,12 +67,12 @@
 
             <aside>
               <div class="Testbook-feature box content" v-for="suite in suites">
-                <h4 class="title" v-html="formatMarkdown(suite.title)">
-                </h4>
+                <h5 class="title" v-html="formatMarkdown(suite.title)">
+                </h5>
                 <ul v-for="test in suite.tests">
                   <li>
                     <div class="Testbook-test" v-bind:class="{ 'is-active': isSelectedTest(test) }" v-on:click="selectTest(test)">
-                      <h5 class="subtitle">
+                      <h6 class="subtitle">
                         <span class="u-passed" v-if="test.state === 'passed'">
                           <i class="fa fa-check"></i>
                         </span>
@@ -87,7 +87,7 @@
                         </span>
 
                         {{test.title}}
-                      </h5>
+                      </h6>
 
                     </div>
 
@@ -106,8 +106,8 @@
                           <div class="notification is-danger">
                             {{ selectedTest.errorMessage }}
                           </div>
-                          
-                          <div v-if="selectedTest.err.message"> 
+
+                          <div v-if="selectedTest.err.message">
 
                             <div class="message is-success" v-if="selectedTest.err.message.expected">
                               <div class="message-body">
@@ -125,7 +125,7 @@
                           </div>
 
 
-                          
+
                         </li>
 
                         <li class="Step" v-bind:class="{ 'Step--active': isSelectedStep(step) }"
@@ -172,12 +172,14 @@
 
     <div class="Step-preview">
       <div v-if="selectedStep">
-        <h2>{{selectedStep.pageTitle}}</h2>
+        <h2 class="title">{{selectedStep.pageTitle}}</h2>
+        <div>
+          <a target="_blank" v-bind:href="htmlSourceUrl(selectedStep)">HTMLSource</a>
+        </div>
 
         <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl | truncate 50}}</a>
-        
-        <a target="_blank" v-bind:href="htmlSourceUrl(selectedStep)">HTMLSource</a>
-        
+
+
         <hr>
         <img class="Step-screenshot" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
 
@@ -267,6 +269,12 @@ export default {
     },
 
     htmlSourceUrl: function (step) {
+      const getLocation = function (href) {
+        var l = document.createElement('a')
+        l.href = href
+        return l
+      }
+
       let selector
       if (step.name === 'waitForElement') {
         selector = step.args[0]
@@ -274,9 +282,14 @@ export default {
         selector = step.args[0]
       } else if (step.name === 'see' && step.args.length === 2) {
         selector = step.args[1]
+      } else if (step.name === 'seeElement') {
+        selector = step.args[0]
+      } else if (step.name === 'fillField') {
+        selector = 'input' + step.args[0]
       }
       selector = encodeURIComponent(selector)
-      return `http://localhost:3000/html-source/${step.htmlSource}?selector=${selector}`
+      const host = encodeURIComponent(getLocation(step.pageUrl).hostname)
+      return `http://localhost:3000/html-source/${step.htmlSource}?selector=${selector}&host=${host}`
     },
 
     relativeTime: function (test, step) {
@@ -345,6 +358,7 @@ export default {
     height: 100%;
     width: 33%;
     overflow-y: scroll;
+    box-sizing: border-box;
   }
 
   .Testbook-feature {
