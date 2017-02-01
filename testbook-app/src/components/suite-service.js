@@ -153,19 +153,25 @@ export default {
     test.file = evt.file
     test.screenshot = evt.screenshot
 
+    // Mark last step as failed
+    const failedStep = test.stepsReverse[0]
+    failedStep.state = 'failed'
+    failedStep.screenshot = evt.screenshot
+    failedStep.htmlSource = evt.htmlSource
+
     // Add an artificial step
-    const step = {
-      t: evt.t,
-      actor: 'I',
-      humanizedName: 'failed here',
-      args: '',
-      screenshot: evt.screenshot,
-      htmlSource: evt.htmlSource,
-      pageUrl: undefined,
-      pageTitle: undefined
-    }
-    test.steps.push(step)
-    test.stepsReverse.splice(0, 0, step)
+    // const step = {
+    //   t: evt.t,
+    //   actor: 'I',
+    //   humanizedName: 'failed here',
+    //   args: '',
+    //   screenshot: evt.screenshot,
+    //   htmlSource: evt.htmlSource,
+    //   pageUrl: undefined,
+    //   pageTitle: undefined
+    // }
+    // test.steps.push(step)
+    // test.stepsReverse.splice(0, 0, step)
   },
 
   reset: () => {

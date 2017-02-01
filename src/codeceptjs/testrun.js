@@ -69,7 +69,7 @@ module.exports = {
       return path.join(global.output_dir, test.title.replace(/ /g, '_') + '.failed.png')
     }
     const destScreenshotName = `screenshot-${shortid.generate()}.png`
-    const destHtmlSourcePath = path.join(OUTPUT_DIR, runId, destScreenshotName)
+    const destScreenshotPath = path.join(OUTPUT_DIR, runId, destScreenshotName)
 
     try {
       if (fs.existsSync(codeceptErrorScreenshot(test))) {

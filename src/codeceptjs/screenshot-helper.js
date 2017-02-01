@@ -49,6 +49,7 @@ class ScreenshotHelper extends Helper {
   comment (txt) {
     return new Promise(resolve => {
       console.log(txt)
+      resolve(txt)
     })
   }
 }

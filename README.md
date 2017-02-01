@@ -30,14 +30,21 @@ x Report before/after suite events using test.started/test.after events
 
 ## BETA 1
 
-- DONE FIX Find reason for before hook failures (restart and manualStart must be false)
-- DONE Save html source for each step
-- DONE Link to htm source in frontend
-- DONE Need to convert relative (local) js/css links in html source to absolute links
-- BUG Marking text in html breaks the layout
-- BUG Error screenshot is broken
-- BUG Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
-- Store test runs in a database
+- DONE Implement comment/say
+- DONE Marked failed step
+- DONE Nicer error formatting
+- DONE FIX Error screenshot is broken
+- Add context when step is executed in within
+- BUG Dont mark executing step as passed
+- BUG Pressing stop causes error on linux
+- Implement test.after event
+- Make small tags
+- Make a nice scrolling sidebar
+- Show error message when testrun fails
+- Switch environment
+- Enter coninuous testing mode from frontend
+- Send notification on failure
+- FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - Start/Stop phantomjs before testrun
 - Run tests for all devices
 - Run tests continuously
@@ -47,6 +54,8 @@ x Report before/after suite events using test.started/test.after events
 - Use and display markdown in feature and scenario titles
 
 ## BETA 2
+
+- Store test runs in a database
 - Record test runs on the server
 
 ## BACKLOG

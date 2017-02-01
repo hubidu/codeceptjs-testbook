@@ -39,8 +39,6 @@
         </a>
         <a class="nav-item">
           <button class="button is-secondary" type="button" v-on:click="stopTestRun()">
-            <i class="fa fa-stop u-failed"></i>
-            &nbsp;
             Stop
           </button>
         </a>
@@ -109,17 +107,17 @@
 
                           <div v-if="selectedTest.err.message">
 
-                            <div class="message is-success" v-if="selectedTest.err.message.expected">
-                              <div class="message-body">
-                                <strong>Expected</strong>
-                                {{ selectedTest.err.message.expected }}
-                              </div>
+                            <div class="u-expected" v-if="selectedTest.err.expected">
+
+                                <strong class="u-expected">Expected</strong>
+                                {{ selectedTest.err.expected }}
+
                             </div>
-                            <div class="message is-danger" v-if="selectedTest.err.message.actual">
-                              <div class="message-body">
-                                <strong>Actual</strong>
-                                {{ selectedTest.err.message.actual }}
-                              </div>
+                            <div class="u-actual" v-if="selectedTest.err.actual">
+
+                                <strong class="u-actual">Actual</strong>
+                                {{ selectedTest.err.actual }}
+
                             </div>
 
                           </div>
@@ -128,38 +126,45 @@
 
                         </li>
 
-                        <li class="Step" v-bind:class="{ 'Step--active': isSelectedStep(step) }"
+                        <li class="Step"
+                          v-bind:class="{ 'Step--active': isSelectedStep(step), 'Step--failed': step.state === 'failed', 'Step--passed': step.state === undefined && step.name !== 'comment' }"
                           v-for="step in selectedTest.stepsReverse"
-                          @mouseenter="selectStep(step)"
+                          v-on:click="selectStep(step)"
                         >
-                          <!--
-                          <span class="u-rel-time">
-                            {{relativeTime(selectedTest, step)}}
-                          </span>
-                          -->
-                          <strong>
-                            {{step.actor}} {{step.humanizedName}}
-                          </strong>
-                          <em>
-                            {{step.humanizedArgs}}
-                          </em>
+                          <div class="comment" v-if="step.name === 'comment'" v-html="formatMarkdown(step.humanizedArgs) ">
 
-                          <blockquote v-if="isSelectedStep(step)">
-                            <div>
-                              in
-                              <em>
-                                {{step.method}}
-                              </em>
-                              at line
-                              <em>
-                                {{step.lineNo}}
-                              </em>
-                              of
-                              <strong>
-                                {{step.fileName}}
-                              </strong>
-                            </div>
-                          </blockquote>
+                          </div>
+
+                          <div v-else>
+                            <!--
+                            <span class="u-rel-time">
+                              {{relativeTime(selectedTest, step)}}
+                            </span>
+                            -->
+                            <strong>
+                              {{step.actor}} {{step.humanizedName}}
+                            </strong>
+                            <em>
+                              {{step.humanizedArgs}}
+                            </em>
+
+                            <blockquote v-if="isSelectedStep(step)">
+                              <div>
+                                in
+                                <em>
+                                  {{step.method}}
+                                </em>
+                                at line
+                                <em>
+                                  {{step.lineNo}}
+                                </em>
+                                of
+                                <strong>
+                                  {{step.fileName}}
+                                </strong>
+                              </div>
+                            </blockquote>
+                          </div>
                         </li>
 
                       </ul>
@@ -367,11 +372,12 @@ export default {
   }
 
   .Testbook-features {
-    position:absolute;
-    height: 100%;
+    position: fixed;
     width: 33%;
     overflow-y: scroll;
-    box-sizing: border-box;
+    top: 150px;
+    bottom: 0;
+
   }
 
   .Testbook-feature {
@@ -435,11 +441,52 @@ export default {
     margin-left: 1em;
   }
 
+  .Step--active {
+
+  }
+
+  .Step--failed {
+    border-left: 4px solid $red;
+    padding-left: 5px;
+  }
+
+  .Step--passed {
+    border-left: 4px solid $green;
+    padding-left: 5px;
+  }
+
+  .comment {
+    background: #f9f9f9;
+    border-left: 10px solid #ccc;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+    quotes: "\201C""\201D""\2018""\2019";
+  }
+  .comment:before {
+    color: #ccc;
+    content: open-quote;
+    font-size: 4em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
+  }
+  .comment p {
+    display: inline;
+  }
+
   .u-passed {
     color: $green;
   }
 
   .u-failed {
+    color: $red;
+  }
+
+  .u-expected {
+    color: $green;
+  }
+
+  .u-actual {
     color: $red;
   }
 
