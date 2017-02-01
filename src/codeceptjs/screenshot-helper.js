@@ -42,6 +42,15 @@ class ScreenshotHelper extends Helper {
       event.dispatcher.emit('step.after.custom', step)
     })
   }
+
+  /**
+   * Experimental
+   */
+  comment (txt) {
+    return new Promise(resolve => {
+      console.log(txt)
+    })
+  }
 }
 
 module.exports = ScreenshotHelper

@@ -130,7 +130,8 @@
 
                         <li class="Step" v-bind:class="{ 'Step--active': isSelectedStep(step) }"
                           v-for="step in selectedTest.stepsReverse"
-                          v-on:click="selectStep(step)">
+                          @mouseenter="selectStep(step)"
+                        >
                           <!--
                           <span class="u-rel-time">
                             {{relativeTime(selectedTest, step)}}
@@ -282,10 +283,22 @@ export default {
         selector = step.args[0]
       } else if (step.name === 'see' && step.args.length === 2) {
         selector = step.args[1]
+      } else if (step.name === 'see' && step.args.length === 1) {
+        selector = step.args[0]
       } else if (step.name === 'seeElement') {
         selector = step.args[0]
       } else if (step.name === 'fillField') {
-        selector = 'input' + step.args[0]
+        if (step.args[0].indexOf('input') === 0) {
+          selector = step.args[0]
+        } else {
+          selector = 'input' + step.args[0]
+        }
+      } else if (step.name === 'waitForText') {
+        if (step.args.length === 1) {
+          selector = step.args[0]
+        } else if (step.args.length === 3) {
+          selector = step.args[2]
+        }
       }
       selector = encodeURIComponent(selector)
       const host = encodeURIComponent(getLocation(step.pageUrl).hostname)

@@ -33,10 +33,10 @@ x Report before/after suite events using test.started/test.after events
 - DONE FIX Find reason for before hook failures (restart and manualStart must be false)
 - DONE Save html source for each step
 - DONE Link to htm source in frontend
-- FIX Error screenshot is broken
-- Need to convert relative (local) js/css links in html source to absolute links
-- Record test runs on the server
-- FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
+- DONE Need to convert relative (local) js/css links in html source to absolute links
+- BUG Marking text in html breaks the layout
+- BUG Error screenshot is broken
+- BUG Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - Store test runs in a database
 - Start/Stop phantomjs before testrun
 - Run tests for all devices
@@ -45,6 +45,9 @@ x Report before/after suite events using test.started/test.after events
 - Run testbook app and server in a docker container
 
 - Use and display markdown in feature and scenario titles
+
+## BETA 2
+- Record test runs on the server
 
 ## BACKLOG
 - When a test fails show possibly related changes in source code (e. g. using a correlation service which uses the tags to find changes in related projects)
