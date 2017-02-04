@@ -5,29 +5,6 @@ Visually manage your codeceptjs tests.
 
 ## Backlog
 
-x Add a vue.js websocket (RXJS?) implementation
-x Add a 'run all tests button'
-x Record suites/tests/steps and associate them
-x Provide test suite name in start event
-x Provide humanized step name and args
-x Add actor name to step
-x Extract tags from titles
-x Add a time stamp to suite, test and steps
-x Save screenshot after each test
-x Make screenshot sticky to the page
-x Reverse step list
-x Use vue ui library
-x Show screenshot of failed tests
-x Show steps of failed test highlighting failed command
-x Use font-awesome icons
-x Stop a test run
-x Make header sticky
-x Run a single test
-x Report test environment in run event
-x Report device in run event
-x Retrieve current url for each step and return it in events
-x Report before/after suite events using test.started/test.after events
-
 ## BETA 1
 
 - DONE Implement comment/say
@@ -35,11 +12,14 @@ x Report before/after suite events using test.started/test.after events
 - DONE Nicer error formatting
 - DONE FIX Error screenshot is broken
 - DONE Improve test styling
-- Extract nav as a component
+- DONE Extract nav as a component
 - Add step prefix for before/after suite
 - Run continuously
+- UI: Extract step as component
+- Add suite and test duration
 - Create a multi-reporter
 - Create an email reporter
+- DONE Run a suite
 - Microservice to manage phantomjs instances
 - Add context when step is executed in within
 - BUG Dont mark executing step as passed
@@ -64,6 +44,7 @@ x Report before/after suite events using test.started/test.after events
 
 - Store test runs in a database
 - Record test runs on the server
+- Search suites, tests and steps
 
 ## BACKLOG
 - For better readability of steps: Make method templates which specify parameters. E. g. I.see => I see {text} in {element}

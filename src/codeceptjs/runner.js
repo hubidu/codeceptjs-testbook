@@ -83,6 +83,11 @@ module.exports = {
       }))
 
     const opts = CODECEPT_OPTS.slice()
+    if (options.suite) {
+      opts.push('--grep')
+      const escapedGrep = escapeRegExp(options.suite)
+      opts.push(escapedGrep)
+    }
 
     // Use grep to only run a specific test
     if (options.grep) {
@@ -129,6 +134,11 @@ module.exports = {
 
       testrun = undefined
       isRunning = false
+
+      if (options.continuous) {
+        console.log('Running in continuous mode. Next run in ', options.interval)
+        setTimeout(() => module.exports.run(options), options.interval)
+      }
     })
 
     testrun.on('end', function (code) {
@@ -136,6 +146,7 @@ module.exports = {
 
       testrun = undefined
       isRunning = false
+
     })
   },
 
@@ -147,7 +158,7 @@ module.exports = {
     if (os.platform() === 'win32') {
       exec('taskkill /pid ' + testrun.pid + ' /T /F')
     } else {
-      ps.kill()
+      ps.kill(testrun.pid)
     }
   }
 }
