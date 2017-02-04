@@ -69,8 +69,8 @@
                 </h5>
                 <ul v-for="test in suite.tests">
                   <li>
-                    <div class="Testbook-test" v-bind:class="{ 'is-active': isSelectedTest(test) }" v-on:click="selectTest(test)">
-                      <h6 class="subtitle">
+                    <div class="TestbookTest" v-bind:class="{ 'is-active': isSelectedTest(test) }" v-on:click="selectTest(test)">
+                      <span class="TestbookTest-icon">
                         <span class="u-passed" v-if="test.state === 'passed'">
                           <i class="fa fa-check"></i>
                         </span>
@@ -83,7 +83,8 @@
                         <span v-if="test.state === undefined">
                           <i class="fa fa-refresh fa-spin"></i>
                         </span>
-
+                      </span>
+                      <h6 class="TestbookTest-title">
                         {{test.title}}
                       </h6>
 
@@ -387,8 +388,20 @@ export default {
     }
   }
 
-  .Testbook-test {
+  .TestbookTest {
     cursor: pointer;
+  }
+
+  .TestbookTest-icon {
+    float: left;
+    .fa {
+      font-size: inherit;
+    }
+  }
+
+  .TestbookTest-title {
+    margin: 0;
+    margin-left: 2em;
   }
 
   .Testbook-steps {

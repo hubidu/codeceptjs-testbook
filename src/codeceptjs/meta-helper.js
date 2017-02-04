@@ -5,13 +5,19 @@ let Helper = codecept_helper // eslint-disable-line
  */
 class ScreenshotHelper extends Helper {
   _getI () {
-    return this.helpers['WebDriverIO']
+    // Expect first helper to be the driver
+    const driver = Object.keys(this.helpers)[0]
+    return this.helpers[driver]
   }
 
   _beforeStep (step) {
     let client = this._getI().browser
     if (!client) {
       console.log('WARN Browser not yet initialized - Can not get meta data')
+      return
+    }
+    if (!client.getTitle || !client.getUrl || !client.getSource) {
+      console.log('WARN Driver does not support getTitle, getUrl, getSource')
       return
     }
 

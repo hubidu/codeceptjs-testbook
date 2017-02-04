@@ -48,6 +48,7 @@ function mapStep (step) {
     t: Date.now(),
     name: step.name,
     args: step.args,
+    prefix: step.prefix ? step.prefix : undefined,
     humanizedName: step.humanize(),
     humanizedArgs: step.humanizeArgs(),
     helper: step.helper.constructor.name,

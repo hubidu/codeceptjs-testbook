@@ -11,7 +11,9 @@ let Helper = codecept_helper // eslint-disable-line
  */
 class ScreenshotHelper extends Helper {
   _getI () {
-    return this.helpers['WebDriverIO']
+    // Expect first helper to be the driver
+    const driver = Object.keys(this.helpers)[0]
+    return this.helpers[driver]
   }
 
   /**
@@ -45,12 +47,10 @@ class ScreenshotHelper extends Helper {
 
   /**
    * Experimental
+   * TODO Dont get it - does not run synchronously
    */
   comment (txt) {
-    return new Promise(resolve => {
-      console.log(txt)
-      resolve(txt)
-    })
+    return Promise.resolve(txt)
   }
 }
 

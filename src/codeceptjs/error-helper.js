@@ -7,7 +7,9 @@ let Helper = codecept_helper // eslint-disable-line
  */
 class ErrorHelper extends Helper {
   _getI () {
-    return this.helpers['WebDriverIO']
+    // Expect first helper to be the driver
+    const driver = Object.keys(this.helpers)[0]
+    return this.helpers[driver]
   }
 
   _beforeStep (step) {
