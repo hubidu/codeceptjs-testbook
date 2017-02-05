@@ -49,8 +49,7 @@
                           <i class="fa fa-refresh fa-spin"></i>
                         </span>
                       </span>
-                      <h6 class="TestbookTest-title">
-                        {{test.title}}
+                      <h6 class="TestbookTest-title" v-html="formatMarkdown(test.title)">
                       </h6>
 
                     </div>

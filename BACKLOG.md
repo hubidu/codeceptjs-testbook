@@ -13,19 +13,23 @@ Visually manage your codeceptjs tests.
 - DONE FIX Error screenshot is broken
 - DONE Improve test styling
 - DONE Extract nav as a component
+- DONE Run continuously
+- DONE Create an email reporter
+- DONE Run a suite
+- DONE Create a multi-reporter
+- Stop continous testing mode
+- Switch environment
+- Switch device
+- Handle errors in before/after hooks properly
+- Send an email notification when tests fail
+- Run tests for different devices in parallel
 - Add step prefix for before/after suite
-- Run continuously
 - UI: Extract step as component
 - Add suite and test duration
-- Create a multi-reporter
-- Create an email reporter
-- DONE Run a suite
 - Microservice to manage phantomjs instances
 - Add context when step is executed in within
 - BUG Dont mark executing step as passed
 - BUG Pressing stop causes error on linux
-- Implement test.after event
-- Make small tags
 - Make a nice scrolling sidebar
 - Show error message when testrun fails
 - Switch environment
@@ -35,7 +39,6 @@ Visually manage your codeceptjs tests.
 - Start/Stop phantomjs before testrun
 - Run tests for all devices
 - Run tests continuously
-- Send an email notification when tests fail
 - Run testbook app and server in a docker container
 
 - Use and display markdown in feature and scenario titles
