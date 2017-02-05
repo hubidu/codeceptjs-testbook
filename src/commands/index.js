@@ -20,6 +20,8 @@ module.exports = {
   },
 
   detach: (socket) => {
+    socket.removeListener('cmd.run-continuously', cmdRunTests)
     socket.removeListener('cmd.run', cmdRunTests)
+    socket.removeListener('cmd.stop', cmdRunTests)
   }
 }

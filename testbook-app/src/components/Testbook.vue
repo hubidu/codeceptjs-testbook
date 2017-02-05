@@ -431,7 +431,7 @@ export default {
 
   .Step {
     &--active {
-      background-color: $grey;
+      border: 1px solid $primary;
     }
   }
 
@@ -448,10 +448,6 @@ export default {
 
   .Step-screenshot {
     margin-left: 1em;
-  }
-
-  .Step--active {
-
   }
 
   .Step--failed {

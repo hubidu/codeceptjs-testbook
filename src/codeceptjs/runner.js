@@ -1,6 +1,7 @@
+const EventEmitter = require('events')
 const spawn = require('child_process').spawn
 const exec = require('child_process').exec
-const fsPath = require('path')
+const path = require('path')
 const shortid = require('shortid')
 
 /**
@@ -9,10 +10,10 @@ const shortid = require('shortid')
 const opts = JSON.stringify({
   helpers: {
     ScreenshotHelper: {
-      require: fsPath.join(__dirname, './screenshot-helper.js').replace(/\\/g, '\\\\')
+      require: path.join(__dirname, './helpers/screenshot-helper.js').replace(/\\/g, '\\\\')
     },
     MetaHelper: {
-      require: fsPath.join(__dirname, './meta-helper.js').replace(/\\/g, '\\\\')
+      require: path.join(__dirname, './helpers/meta-helper.js').replace(/\\/g, '\\\\')
     }
   }
 })
@@ -25,11 +26,11 @@ const CODECEPT_CMD = 'node'
 const CODECEPT_OPTS = [
   './node_modules/codeceptjs/bin/codecept.js',
   'run',
-  '--reporter', fsPath.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
+  '--reporter', path.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
   '-o',
   opts,
   '--sort',
-  '--debug',
+  '--debug'
 
   // '--grep', '@UserConvert'
 ]
@@ -37,29 +38,34 @@ const CODECEPT_OPTS = [
 /**
  * Keep track of websockets
  */
-const sockets = {}
 let isRunning = false
 let testrun
+
+class TestbookEventEmitter extends EventEmitter {}
+
+const eventEmitter = new TestbookEventEmitter()
+eventEmitter.setMaxListeners(20)
 
 /**
  * Pass on reporter output to subscribed websockets
  */
 function fireEvent (type, payload = {}) {
-  console.log('EVT', type, payload)
-  Object.keys(sockets).forEach(k => sockets[k].emit(type, payload))
-}
-
-function escapeRegExp (str) {
-  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
+  // console.log('EVT', type, payload)
+  eventEmitter.emit(type, payload)
 }
 
 module.exports = {
-  subscribe: (socket) => {
-    sockets[socket.id] = socket
+  eventTypes: () => {
+    return [
+      'codecept.start_run', 'codecept.finish_run',
+      'codecept.start', 'codecept.suite', 'codecept.suite',
+      'codecept.fail', 'codecept.pending', 'codecept.pass', 'codecept.test.start',
+      'codecept.test.after', 'codecept.test', 'codecept.step', 'codecept.end'
+    ]
   },
 
-  unsubscribe: (socket) => {
-    delete sockets[socket.id]
+  events: () => {
+    return eventEmitter
   },
 
   /**
@@ -67,6 +73,10 @@ module.exports = {
    */
   // TODO return a promise from this function
   run: (options) => {
+    function escapeRegExp (str) {
+      return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
+    }
+
     if (isRunning) return
 
     isRunning = true
@@ -130,7 +140,7 @@ module.exports = {
     })
 
     testrun.on('exit', function (code) {
-      fireEvent('codecept.finish_run', { code })
+      fireEvent('codecept.finish_run', Object.assign({ code }, options))
 
       testrun = undefined
       isRunning = false
@@ -142,11 +152,10 @@ module.exports = {
     })
 
     testrun.on('end', function (code) {
-      fireEvent('codecept.finish_run', { code })
+      fireEvent('codecept.finish_run', Object.assign({ code }, options))
 
       testrun = undefined
       isRunning = false
-
     })
   },
 

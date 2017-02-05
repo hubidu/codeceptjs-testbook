@@ -93,9 +93,9 @@ function reporterFactoryFn (runner, opts) {
   })
 
   runner.on('fail', function (test, err) {
-    let msg = err.message;
+    let msg = err.message
     if (err instanceof AssertionFailedError) {
-      msg = err.message = err.inspect();
+      msg = err.message = err.inspect()
     }
 
     utils.log('codecept.fail', Object.assign({
