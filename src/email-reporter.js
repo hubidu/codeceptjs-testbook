@@ -1,4 +1,4 @@
-const codeceptRunner = require('./codeceptjs/runner')
+const codeceptRunner = require('./codeceptjs/parallel-runner')
 
 const THRESHOLD = 0
 
@@ -10,6 +10,7 @@ let stats = {}
 let currentSuite
 
 codeceptRunner.events().on('codecept.start_run', options => {
+  // TODO: Support devices
   Object.assign(stats, {
     startedAt: new Date(),
     finishedAt: undefined,

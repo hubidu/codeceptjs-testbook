@@ -1,4 +1,7 @@
-const suites = []
+const suites = {
+  mobile: [],
+  desktop: []
+}
 const stats = {
   passed: 0,
   failed: 0,
@@ -9,16 +12,16 @@ const state = {
   state: undefined
 }
 
-const updateStats = () => {
-  stats.passed = suites.reduce((sum, suite) => {
+const updateStats = (device) => {
+  stats.passed = suites[device].reduce((sum, suite) => {
     sum += suite.tests.filter(test => test.state === 'passed').length
     return sum
   }, 0)
-  stats.failed = suites.reduce((sum, suite) => {
+  stats.failed = suites[device].reduce((sum, suite) => {
     sum += suite.tests.filter(test => test.state === 'failed').length
     return sum
   }, 0)
-  stats.tags = suites.reduce((aggTags, suite) => {
+  stats.tags = suites[device].reduce((aggTags, suite) => {
     suite.tags.forEach(tag => {
       aggTags[tag] === undefined ? aggTags[tag] = [suite] : aggTags[tag].push(suite)
     }, aggTags)
@@ -32,14 +35,14 @@ export default {
   },
 
   addSuiteFromEvent: (evt) => {
-    const suite = suites.find(suite => suite.id === evt.id)
+    const suite = suites[evt._device].find(suite => suite.id === evt.id)
     if (suite) return
 
-    const unfinishedSuites = suites.filter(suite => suite.state === undefined)
+    const unfinishedSuites = suites[evt._device].filter(suite => suite.state === undefined)
     // Finish running suites
     unfinishedSuites.map(suite => (suite.state = 'passed'))
 
-    suites.push({
+    suites[evt._device].push({
       t: evt.t,
       id: evt.id,
       title: evt.title,
@@ -50,7 +53,7 @@ export default {
   },
 
   addTestToSuite: (suiteId, evt) => {
-    const suite = suites.find(suite => suite.id === suiteId)
+    const suite = suites[evt._device].find(suite => suite.id === suiteId)
     if (!suite) return
 
     const newTest = {
@@ -73,11 +76,11 @@ export default {
       suite.tests.push(newTest)
     }
 
-    updateStats()
+    updateStats(evt._device)
   },
 
   addStepToTest: (suiteId, testId, evt) => {
-    const suite = suites.find(suite => suite.id === suiteId)
+    const suite = suites[evt._device].find(suite => suite.id === suiteId)
     if (!suite) return
 
     const test = suite.tests.find(test => test.id === testId)
@@ -107,7 +110,7 @@ export default {
   },
 
   markTestStart: (suiteId, testId, evt) => {
-    const suite = suites.find(suite => suite.id === suiteId)
+    const suite = suites[evt._device].find(suite => suite.id === suiteId)
     if (!suite) return
 
     const test = suite.tests.find(test => test.id === testId)
@@ -127,7 +130,7 @@ export default {
   },
 
   markTestPassed: (suiteId, evt) => {
-    const suite = suites.find(suite => suite.id === suiteId)
+    const suite = suites[evt._device].find(suite => suite.id === suiteId)
     if (!suite) return
 
     const test = suite.tests.find(test => test.id === evt.id)
@@ -139,7 +142,7 @@ export default {
   },
 
   markTestFailed: (suiteId, evt) => {
-    const suite = suites.find(suite => suite.id === suiteId)
+    const suite = suites[evt._device].find(suite => suite.id === suiteId)
     suite.state = 'failed'
 
     const test = suite.tests.find(test => test.id === evt.id)
@@ -175,9 +178,11 @@ export default {
   },
 
   reset: () => {
-    suites.length = 0
+    suites.mobile.length = 0
+    suites.desktop.length = 0
     state.state = undefined
-    updateStats()
+    updateStats('desktop')
+    updateStats('mobile')
   },
 
   stats: () => stats,
@@ -190,8 +195,8 @@ export default {
     stats.env.device = evt.device
   },
 
-  endTestRun: () => {
-    suites.forEach(suite => {
+  endTestRun: (evt) => {
+    suites[evt._device].forEach(suite => {
       if (!suite.state) {
         suite.state = 'aborted'
         suite.tests.forEach(test => {
@@ -200,7 +205,7 @@ export default {
       }
     })
 
-    updateStats()
+    updateStats(evt._device)
 
     state.state = undefined
   }

@@ -17,7 +17,9 @@ Visually manage your codeceptjs tests.
 - DONE Create an email reporter
 - DONE Run a suite
 - DONE Create a multi-reporter
+- Restore continuous run mode
 - Stop continous testing mode
+- Run device tests in parallel
 - Switch environment
 - Switch device
 - Handle errors in before/after hooks properly

@@ -1,4 +1,4 @@
-const codeceptRunner = require('./codeceptjs/runner')
+const codeceptRunner = require('./codeceptjs/parallel-runner')
 
 function proxyEvents (sockets) {
   const EventTypes = codeceptRunner.eventTypes()

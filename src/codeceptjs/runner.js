@@ -1,136 +1,45 @@
 const EventEmitter = require('events')
-const spawn = require('child_process').spawn
-const exec = require('child_process').exec
-const path = require('path')
+const CodeceptCtrl = require('./codecept-ctrl')
 const shortid = require('shortid')
-
-/**
- * Add custom helpers by overriding the codeceptjs config on command line
- */
-const opts = JSON.stringify({
-  helpers: {
-    ScreenshotHelper: {
-      require: path.join(__dirname, './helpers/screenshot-helper.js').replace(/\\/g, '\\\\')
-    },
-    MetaHelper: {
-      require: path.join(__dirname, './helpers/meta-helper.js').replace(/\\/g, '\\\\')
-    }
-  }
-})
-
-/**
- * Run codeceptjs out-of-process and read events from stdout
- */
-// TODO Actually I would rather invoke codeceptjs directly
-const CODECEPT_CMD = 'node'
-const CODECEPT_OPTS = [
-  './node_modules/codeceptjs/bin/codecept.js',
-  'run',
-  '--reporter', path.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
-  '-o',
-  opts,
-  '--sort',
-  '--debug'
-
-  // '--grep', '@UserConvert'
-]
-
-/**
- * Keep track of websockets
- */
-let isRunning = false
-let testrun
 
 class TestbookEventEmitter extends EventEmitter {}
 
-const eventEmitter = new TestbookEventEmitter()
-eventEmitter.setMaxListeners(20)
-
-/**
- * Pass on reporter output to subscribed websockets
- */
-function fireEvent (type, payload = {}) {
-  // console.log('EVT', type, payload)
-  eventEmitter.emit(type, payload)
+function escapeRegExp (str) {
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
 }
 
-module.exports = {
-  eventTypes: () => {
-    return [
-      'codecept.start_run', 'codecept.finish_run',
-      'codecept.start', 'codecept.suite', 'codecept.suite',
-      'codecept.fail', 'codecept.pending', 'codecept.pass', 'codecept.test.start',
-      'codecept.test.after', 'codecept.test', 'codecept.step', 'codecept.end'
-    ]
-  },
+function capitalize (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
-  events: () => {
-    return eventEmitter
-  },
+const EVENT_TYPES = [
+  'codecept.start_run', 'codecept.finish_run',
+  'codecept.start', 'codecept.suite', 'codecept.suite',
+  'codecept.fail', 'codecept.pending', 'codecept.pass', 'codecept.test.start',
+  'codecept.test.after', 'codecept.test', 'codecept.step', 'codecept.end'
+]
 
-  /**
-   * Start a testrun
-   */
-  // TODO return a promise from this function
-  run: (options) => {
-    function escapeRegExp (str) {
-      return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
-    }
+class CodeceptRunner {
+  constructor (options) {
+    this.options = options
+    this.isRunning = false
+    this.proc = undefined
 
-    function capitalize (str) {
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    }
+    this.eventEmitter = new TestbookEventEmitter()
+    this.eventEmitter.setMaxListeners(20)
+    this.codeceptCtrl = new CodeceptCtrl()
+  }
 
-    if (isRunning) return
+  get events () {
+    return this.eventEmitter
+  }
 
-    isRunning = true
+  _fireEvent (type, payload = {}) {
+    this.eventEmitter.emit(type, payload)
+  }
 
-    // Set environment variable defaults
-    if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production'
-    if (!process.env.DEVICE) process.env.DEVICE = 'desktop'
-
-    fireEvent('codecept.start_run',
-      Object.assign(options, {
-        id: shortid.generate(),
-        environment: process.env.NODE_ENV,
-        device: process.env.DEVICE
-      }))
-
-    const opts = CODECEPT_OPTS.slice()
-
-    // TODO Make this work
-    // Don't execute tests marked with tag @Not<Environment>
-    opts.push('--grep')
-    opts.push(`.*(?!@Not${capitalize(process.env.NODE_ENV)}).*`)
-
-    // Run the specified test suite
-    if (options.suite) {
-      opts.push('--grep')
-      const escapedGrep = escapeRegExp(options.suite)
-      opts.push(escapedGrep)
-    }
-
-    // Use grep to only run a specific test
-    if (options.grep) {
-      opts.push('--grep')
-      const escapedGrep = escapeRegExp(options.grep)
-      opts.push(escapedGrep)
-
-      console.log('Running with grep', options.grep)
-    }
-
-    try {
-      testrun = spawn(CODECEPT_CMD, opts, {
-        detached: true,
-        env: process.env
-      })
-    } catch (err) {
-      isRunning = false
-      console.log('Failed to run codeceptjs', err)
-      return
-    }
-
-    testrun.stdout.on('data', function (data) {
+  _handleStdout (proc) {
+    proc.stdout.on('data', (data) => {
       const lines = data.toString().split('\n')
 
       lines.forEach(line => {
@@ -142,43 +51,101 @@ module.exports = {
         }
 
         const l = line.split(/ (.+)/)
-        fireEvent(l[0], JSON.parse(l[1]))
+        this._fireEvent(l[0], Object.assign({
+          _device: this.options.device
+        }, JSON.parse(l[1])))
       })
     })
 
-    testrun.stderr.on('data', function (data) {
-      fireEvent('codecept.error_run', { message: data.toString() })
+    proc.stderr.on('data', (data) => {
+      this._fireEvent('codecept.error_run', { message: data.toString() })
     })
 
-    testrun.on('exit', function (code) {
-      fireEvent('codecept.finish_run', Object.assign({ code }, options))
+    proc.on('exit', (code) => {
+      this._fireEvent('codecept.finish_run', Object.assign({ code }, this.options))
 
-      testrun = undefined
-      isRunning = false
-
-      if (options.continuous) {
-        console.log('Running in continuous mode. Next run in ', options.interval)
-        setTimeout(() => module.exports.run(options), options.interval)
-      }
+      this.codeceptCtrl = undefined
+      this.isRunning = false
     })
 
-    testrun.on('end', function (code) {
-      fireEvent('codecept.finish_run', Object.assign({ code }, options))
+    proc.on('end', (code) => {
+      this._fireEvent('codecept.finish_run', Object.assign({ code }, this.options))
 
-      testrun = undefined
-      isRunning = false
+      this.codeceptCtrl = undefined
+      this.isRunning = false
     })
-  },
+  }
 
-  stop: () => {
-    if (!testrun) return
+  subscribe (listener) {
+    EVENT_TYPES.forEach(event => {
+      this.eventEmitter.on(event, (payload) => {
+        listener.emit(event, payload)
+      })
+    })
+  }
 
-    const os = require('os')
-    const ps = require('process')
-    if (os.platform() === 'win32') {
-      exec('taskkill /pid ' + testrun.pid + ' /T /F')
-    } else {
-      ps.kill(testrun.pid)
+  unsubscribe () {
+    EVENT_TYPES.forEach(event => {
+      this.eventEmitter.removeAllListeners(event)
+    })
+  }
+
+  run () {
+    if (this.isRunning) return
+
+    this.isRunning = true
+
+    // Set environment variable defaults
+    if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production'
+
+    this._fireEvent('codecept.start_run',
+      Object.assign({
+        id: shortid.generate(),
+        environment: process.env.NODE_ENV,
+        device: process.env.DEVICE
+      }, this.options))
+
+    const cmdOpts = this.codeceptCtrl.cmd_opts
+
+    // TODO Make this work
+    // Don't execute tests marked with tag @Not<Environment>
+    cmdOpts.push('--grep')
+    cmdOpts.push(`.*(?!@Not${capitalize(process.env.NODE_ENV)}).*`)
+
+    // Run the specified test suite
+    if (this.options.suite) {
+      cmdOpts.push('--grep')
+      const escapedGrep = escapeRegExp(this.options.suite)
+      cmdOpts.push(escapedGrep)
     }
+
+    // Use grep to only run a specific test
+    if (this.options.grep) {
+      cmdOpts.push('--grep')
+      const escapedGrep = escapeRegExp(this.options.grep)
+      cmdOpts.push(escapedGrep)
+
+      console.log('Running with grep', this.options.grep)
+    }
+
+    let proc
+    try {
+      proc = this.codeceptCtrl.start()
+    } catch (err) {
+      this.isRunning = false
+      console.log('Failed to run codeceptjs', err)
+      return
+    }
+
+    this._handleStdout(proc)
+  }
+
+  stop () {
+    if (!this.codeceptCtrl) return
+    this.codeceptCtrl.stop()
   }
 }
+
+CodeceptRunner.EVENT_TYPES = EVENT_TYPES
+
+module.exports = CodeceptRunner

@@ -1,4 +1,4 @@
-const codeceptRunner = require('../codeceptjs/runner')
+const codeceptRunner = require('../codeceptjs/parallel-runner')
 
 const cmdRunTests = (options) => {
   codeceptRunner.run(options)

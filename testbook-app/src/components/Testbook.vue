@@ -13,13 +13,13 @@
       <span class="TestbookTag" v-for="(suites, tag) in stats.tags">
           {{tag}}
           &nbsp;
-          {{suites.length}}
+          {{suites.desktop.length}}
       </span>
     </div>
 
-    <section class="section Testbook-features">
+    <div class="Testbook-features">
 
-            <blockquote class="has-text-centered" v-if="suites.length === 0">
+            <blockquote class="has-text-centered" v-if="suites.desktop.length === 0">
               <strong>
                 No test results are yet available.
                 <a href="#" v-on:click="startTestrun()">Start a test run now!</a>
@@ -27,7 +27,7 @@
             </blockquote>
 
             <aside>
-              <div class="Testbook-feature box content" v-for="suite in suites">
+              <div class="Testbook-feature box content" v-for="suite in suites.desktop">
                 <span class="TestbookSuite-lastRun">{{ suite.t | date }}</span>
                 <button class="button is-primary is-small is-outlined pull-right" v-on:click="runSuite(suite)">Run</button>
                 <h5 class="title" v-html="formatMarkdown(suite.title)">
@@ -139,7 +139,7 @@
               </div>
             </aside>
 
-    </section>
+    </div>
 
     <div class="Step-preview">
       <div v-if="selectedStep">
@@ -221,7 +221,7 @@ export default {
     },
     'codecept.finish_run': function (evt) {
       evt.type = 'codecept.finish_run'
-      suiteService.endTestRun()
+      suiteService.endTestRun(evt)
     }
   },
   data () {
@@ -372,6 +372,7 @@ export default {
   }
 
   .Testbook-feature {
+    margin-right: 10px;
     > ul {
       list-style-type: none;
       margin-left: 0;
@@ -380,6 +381,7 @@ export default {
 
   .TestbookSuite-lastRun {
     float: right;
+    margin-left: .5em;
     color: $grey_light;
   }
 
