@@ -98,6 +98,7 @@ module.exports = {
 
     const opts = CODECEPT_OPTS.slice()
 
+    // TODO Make this work
     // Don't execute tests marked with tag @Not<Environment>
     opts.push('--grep')
     opts.push(`.*(?!@Not${capitalize(process.env.NODE_ENV)}).*`)
