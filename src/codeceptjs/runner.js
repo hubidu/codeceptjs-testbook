@@ -77,6 +77,10 @@ module.exports = {
       return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
     }
 
+    function capitalize (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    }
+
     if (isRunning) return
 
     isRunning = true
@@ -93,6 +97,12 @@ module.exports = {
       }))
 
     const opts = CODECEPT_OPTS.slice()
+
+    // Don't execute tests marked with tag @Not<Environment>
+    opts.push('--grep')
+    opts.push(`.*(?!@Not${capitalize(process.env.NODE_ENV)}).*`)
+
+    // Run the specified test suite
     if (options.suite) {
       opts.push('--grep')
       const escapedGrep = escapeRegExp(options.suite)
