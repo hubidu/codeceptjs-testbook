@@ -18,8 +18,15 @@ Visually manage your codeceptjs tests.
 - DONE Run a suite
 - DONE Create a multi-reporter
 - DONE Run device tests in parallel
+- DONE Set DEVICE environment variable for each run
+- DONE Use a different phantomjs instance for parallel runs
+- Sometimes seeing a mobile screenshot in steps
+- Add environment to events
+- Cannot read property reduce of undefined in suite-service / updateStats
+- Spinner does not spinning after test run finished
 - Fix problems with parallel device runs
-- Use a different phantomjs instance for parallel runs
+- Format suite time correctly
+- BUG Failed to resolve filter truncate
 - Restore continuous run mode
 - Stop continous testing mode
 - Switch environment

@@ -13,7 +13,7 @@
       <span class="TestbookTag" v-for="(suites, tag) in stats.tags">
           {{tag}}
           &nbsp;
-          {{suites.desktop.length}}
+          {{suites.length}}
       </span>
     </div>
 
@@ -148,7 +148,7 @@
           <a target="_blank" v-bind:href="htmlSourceUrl(selectedStep)">HTMLSource</a>
         </div>
 
-        <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl | truncate 50}}</a>
+        <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl}}</a>
 
 
         <hr>

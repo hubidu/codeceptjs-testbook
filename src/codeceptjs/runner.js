@@ -8,9 +8,9 @@ function escapeRegExp (str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
 }
 
-function capitalize (str) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
+// function capitalize (str) {
+//   return str.charAt(0).toUpperCase() + str.slice(1)
+// }
 
 const EVENT_TYPES = [
   'codecept.start_run', 'codecept.finish_run',
@@ -27,7 +27,7 @@ class CodeceptRunner {
 
     this.eventEmitter = new TestbookEventEmitter()
     this.eventEmitter.setMaxListeners(20)
-    this.codeceptCtrl = new CodeceptCtrl()
+    this.codeceptCtrl = new CodeceptCtrl(options.environment, options.device)
   }
 
   get events () {
@@ -96,21 +96,21 @@ class CodeceptRunner {
     this.isRunning = true
 
     // Set environment variable defaults
-    if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production'
+    // if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production'
 
     this._fireEvent('codecept.start_run',
       Object.assign({
-        id: shortid.generate(),
-        environment: process.env.NODE_ENV,
-        device: process.env.DEVICE
+        id: shortid.generate()
+        // environment: process.env.NODE_ENV,
+        // device: process.env.DEVICE
       }, this.options))
 
     const cmdOpts = this.codeceptCtrl.cmd_opts
 
     // TODO Make this work
     // Don't execute tests marked with tag @Not<Environment>
-    cmdOpts.push('--grep')
-    cmdOpts.push(`.*(?!@Not${capitalize(process.env.NODE_ENV)}).*`)
+    // cmdOpts.push('--grep')
+    // cmdOpts.push(`.*(?!@Not${capitalize(process.env.NODE_ENV)}).*`)
 
     // Run the specified test suite
     if (this.options.suite) {

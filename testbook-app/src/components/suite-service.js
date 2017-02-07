@@ -196,7 +196,7 @@ export default {
   },
 
   endTestRun: (evt) => {
-    suites[evt._device].forEach(suite => {
+    suites[evt.device].forEach(suite => {
       if (!suite.state) {
         suite.state = 'aborted'
         suite.tests.forEach(test => {

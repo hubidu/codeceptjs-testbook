@@ -1,12 +1,15 @@
 const path = require('path')
 const spawn = require('child_process').spawn
+const exec = require('child_process').exec
 
 class CodeceptCtrl {
-  constructor () {
-    /**
-     * Run codeceptjs out-of-process and read events from stdout
-     */
-    // TODO Actually I would rather invoke codeceptjs directly
+  constructor (environment, device) {
+    // TODO Mix in process environment???
+    this.env = {
+      NODE_ENV: environment,
+      DEVICE: device
+    }
+
     this.cmd = 'node'
     this.cmd_opts = [
       './node_modules/codeceptjs/bin/codecept.js',
@@ -19,7 +22,8 @@ class CodeceptCtrl {
 
       // '--grep', '@UserConvert'
     ]
-    this.proc
+    this.proc = undefined
+
   }
 
   /**
@@ -29,6 +33,9 @@ class CodeceptCtrl {
     // TODO: Override/ Add webdriver port per device
     return JSON.stringify({
       helpers: {
+        WebDriverIO: {
+          port: this.env.DEVICE === 'desktop' ? 4444 : 4445
+        },
         ScreenshotHelper: {
           require: path.join(__dirname, './helpers/screenshot-helper.js').replace(/\\/g, '\\\\')
         },
@@ -39,11 +46,10 @@ class CodeceptCtrl {
     })
   }
 
-
   start () {
     this.proc = spawn(this.cmd, this.cmd_opts, {
       detached: true,
-      env: process.env
+      env: this.env
     })
     return this.proc
   }

@@ -22,7 +22,10 @@ module.exports = {
     if (runnerInstances) return
     if (options.continuous) throw new Error('Continuous mode currently not supported, please implement')
 
-    runnerInstances = DEVICES.map(device => new CodeceptRunner(Object.assign({ device }, options)))
+    // TODO Fix environment and device
+    runnerInstances = DEVICES.map(device => new CodeceptRunner(Object.assign({
+      device, environment: 'production'
+    }, options)))
 
     runnerInstances.forEach(runner => runner.subscribe(eventEmitter))
     runnerInstances.forEach(runner => runner.run())
