@@ -9,23 +9,8 @@
     >
     </navigation>
 
-<div class="tabs is-centered is-boxed">
-  <ul>
-    <li v-bind:class="{ 'is-active': selectedDevice === 'desktop' }">
-      <a v-on:click="selectDevice('desktop')">
-        <span>Desktop</span>
-      </a>
-    </li>
-    <li v-bind:class="{ 'is-active': selectedDevice === 'mobile' }">
-      <a v-on:click="selectDevice('mobile')">
-        <span class="icon is-small"><i class="fa fa-phone"></i></span>
-        <span>Mobile</span>
-      </a>
-    </li>
-  </ul>
-</div>
 
-
+    <!--
     <div>
       <span class="TestbookTag" v-for="(suites, tag) in stats.tags">
           {{tag}}
@@ -33,14 +18,13 @@
           {{suites.length}}
       </span>
     </div>
+    -->
 
     <div class="Testbook-features">
 
-            <blockquote class="has-text-centered" v-if="suites[selectedDevice].length === 0">
-              <strong>
-                No test results are yet available.
-                <a href="#" v-on:click="startTestrun()">Start a test run now!</a>
-              </strong>
+            <blockquote class="TestbookFeatures--emptyState has-text-centered" v-if="suites[selectedDevice].length === 0">
+              No test results are yet available.
+              <a href="#" v-on:click="startTestrun()">Start a test run now!</a>
             </blockquote>
 
             <aside>
@@ -159,6 +143,26 @@
     </div>
 
     <div class="Step-preview">
+      <section class="TestbookDeviceSelection" v-if="suites[selectedDevice].length > 0">
+      <div class="tabs is-centered is-boxed">
+        <ul>
+          <li v-bind:class="{ 'is-active': selectedDevice === 'desktop' }">
+            <a v-on:click="selectDevice('desktop')">
+              <span class="icon is-small"><i class="fa fa-desktop"></i></span>
+              <span>Desktop</span>
+            </a>
+          </li>
+          <li v-bind:class="{ 'is-active': selectedDevice === 'mobile' }">
+            <a v-on:click="selectDevice('mobile')">
+              <span class="icon is-small"><i class="fa fa-mobile"></i></span>
+              <span>Mobile</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      </section>
+
+
       <div v-if="selectedStep">
         <h2 class="title">{{selectedStep.pageTitle}}</h2>
         <div>
@@ -387,9 +391,12 @@ export default {
     position: fixed;
     width: 33%;
     overflow-y: scroll;
-    top: 120px;
+    top: 55px;
     bottom: 0;
+  }
 
+  .TestbookFeatures--emptyState {
+    margin-top: 50%;
   }
 
   .Testbook-feature {
@@ -453,7 +460,7 @@ export default {
 
   .Step {
     &--active {
-      border: 1px solid $primary;
+      border-right: 2px solid $info;
     }
   }
 
@@ -465,7 +472,8 @@ export default {
   .Step-preview {
     float: right;
     padding: 10px;
-    margin-left: 33%;
+    // margin-left: 33%;
+    width: 66%
   }
 
   .Step-screenshot {

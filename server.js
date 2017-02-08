@@ -23,14 +23,23 @@ const sockets = {}
 eventProxy.proxyEvents(sockets)
 
 io.on('connection', function (socket) {
-  console.log('New socket connection with id', socket.id)
+  console.log('New socket connection #', socket.id)
   sockets[socket.id] = socket
 
   commands.attach(socket)
 
   socket.on('disconnect', () => {
-    console.log('Socket connection closed ', socket.id)
+    console.log('Socket connection closed #', socket.id)
     commands.detach(socket)
     delete sockets[socket.id]
   })
+})
+
+process.on('uncaughtException', (error) => {
+  console.log('UNHANDLED EXCEPTION', error)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('UNHANDLED REJECTION', reason, p)
 })

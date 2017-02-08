@@ -20,6 +20,7 @@ Visually manage your codeceptjs tests.
 - DONE Run device tests in parallel
 - DONE Set DEVICE environment variable for each run
 - DONE Use a different phantomjs instance for parallel runs
+- 'Failed to find test' console error when running yahoo test
 - Are phantomjs instances terminated?
 - Make phantom ports dynamic
 - Mark last step as passed when test is passed

@@ -23,7 +23,6 @@ class CodeceptCtrl {
       // '--grep', '@UserConvert'
     ]
     this.proc = undefined
-
   }
 
   /**
@@ -34,7 +33,7 @@ class CodeceptCtrl {
     return JSON.stringify({
       helpers: {
         WebDriverIO: {
-          port: this.env.DEVICE === 'desktop' ? 4444 : 4445 // TODO Pass ports in constructor
+          port: this.env.DEVICE === 'desktop' ? '4444' : '4445' // TODO Pass ports in constructor
         },
         ScreenshotHelper: {
           require: path.join(__dirname, './helpers/screenshot-helper.js').replace(/\\/g, '\\\\')
@@ -49,8 +48,9 @@ class CodeceptCtrl {
   start () {
     this.proc = spawn(this.cmd, this.cmd_opts, {
       detached: true,
-      env: this.env
+      env: Object.assign({}, process.env, this.env)
     })
+
     return this.proc
   }
 

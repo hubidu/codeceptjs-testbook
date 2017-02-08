@@ -116,6 +116,7 @@ class CodeceptRunner {
 
     // Run the specified test suite
     if (this.options.suite) {
+      console.log('Running suite', this.options.suite)
       cmdOpts.push('--grep')
       const escapedGrep = escapeRegExp(this.options.suite)
       cmdOpts.push(escapedGrep)
@@ -130,16 +131,13 @@ class CodeceptRunner {
       console.log('Running with grep', this.options.grep)
     }
 
-    let proc
     try {
-      proc = this.codeceptCtrl.start()
+      this.proc = this.codeceptCtrl.start()
+      this._handleStdout(this.proc)
     } catch (err) {
       this.isRunning = false
       console.log('Failed to run codeceptjs', err)
-      return
     }
-
-    this._handleStdout(proc)
   }
 
   stop () {
