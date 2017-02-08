@@ -1,7 +1,10 @@
 const EventEmitter = require('events')
 const CodeceptRunner = require('./runner')
 
+const phantomjsCtrl = require('../phantom-ctrl')
+
 const DEVICES = ['desktop', 'mobile']
+const PORTS = ['4444', '4445']
 
 let runnerInstances
 
@@ -22,17 +25,21 @@ module.exports = {
     if (runnerInstances) return
     if (options.continuous) throw new Error('Continuous mode currently not supported, please implement')
 
-    // TODO Fix environment and device
-    runnerInstances = DEVICES.map(device => new CodeceptRunner(Object.assign({
-      device, environment: 'production'
-    }, options)))
+    phantomjsCtrl.start(PORTS).then(() => {
+      // TODO Fix environment and device
+      runnerInstances = DEVICES.map(device => new CodeceptRunner(Object.assign({
+        device, environment: 'production'
+      }, options)))
 
-    runnerInstances.forEach(runner => runner.subscribe(eventEmitter))
-    runnerInstances.forEach(runner => runner.run())
+      runnerInstances.forEach(runner => runner.subscribe(eventEmitter))
+      runnerInstances.forEach(runner => runner.run())
+    })
   },
 
   stop: () => {
     if (!runnerInstances) return
+
+    phantomjsCtrl.stop()
 
     runnerInstances.forEach(runner => runner.stop())
     runnerInstances.forEach(runner => runner.unsubscribe())

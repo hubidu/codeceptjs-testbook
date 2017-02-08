@@ -34,7 +34,7 @@ class CodeceptCtrl {
     return JSON.stringify({
       helpers: {
         WebDriverIO: {
-          port: this.env.DEVICE === 'desktop' ? 4444 : 4445
+          port: this.env.DEVICE === 'desktop' ? 4444 : 4445 // TODO Pass ports in constructor
         },
         ScreenshotHelper: {
           require: path.join(__dirname, './helpers/screenshot-helper.js').replace(/\\/g, '\\\\')

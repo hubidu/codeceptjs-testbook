@@ -15,6 +15,7 @@
     "cheerio": "^0.22.0",
     "codeceptjs": "^0.4.13",
     "express": "^4.14.0",
+    "phantomjs-prebuilt": "^2.1.14",
     "resolve": "^1.2.0",
     "shortid": "^2.2.6",
     "socketio": "^1.0.0"

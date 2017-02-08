@@ -35,7 +35,11 @@ class CodeceptRunner {
   }
 
   _fireEvent (type, payload = {}) {
-    this.eventEmitter.emit(type, payload)
+    // Always add device and environment to events
+    this.eventEmitter.emit(type, Object.assign({
+      _device: this.options.device,
+      _environment: this.options.environment
+    }, payload))
   }
 
   _handleStdout (proc) {
@@ -51,9 +55,7 @@ class CodeceptRunner {
         }
 
         const l = line.split(/ (.+)/)
-        this._fireEvent(l[0], Object.assign({
-          _device: this.options.device
-        }, JSON.parse(l[1])))
+        this._fireEvent(l[0], JSON.parse(l[1]))
       })
     })
 
@@ -62,14 +64,14 @@ class CodeceptRunner {
     })
 
     proc.on('exit', (code) => {
-      this._fireEvent('codecept.finish_run', Object.assign({ code }, this.options))
+      this._fireEvent('codecept.finish_run', { code })
 
       this.codeceptCtrl = undefined
       this.isRunning = false
     })
 
     proc.on('end', (code) => {
-      this._fireEvent('codecept.finish_run', Object.assign({ code }, this.options))
+      this._fireEvent('codecept.finish_run', { code })
 
       this.codeceptCtrl = undefined
       this.isRunning = false

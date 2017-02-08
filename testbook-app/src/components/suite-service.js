@@ -105,7 +105,9 @@ export default {
       lineNo: evt.lineNo,
       method: evt.method
     }
+    test.steps.forEach(s => (s.state = 'passed'))
     test.steps.push(step)
+    test.stepsReverse.forEach(s => (s.state = 'passed'))
     test.stepsReverse.splice(0, 0, step)
   },
 
@@ -191,12 +193,12 @@ export default {
 
   startTestRun: (evt) => {
     state.state = 'running'
-    stats.env.environment = evt.environment
-    stats.env.device = evt.device
+    stats.env.environment = evt._environment
+    stats.env.device = evt._device
   },
 
   endTestRun: (evt) => {
-    suites[evt.device].forEach(suite => {
+    suites[evt._device].forEach(suite => {
       if (!suite.state) {
         suite.state = 'aborted'
         suite.tests.forEach(test => {

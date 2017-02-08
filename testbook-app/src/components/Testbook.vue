@@ -9,6 +9,23 @@
     >
     </navigation>
 
+<div class="tabs is-centered is-boxed">
+  <ul>
+    <li v-bind:class="{ 'is-active': selectedDevice === 'desktop' }">
+      <a v-on:click="selectDevice('desktop')">
+        <span>Desktop</span>
+      </a>
+    </li>
+    <li v-bind:class="{ 'is-active': selectedDevice === 'mobile' }">
+      <a v-on:click="selectDevice('mobile')">
+        <span class="icon is-small"><i class="fa fa-phone"></i></span>
+        <span>Mobile</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
     <div>
       <span class="TestbookTag" v-for="(suites, tag) in stats.tags">
           {{tag}}
@@ -19,7 +36,7 @@
 
     <div class="Testbook-features">
 
-            <blockquote class="has-text-centered" v-if="suites.desktop.length === 0">
+            <blockquote class="has-text-centered" v-if="suites[selectedDevice].length === 0">
               <strong>
                 No test results are yet available.
                 <a href="#" v-on:click="startTestrun()">Start a test run now!</a>
@@ -27,7 +44,7 @@
             </blockquote>
 
             <aside>
-              <div class="Testbook-feature box content" v-for="suite in suites.desktop">
+              <div class="Testbook-feature box content" v-for="suite in suites[selectedDevice]">
                 <span class="TestbookSuite-lastRun">{{ suite.t | date }}</span>
                 <button class="button is-primary is-small is-outlined pull-right" v-on:click="runSuite(suite)">Run</button>
                 <h5 class="title" v-html="formatMarkdown(suite.title)">
@@ -92,7 +109,7 @@
                         </li>
 
                         <li class="Step"
-                          v-bind:class="{ 'Step--active': isSelectedStep(step), 'Step--failed': step.state === 'failed', 'Step--passed': step.state === undefined && step.name !== 'comment' }"
+                          v-bind:class="{ 'Step--active': isSelectedStep(step), 'Step--failed': step.state === 'failed', 'Step--inprogress': step.state === undefined, 'Step--passed': step.state === 'passed' && step.name !== 'comment' }"
                           v-for="step in selectedTest.stepsReverse"
                           v-on:click="selectStep(step)"
                         >
@@ -226,6 +243,7 @@ export default {
   },
   data () {
     return {
+      selectedDevice: 'desktop',
       selectedStep: undefined,
       selectedTest: undefined,
       suiteName: undefined,
@@ -289,6 +307,9 @@ export default {
       } else {
         this.selectedStep = step
       }
+    },
+    selectDevice: function (deviceName) {
+      this.selectedDevice = deviceName
     },
     isSelectedStep: function (step) {
       return step === this.selectedStep
@@ -458,6 +479,11 @@ export default {
 
   .Step--passed {
     border-left: 4px solid $green;
+    padding-left: 5px;
+  }
+
+  .Step--inprogress {
+    border-left: 4px solid $grey-lighter;
     padding-left: 5px;
   }
 
