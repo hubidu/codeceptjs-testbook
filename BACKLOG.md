@@ -20,6 +20,11 @@ Visually manage your codeceptjs tests.
 - DONE Run device tests in parallel
 - DONE Set DEVICE environment variable for each run
 - DONE Use a different phantomjs instance for parallel runs
+- Fire an end_run event when all parallel runs have finished
+- Switch between diffferent device runs
+- Keep statistics per device
+- Fix email reporter to support multiple devices
+- Mark tags which have failed tests
 - Sometimes seeing a mobile screenshot in steps
 - Add environment to events
 - Cannot read property reduce of undefined in suite-service / updateStats
