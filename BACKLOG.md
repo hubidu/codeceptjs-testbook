@@ -20,13 +20,18 @@ Visually manage your codeceptjs tests.
 - DONE Run device tests in parallel
 - DONE Set DEVICE environment variable for each run
 - DONE Use a different phantomjs instance for parallel runs
+- DONE Switch between diffferent device runs
+- Show tags on tests
+- Step syntax highlight: Display strings and selectors in different colors
+- Bundle testbook server and testbook frontend
+- UI Allow to expand more than one test
+- UI Keep selected tests when switching between devices
 - 'Failed to find test' console error when running yahoo test
 - Are phantomjs instances terminated?
 - Make phantom ports dynamic
 - Mark last step as passed when test is passed
 - Start phantom only if webdriverio is configured for phantom
 - Fire an end_run event when all parallel runs have finished
-- Switch between diffferent device runs
 - Keep statistics per device
 - Fix email reporter to support multiple devices
 - Mark tags which have failed tests
@@ -43,12 +48,10 @@ Visually manage your codeceptjs tests.
 - Switch device
 - Handle errors in before/after hooks properly
 - Send an email notification when tests fail
-- Run tests for different devices in parallel
 - Add step prefix for before/after suite
 - UI: Extract step as component
 - Add suite and test duration
-- Microservice to manage phantomjs instances
-- Add context when step is executed in within
+- Implement support for within
 - BUG Dont mark executing step as passed
 - BUG Pressing stop causes error on linux
 - Make a nice scrolling sidebar

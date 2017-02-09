@@ -52,11 +52,8 @@
     name: 'Navigation',
     props: ['stats', 'state'],
     data () {
-      return {
-
-      }
+      return {}
     },
-
     methods: {
       runContinuosly () {
         this.$emit('testrun-continuously')

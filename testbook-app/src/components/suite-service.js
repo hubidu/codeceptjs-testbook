@@ -91,6 +91,7 @@ export default {
 
     const step = {
       t: evt.t,
+      state: undefined, // at this point step is probably still running
       actor: evt.actor,
       name: evt.name,
       humanizedName: evt.humanizedName,
@@ -141,6 +142,9 @@ export default {
       return
     }
     test.state = 'passed'
+
+    // Make sure all tests are now green
+    test.steps.forEach(s => (s.state = 'passed'))
   },
 
   markTestFailed: (suiteId, evt) => {
@@ -152,31 +156,19 @@ export default {
       console.error('Failed to find test', evt)
       return
     }
+
     test.state = 'failed'
     test.errorMessage = evt.errorMessage
     test.err = evt.err
     test.file = evt.file
-    test.screenshot = evt.screenshot
+    test.screenshot = evt.screenshot // dont need that on the test (steps are supposed to have screenshots)
 
     // Mark last step as failed
     const failedStep = test.stepsReverse[0]
     failedStep.state = 'failed'
     failedStep.screenshot = evt.screenshot
-    failedStep.htmlSource = evt.htmlSource
-
-    // Add an artificial step
-    // const step = {
-    //   t: evt.t,
-    //   actor: 'I',
-    //   humanizedName: 'failed here',
-    //   args: '',
-    //   screenshot: evt.screenshot,
-    //   htmlSource: evt.htmlSource,
-    //   pageUrl: undefined,
-    //   pageTitle: undefined
-    // }
-    // test.steps.push(step)
-    // test.stepsReverse.splice(0, 0, step)
+    // NOTE htmlSource is not available in test failed so far
+    // failedStep.htmlSource = evt.htmlSource
   },
 
   reset: () => {

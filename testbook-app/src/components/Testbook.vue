@@ -87,9 +87,6 @@
                             </div>
 
                           </div>
-
-
-
                         </li>
 
                         <li class="Step"
@@ -97,40 +94,7 @@
                           v-for="step in selectedTest.stepsReverse"
                           v-on:click="selectStep(step)"
                         >
-                          <div class="comment" v-if="step.name === 'comment'" v-html="formatMarkdown(step.humanizedArgs) ">
-
-                          </div>
-
-                          <div v-else>
-                            <!--
-                            <span class="u-rel-time">
-                              {{relativeTime(selectedTest, step)}}
-                            </span>
-                            -->
-                            <strong>
-                              {{step.actor}} {{step.humanizedName}}
-                            </strong>
-                            <em>
-                              {{step.humanizedArgs}}
-                            </em>
-
-                            <blockquote v-if="isSelectedStep(step)">
-                              <div>
-                                in
-                                <em>
-                                  {{step.method}}
-                                </em>
-                                at line
-                                <em>
-                                  {{step.lineNo}}
-                                </em>
-                                of
-                                <strong>
-                                  {{step.fileName}}
-                                </strong>
-                              </div>
-                            </blockquote>
-                          </div>
+                          <step :step="step" :is-selected="isSelectedStep(step)" ></Step>
                         </li>
 
                       </ul>
@@ -166,14 +130,24 @@
       <div v-if="selectedStep">
         <h2 class="title">{{selectedStep.pageTitle}}</h2>
         <div>
-          <a target="_blank" v-bind:href="htmlSourceUrl(selectedStep)">HTMLSource</a>
+          <a target="_blank" v-if="selectedStep.htmlSource" v-bind:href="htmlSourceUrl(selectedStep)">
+            View HTML
+          </a>
         </div>
 
-        <a target="_blank" v-bind:href="selectedStep.pageUrl">{{selectedStep.pageUrl}}</a>
-
+        <a
+          target="_blank"
+          v-if="selectedStep.pageUrl"
+          v-bind:href="selectedStep.pageUrl">
+          <input class="input" type="text" placeholder="The url" v-bind:value="selectedStep.pageUrl" disabled>
+        </a>
 
         <hr>
-        <img class="Step-screenshot" v-bind:src="screenshotUrl(selectedStep.screenshot)" alt="step screenshot">
+        <img
+          v-if="selectedStep.screenshot"
+          class="Step-screenshot"
+          v-bind:src="screenshotUrl(selectedStep.screenshot)"
+          alt="step screenshot">
 
         <pre>
           <code>
@@ -194,11 +168,13 @@ import marked from 'marked'
 import suiteService from './suite-service'
 
 import Navigation from './Navigation.vue'
+import Step from './Step.vue'
 
 export default {
   name: 'testbook',
   components: {
-    Navigation
+    Navigation,
+    Step
   },
   sockets: {
     connect: function () {
@@ -466,7 +442,7 @@ export default {
 
   .Step:hover {
     cursor: pointer;
-    background-color: $grey-lighter;
+    border-right: 1px solid $info;
   }
 
   .Step-preview {
