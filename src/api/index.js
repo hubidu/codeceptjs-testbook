@@ -4,10 +4,6 @@ const cheerio = require('cheerio')
 
 
 module.exports = function (app) {
-  app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '/index.html'))
-  })
-
   app.get('/screenshots/:runId/:fileName', function (req, res) {
     res.sendFile(path.join(process.cwd(), '.testbook', req.params.runId, req.params.fileName))
   })

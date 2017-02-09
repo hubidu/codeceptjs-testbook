@@ -6,12 +6,20 @@ import VueSocketio from 'vue-socket.io'
 import 'font-awesome/css/font-awesome.min.css'
 
 // TODO: Make url configurable
-Vue.use(VueSocketio, 'http://localhost:3000')
+Vue.use(VueSocketio, '/')
 
-Vue.filter('date', function (t) {
-  const d = new Date(t)
-  return `${d.getUTCHours()}:${d.getUTCMinutes()}`
-})
+const toTime = function (ts) {
+  const d = new Date(ts)
+
+  let hours = d.getHours()
+  let minutes = d.getMinutes()
+
+  if (hours < 10) { hours = '0' + hours }
+  if (minutes < 10) { minutes = '0' + minutes }
+  return hours + ':' + minutes
+}
+
+Vue.filter('toTime', toTime)
 
 import App from './App'
 

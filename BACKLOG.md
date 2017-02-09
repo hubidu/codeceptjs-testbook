@@ -21,6 +21,9 @@ Visually manage your codeceptjs tests.
 - DONE Set DEVICE environment variable for each run
 - DONE Use a different phantomjs instance for parallel runs
 - DONE Switch between diffferent device runs
+- Create a testbook config file
+- Write a decent readme
+- Record an awesome screencast
 - Show tags on tests
 - Step syntax highlight: Display strings and selectors in different colors
 - Bundle testbook server and testbook frontend

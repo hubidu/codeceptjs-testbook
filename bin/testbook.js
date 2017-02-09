@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-// start server
-const server = require('../server');
+// Start the express server
+require('../server')

@@ -1,8 +1,12 @@
+const path = require('path')
+
 const commands = require('./src/commands')
 const eventProxy = require('./src/event-proxy')
 require('./src/email-reporter')({})
 
-var app = require('express')()
+const express = require('express')
+const app = express()
+app.use(express.static(path.join(__dirname, 'testbook-app/dist')))
 
 // API routes
 require('./src/api')(app)
@@ -10,8 +14,8 @@ require('./src/api')(app)
 /**
  * Start the web server
  */
-const server = app.listen(3000, function () {
-  console.log('testbook server running on http://localhost:3000/')
+const server = app.listen(3333, function () {
+  console.log('Your <testbook/> server is running on http://localhost:3333/')
 })
 
 /**

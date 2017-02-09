@@ -52,18 +52,26 @@
       formatArgs: function (step) {
         if (step.name === 'waitForElement' && step.args.length === 1) {
           return `<span class="Step--argLocator">${step.args[0]}</span>`
+        } else if (step.name === 'waitForElement' && step.args.length === 2) {
+          return `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argOptional">${step.args[1]}s`
+        } else if (step.name === 'seeElement' && step.args.length === 1) {
+          return `<span class="Step--argLocator">${step.args[0]}</span>`
         } else if (step.name === 'click' && step.args.length === 1) {
-          return `<span class="Step--argString">"${step.args[0]}"</span>`
+          return `<i class="icon is-small fa fa-mouse-pointer"></i><span class="Step--argString">"${step.args[0]}"</span>`
         } else if (step.name === 'click' && step.args.length === 2) {
+          return `<span class="Step--argString">"${step.args[0]}"</span> <span class="Step--argLocator">${step.args[1]}</span>`
+        } else if (step.name === 'see' && step.args.length === 2) {
           return `<span class="Step--argString">"${step.args[0]}"</span> <span class="Step--argLocator">${step.args[1]}</span>`
         } else if (step.name === 'fillField' && step.args.length === 2) {
           return `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argString">"${step.args[1]}"</span>`
+        } else if (step.name === 'selectOption' && step.args.length === 2) {
+          return `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argString">"${step.args[1]}"</span>`
         } else if (step.name === 'pressKey' && step.args.length === 1) {
-          return `<span class="Step--argString">"${step.args[0]}"</span>`
+          return `<i class="icon is-small fa fa-keyboard-o"></i> <span class="Step--argKey">${step.args[0]}</span>`
         } else if (step.name === 'amOnPage' && step.args.length === 1) {
           return `<span class="Step--argString">"${step.args[0]}"</span>`
         } else if (step.name === 'see' && step.args.length === 1) {
-          return `<span class="Step--argString">"${step.args[0]}"</span>`
+          return `<i class="icon is-small fa fa-eye-slash"></i><span class="Step--argString">"${step.args[0]}"</span>`
         } else if (step.name === 'waitForText' && step.args.length === 1) {
           return `<span class="Step--argString">"${step.args[0]}"</span>`
         } else if (step.name === 'waitForText' && step.args.length === 3) {
@@ -88,6 +96,10 @@
 
   .Step--argOptional {
     color: $grey-light;
+  }
+
+  .Step--argKey {
+    color: $blue;
   }
 
 </style>

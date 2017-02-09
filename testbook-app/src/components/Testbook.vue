@@ -29,7 +29,7 @@
 
             <aside>
               <div class="Testbook-feature box content" v-for="suite in suites[selectedDevice]">
-                <span class="TestbookSuite-lastRun">{{ suite.t | date }}</span>
+                <span class="TestbookSuite-lastRun">{{ suite.t | toTime }}</span>
                 <button class="button is-primary is-small is-outlined pull-right" v-on:click="runSuite(suite)">Run</button>
                 <h5 class="title" v-html="formatMarkdown(suite.title)">
                 </h5>
@@ -239,7 +239,7 @@ export default {
     },
 
     screenshotUrl: function (screenshot) {
-      return `http://localhost:3000/screenshots/${screenshot}`
+      return `/screenshots/${screenshot}`
     },
 
     htmlSourceUrl: function (step) {
@@ -275,7 +275,7 @@ export default {
       }
       selector = encodeURIComponent(selector)
       const host = encodeURIComponent(getLocation(step.pageUrl).hostname)
-      return `http://localhost:3000/html-source/${step.htmlSource}?selector=${selector}&host=${host}`
+      return `/html-source/${step.htmlSource}?selector=${selector}&host=${host}`
     },
 
     relativeTime: function (test, step) {
@@ -365,6 +365,7 @@ export default {
 
   .Testbook-features {
     position: fixed;
+    padding: 10px;
     width: 33%;
     overflow-y: scroll;
     top: 55px;
@@ -376,7 +377,6 @@ export default {
   }
 
   .Testbook-feature {
-    margin-right: 10px;
     > ul {
       list-style-type: none;
       margin-left: 0;
