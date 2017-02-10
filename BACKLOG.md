@@ -21,29 +21,36 @@ Visually manage your codeceptjs tests.
 - DONE Set DEVICE environment variable for each run
 - DONE Use a different phantomjs instance for parallel runs
 - DONE Switch between diffferent device runs
+- DONE Step syntax highlight: Display strings and selectors in different colors
+- DONE Bundle testbook server and testbook frontend
+- DONE Mark last step as passed when test is passed
+- DONE Fix problems with parallel device runs
+- DONE Spinner does not spinning after test run finished
+- DONE Extract step as component
+- DONE Run tests for all devices
+- DONE Add environment to events
+- DONE Dont mark executing step as passed
+- DONE Start/Stop phantomjs before testrun
+- DONE Cannot read property reduce of undefined in suite-service / updateStats
+- DONE Format suite time correctly
+- Handle errors in before hook gracefully
+- Restore webpack dev mode
 - Create a testbook config file
+- Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - Write a decent readme
 - Record an awesome screencast
 - Show tags on tests
-- Step syntax highlight: Display strings and selectors in different colors
-- Bundle testbook server and testbook frontend
 - UI Allow to expand more than one test
 - UI Keep selected tests when switching between devices
 - 'Failed to find test' console error when running yahoo test
 - Are phantomjs instances terminated?
 - Make phantom ports dynamic
-- Mark last step as passed when test is passed
 - Start phantom only if webdriverio is configured for phantom
 - Fire an end_run event when all parallel runs have finished
 - Keep statistics per device
 - Fix email reporter to support multiple devices
 - Mark tags which have failed tests
 - Sometimes seeing a mobile screenshot in steps
-- Add environment to events
-- Cannot read property reduce of undefined in suite-service / updateStats
-- Spinner does not spinning after test run finished
-- Fix problems with parallel device runs
-- Format suite time correctly
 - BUG Failed to resolve filter truncate
 - Restore continuous run mode
 - Stop continous testing mode
@@ -52,10 +59,8 @@ Visually manage your codeceptjs tests.
 - Handle errors in before/after hooks properly
 - Send an email notification when tests fail
 - Add step prefix for before/after suite
-- UI: Extract step as component
 - Add suite and test duration
 - Implement support for within
-- BUG Dont mark executing step as passed
 - BUG Pressing stop causes error on linux
 - Make a nice scrolling sidebar
 - Show error message when testrun fails
@@ -63,9 +68,6 @@ Visually manage your codeceptjs tests.
 - Enter coninuous testing mode from frontend
 - Send notification on failure
 - FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
-- Start/Stop phantomjs before testrun
-- Run tests for all devices
-- Run tests continuously
 - Run testbook app and server in a docker container
 
 - Use and display markdown in feature and scenario titles

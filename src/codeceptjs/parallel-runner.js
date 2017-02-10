@@ -33,6 +33,8 @@ module.exports = {
 
       runnerInstances.forEach(runner => runner.subscribe(eventEmitter))
       runnerInstances.forEach(runner => runner.run())
+    }).catch(err => {
+      console.log('Failed to start phantomjs', err)
     })
   },
 
