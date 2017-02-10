@@ -74,6 +74,7 @@ Visually manage your codeceptjs tests.
 
 ## BETA 2
 
+- BIG IDEA: test tracking pixel and affiliate stuff
 - Store test runs in a database
 - Record test runs on the server
 - Search suites, tests and steps
