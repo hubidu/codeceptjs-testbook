@@ -15,12 +15,33 @@ const AssertionFailedError = require(path.join(TEST_ROOT, 'node_modules/codecept
  */
 function parseTestTitle (title) {
   return Object.assign({
-    id: utils.hash(title)
+    id: utils.hash(title.trim())
   }, utils.parseTags(title))
+}
+
+function parseTestTitleForType (type, title) {
+  if (type === 'hook') {
+    let m = title.match(/Before for "(.*?)"/) || title.match(/After for "(.*?)"/)
+    return parseTestTitle(m[1])
+  } else {
+    return parseTestTitle(title)
+  }
 }
 
 function parseSuiteTitle (title) {
   return Object.assign({ id: utils.hash(title) }, utils.parseTags(title))
+}
+
+function parseTestType (test) {
+  if (test.type === 'hook') {
+    if (test.title.indexOf('"before each"') === 0) {
+      return 'hook:before'
+    } else {
+      return 'hook:after'
+    }
+  } else {
+    return test.type
+  }
 }
 
 function extractFileLineMethod (stack) {
@@ -102,19 +123,19 @@ function reporterFactoryFn (runner, opts) {
       t: Date.now(),
       errorMessage: msg,
       err: test.err,
-      testType: test.type,
+      testType: parseTestType(test),
       steps: test.steps ? test.steps.map(mapStep) : undefined,
       screenshot: testrun.captureErrorScreenshot(test),
       file: utils.stripCwd(test.file),
       suiteId: utils.hash(currentSuite.fullTitle())
-    }, parseTestTitle(test.title)))
+    }, parseTestTitleForType(test.type, test.title)))
   })
 
   runner.on('pending', function (test) {
     utils.log('codecept.pending', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
-      steps: test.steps ? test.steps.map(mapStep) : undefined,
+      steps: test.steps ? test.steps.map(mapStep) : undefined, // TODO: Remove them
       suiteId: utils.hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)))
   })
@@ -123,7 +144,7 @@ function reporterFactoryFn (runner, opts) {
     utils.log('codecept.pass', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
-      steps: test.steps ? test.steps.map(mapStep) : undefined,
+      steps: test.steps ? test.steps.map(mapStep) : undefined, // TODO: Remove them
       suiteId: utils.hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)))
   })
@@ -152,7 +173,7 @@ function reporterFactoryFn (runner, opts) {
     utils.log('codecept.test', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
-      steps: test.steps.map(mapStep),
+      steps: test.steps.map(mapStep),                 // TODO: Remove them
       suiteId: utils.hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)))
   })

@@ -33,8 +33,9 @@ Visually manage your codeceptjs tests.
 - DONE Start/Stop phantomjs before testrun
 - DONE Cannot read property reduce of undefined in suite-service / updateStats
 - DONE Format suite time correctly
-- Handle errors in before hook gracefully
-- Restore webpack dev mode
+- DONE Restore webpack dev mode
+- DONE Handle errors in before/after hook gracefully
+- BUG (codeceptjs) No file property in before/after hook events
 - Create a testbook config file
 - Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - Write a decent readme

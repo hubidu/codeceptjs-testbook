@@ -22,7 +22,9 @@ module.exports = {
   },
 
   run: (options) => {
-    if (runnerInstances) return
+    if (runnerInstances) {
+      module.exports.stop()
+    }
     if (options.continuous) throw new Error('Continuous mode currently not supported, please implement')
 
     phantomjsCtrl.start(PORTS).then(() => {
@@ -34,6 +36,7 @@ module.exports = {
       runnerInstances.forEach(runner => runner.subscribe(eventEmitter))
       runnerInstances.forEach(runner => runner.run())
     }).catch(err => {
+      runnerInstances = undefined
       console.log('Failed to start phantomjs', err)
     })
   },

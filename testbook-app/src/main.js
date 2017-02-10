@@ -6,7 +6,11 @@ import VueSocketio from 'vue-socket.io'
 import 'font-awesome/css/font-awesome.min.css'
 
 // TODO: Make url configurable
-Vue.use(VueSocketio, '/')
+if (process.env.NODE_ENV === 'production') {
+  Vue.use(VueSocketio, '/')
+} else {
+  Vue.use(VueSocketio, 'http://localhost:3333')
+}
 
 const toTime = function (ts) {
   const d = new Date(ts)

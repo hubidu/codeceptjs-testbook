@@ -66,12 +66,12 @@
                           </div>
                         </li>
 
-                        <li v-if="selectedTest.err">
+                        <li v-if="selectedTest.errorMessage">
                           <div class="notification is-danger">
                             {{ selectedTest.errorMessage }}
                           </div>
 
-                          <div v-if="selectedTest.err.message">
+                          <div v-if="selectedTest.err && selectedTest.err.message">
 
                             <div class="u-expected" v-if="selectedTest.err.expected">
 
@@ -166,6 +166,7 @@
 <script>
 import marked from 'marked'
 import suiteService from './suite-service'
+import urlHelpers from './url-helpers'
 
 import Navigation from './Navigation.vue'
 import Step from './Step.vue'
@@ -178,6 +179,7 @@ export default {
   },
   sockets: {
     connect: function () {
+      // TODO Store connection status so we can display in UI
       console.log('socket connected')
     },
     'codecept.start_run': function (evt) {
@@ -234,49 +236,10 @@ export default {
     }
   },
   methods: {
-    formatMarkdown: function (markdownString) {
-      return marked(markdownString)
-    },
+    formatMarkdown: marked,
 
-    screenshotUrl: function (screenshot) {
-      return `/screenshots/${screenshot}`
-    },
-
-    htmlSourceUrl: function (step) {
-      const getLocation = function (href) {
-        var l = document.createElement('a')
-        l.href = href
-        return l
-      }
-
-      let selector
-      if (step.name === 'waitForElement') {
-        selector = step.args[0]
-      } else if (step.name === 'click') {
-        selector = step.args[0]
-      } else if (step.name === 'see' && step.args.length === 2) {
-        selector = step.args[1]
-      } else if (step.name === 'see' && step.args.length === 1) {
-        selector = step.args[0]
-      } else if (step.name === 'seeElement') {
-        selector = step.args[0]
-      } else if (step.name === 'fillField') {
-        if (step.args[0].indexOf('input') === 0) {
-          selector = step.args[0]
-        } else {
-          selector = 'input' + step.args[0]
-        }
-      } else if (step.name === 'waitForText') {
-        if (step.args.length === 1) {
-          selector = step.args[0]
-        } else if (step.args.length === 3) {
-          selector = step.args[2]
-        }
-      }
-      selector = encodeURIComponent(selector)
-      const host = encodeURIComponent(getLocation(step.pageUrl).hostname)
-      return `/html-source/${step.htmlSource}?selector=${selector}&host=${host}`
-    },
+    screenshotUrl: urlHelpers.screenshotUrl,
+    htmlSourceUrl: urlHelpers.htmlSourceUrl,
 
     relativeTime: function (test, step) {
       return ((step.t - test.t) / 1000).toFixed(3)
@@ -418,6 +381,10 @@ export default {
     width: 320px;
     height: 200px;
     border: 1px solid #ccc;
+  }
+
+  .TestbookDeviceSelection {
+    margin-top: 15px;
   }
 
   .Suite-tags {

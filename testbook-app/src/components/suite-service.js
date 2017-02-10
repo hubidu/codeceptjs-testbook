@@ -149,6 +149,7 @@ export default {
 
   markTestFailed: (suiteId, evt) => {
     const suite = suites[evt._device].find(suite => suite.id === suiteId)
+    if (!suite) return
     suite.state = 'failed'
 
     const test = suite.tests.find(test => test.id === evt.id)
