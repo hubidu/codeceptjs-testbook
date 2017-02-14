@@ -27,7 +27,7 @@ class CodeceptRunner {
 
     this.eventEmitter = new TestbookEventEmitter()
     this.eventEmitter.setMaxListeners(20)
-    this.codeceptCtrl = new CodeceptCtrl(options.environment, options.device)
+    this.codeceptCtrl = new CodeceptCtrl(options.environment, options.device, options.port)
   }
 
   get events () {

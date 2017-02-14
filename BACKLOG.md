@@ -35,8 +35,15 @@ Visually manage your codeceptjs tests.
 - DONE Format suite time correctly
 - DONE Restore webpack dev mode
 - DONE Handle errors in before/after hook gracefully
+- DONE BUG HTML source not captured
+- DONE BUG: Why are steps not shown in UN test suite?
+- DONE Make environments configurable
+- DONE Create a testbook config file
+
 - BUG (codeceptjs) No file property in before/after hook events
-- Create a testbook config file
+- BUG UI Show only configured devices
+- BUG STOP Testrun does not work properly
+- UI Get environments/devices from server
 - Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - Write a decent readme
 - Record an awesome screencast
@@ -51,7 +58,7 @@ Visually manage your codeceptjs tests.
 - Keep statistics per device
 - Fix email reporter to support multiple devices
 - Mark tags which have failed tests
-- Sometimes seeing a mobile screenshot in steps
+- SHOULD BE FIXED Sometimes seeing a mobile screenshot in steps
 - BUG Failed to resolve filter truncate
 - Restore continuous run mode
 - Stop continous testing mode
@@ -61,7 +68,6 @@ Visually manage your codeceptjs tests.
 - Send an email notification when tests fail
 - Add step prefix for before/after suite
 - Add suite and test duration
-- Implement support for within
 - BUG Pressing stop causes error on linux
 - Make a nice scrolling sidebar
 - Show error message when testrun fails
@@ -75,6 +81,7 @@ Visually manage your codeceptjs tests.
 
 ## BETA 2
 
+- Implement support for within
 - BIG IDEA: test tracking pixel and affiliate stuff
 - Store test runs in a database
 - Record test runs on the server
@@ -82,6 +89,7 @@ Visually manage your codeceptjs tests.
 - Group steps by page object methods
 
 ## BACKLOG
+- IDEA Implement a 'linter' for codeceptjs tests and recommend best practices (e. g. dont use timeouts in wait functions, use waitForText with context, use see instead of grab/assert)
 - For better readability of steps: Make method templates which specify parameters. E. g. I.see => I see {text} in {element}
 - When a test fails show possibly related changes in source code (e. g. using a correlation service which uses the tags to find changes in related projects)
 - Implement conditional tags (NotProduction, NotIntegration)

@@ -173,7 +173,7 @@ function reporterFactoryFn (runner, opts) {
     utils.log('codecept.test', Object.assign({
       t: Date.now(),
       file: utils.stripCwd(test.file),
-      steps: test.steps.map(mapStep),                 // TODO: Remove them
+      steps: test.steps ? test.steps.map(mapStep) : undefined,                 // TODO: Remove them
       suiteId: utils.hash(currentSuite.fullTitle())
     }, parseTestTitle(test.title)))
   })
@@ -197,5 +197,13 @@ function reporterFactoryFn (runner, opts) {
 
   return runner
 }
+
+process.on('uncaughtException', function (err) {
+  console.log('UNCAUGHT EXCEPTION', err)
+})
+
+process.on('unhandledRejection', function (reason, p) {
+  console.log('UNHANDLED REJECTION at: Promise ', p, ' reason: ', reason)
+})
 
 module.exports = reporterFactoryFn

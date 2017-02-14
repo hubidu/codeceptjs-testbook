@@ -3,11 +3,12 @@ const spawn = require('child_process').spawn
 const exec = require('child_process').exec
 
 class CodeceptCtrl {
-  constructor (environment, device) {
+  constructor (environment, device, port) {
     // TODO Mix in process environment???
     this.env = {
       NODE_ENV: environment,
-      DEVICE: device
+      DEVICE: device,
+      PORT: port
     }
 
     this.cmd = 'node'
@@ -18,7 +19,7 @@ class CodeceptCtrl {
       '-o',
       this.codeceptOptions,
       '--sort',
-      '--debug'
+      '--debug' // Debug is of no use since using a custom reporter will disable all other output
 
       // '--grep', '@UserConvert'
     ]
@@ -33,7 +34,7 @@ class CodeceptCtrl {
     return JSON.stringify({
       helpers: {
         WebDriverIO: {
-          port: this.env.DEVICE === 'desktop' ? '4444' : '4445' // TODO Pass ports in constructor
+          port: this.env.PORT
         },
         ScreenshotHelper: {
           require: path.join(__dirname, './helpers/screenshot-helper.js').replace(/\\/g, '\\\\')
@@ -46,6 +47,7 @@ class CodeceptCtrl {
   }
 
   start () {
+    console.log(`Running codeceptjs`, this.cmd, this.cmd_opts)
     this.proc = spawn(this.cmd, this.cmd_opts, {
       detached: true,
       env: Object.assign({}, process.env, this.env)

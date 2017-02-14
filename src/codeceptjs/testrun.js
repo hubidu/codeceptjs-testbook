@@ -29,7 +29,7 @@ module.exports = {
    * Move the current screenshot to the testrun output directory
    */
   captureCurrentScreenshot: () => {
-    const screenshotPath = path.join(global.output_dir, 'screenshot.current.png')
+    const screenshotPath = path.join(global.output_dir, `screenshot.${process.env.DEVICE}.png`)
     const destScreenshotName = `screenshot-${shortid.generate()}.png`
     const destScreenshotPath = path.join(OUTPUT_DIR, runId, destScreenshotName)
 
@@ -47,13 +47,13 @@ module.exports = {
    * Move current html snapshot to the testrun output directory
    */
   captureCurrentHtml: () => {
-    const screenshotPath = path.join(global.output_dir, 'source.current.html')
+    const currentHtmlPath = path.join(global.output_dir, `source.${process.env.DEVICE}.html`)
     const destHtmlSource = `source-${shortid.generate()}.html`
     const destHtmlSourcePath = path.join(OUTPUT_DIR, runId, destHtmlSource)
 
     try {
-      if (fs.existsSync(screenshotPath)) {
-        fs.renameSync(screenshotPath, destHtmlSourcePath)
+      if (fs.existsSync(currentHtmlPath)) {
+        fs.renameSync(currentHtmlPath, destHtmlSourcePath)
       }
     } catch (err) {
       console.log('Error capturing HTML source', err)
