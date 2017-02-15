@@ -79,6 +79,7 @@ Visually manage your codeceptjs tests.
 
 - Implement support for within
 - BIG IDEA: test tracking pixel and affiliate stuff
+- Automatic cleanup of screenshots would be nice
 - Store test runs in a database
 - Record test runs on the server
 - Search suites, tests and steps

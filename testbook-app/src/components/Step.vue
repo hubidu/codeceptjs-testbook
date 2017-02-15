@@ -54,8 +54,10 @@
         const stringArg = (step) => `<span class="Step--argString">"${step.args[0]}"</span>`
         const locatorArg = (step) => `<span class="Step--argLocator">${step.args[0]}</span>`
         const keyArg = (step) => `<span class="Step--argKey">${step.args[0]}</span>`
+        const noArg = (step) => ``
         const stringLocatorArg = (step) => `<span class="Step--argString">"${step.args[0]}"</span> <span class="Step--argLocator">${step.args[1]}</span>`
         const locatorStringArg = (step) => `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argString">"${step.args[1]}"</span>`
+        const locatorIntegerArg = (step) => `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argString">${step.args[1]}</span>`
         const locatorOptionalArg = (step) => `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argOptional">${step.args[1]}s`
         const stringOptionalArg = (step) => `<span class="Step--argString">"${step.args[0]}"</span> <span class="Step--argOptional">${step.args[1]}s</span>`
         const stringLocatorOptionalArg = (step) => `<span class="Step--argString">"${step.args[0]}"</span> <span class="Step--argLocator">${step.args[2]}</span> <span class="Step--argOptional">${step.args[1]}s</span>`
@@ -85,6 +87,9 @@
           'seeElement': {
             1: withIcon('<i class="icon is-small fa fa-eye"></i>', locatorArg)
           },
+          'seeNumberOfElements': {
+            2: withIcon('<i class="icon is-small fa fa-eye"></i>', locatorIntegerArg)
+          },
           'dontSeeElement': {
             1: withIcon('<i class="icon is-small fa fa-eye-slash"></i>', locatorArg)
           },
@@ -110,6 +115,15 @@
           },
           'saveScreenshot': {
             1: withIcon('<i class="icon is-small fa fa-floppy-o"></i>', stringArg)
+          },
+          'switchTo': {
+            1: withIcon('<i class="icon is-small fa fa-code-fork"></i>', stringArg)
+          },
+          'resizeWindow': {
+            1: withIcon('<i class="icon is-small fa fa-expand"></i>', stringArg)
+          },
+          'clearCookie': {
+            0: withIcon('<i class="icon is-small fa fa-eraser"></i>', noArg)
           }
         }
 

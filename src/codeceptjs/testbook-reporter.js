@@ -21,7 +21,13 @@ function parseTestTitle (title) {
 
 function parseTestTitleForType (type, title) {
   if (type === 'hook') {
+    // TODO: Should also set the test type differently
+    if (title.indexOf('BeforeSuite') >= 0 || title.indexOf('AfterSuite') >= 0) {
+      return parseTestTitle('')
+    }
     let m = title.match(/Before for "(.*?)"/) || title.match(/After for "(.*?)"/)
+    if (!m) throw new Error(`Failed to extract test title from hook. Title=${title}`)
+
     return parseTestTitle(m[1])
   } else {
     return parseTestTitle(title)

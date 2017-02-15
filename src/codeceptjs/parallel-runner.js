@@ -52,10 +52,22 @@ module.exports = {
   stop: () => {
     if (!runnerInstances) return
 
+    const cfg = config.get()
+    const devices = Object.keys(cfg.devices)
+
     phantomjsCtrl.stop()
 
     runnerInstances.forEach(runner => runner.stop())
-    runnerInstances.forEach(runner => runner.unsubscribe())
-    runnerInstances = undefined
+
+    // Wait until all runners have finished
+    let deviceCount = 0
+    eventEmitter.on('codecept.finish_run', () => {
+      deviceCount++
+
+      if (deviceCount === devices.length && runnerInstances) {
+        runnerInstances.forEach(runner => runner.unsubscribe())
+        runnerInstances = undefined
+      }
+    })
   }
 }

@@ -63,6 +63,13 @@ class CodeceptRunner {
       this._fireEvent('codecept.error_run', { message: data.toString() })
     })
 
+    proc.on('close', (code) => {
+      this._fireEvent('codecept.finish_run', { code })
+
+      this.codeceptCtrl = undefined
+      this.isRunning = false
+    })
+
     proc.on('exit', (code) => {
       this._fireEvent('codecept.finish_run', { code })
 
