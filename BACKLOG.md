@@ -39,10 +39,12 @@ Visually manage your codeceptjs tests.
 - DONE BUG: Why are steps not shown in UN test suite?
 - DONE Make environments configurable
 - DONE Create a testbook config file
+- DONE Make phantom ports dynamic
+- DONE Use and display markdown in feature and scenario titles
 
-- BUG (codeceptjs) No file property in before/after hook events
-- BUG UI Show only configured devices
 - BUG STOP Testrun does not work properly
+- Record test success/failure statistics server side
+- BUG UI Show only configured devices
 - UI Get environments/devices from server
 - Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - Write a decent readme
@@ -50,9 +52,8 @@ Visually manage your codeceptjs tests.
 - Show tags on tests
 - UI Allow to expand more than one test
 - UI Keep selected tests when switching between devices
-- 'Failed to find test' console error when running yahoo test
+- SHOULD BE FIXED 'Failed to find test' console error when running yahoo test
 - Are phantomjs instances terminated?
-- Make phantom ports dynamic
 - Start phantom only if webdriverio is configured for phantom
 - Fire an end_run event when all parallel runs have finished
 - Keep statistics per device
@@ -63,21 +64,16 @@ Visually manage your codeceptjs tests.
 - Restore continuous run mode
 - Stop continous testing mode
 - Switch environment
-- Switch device
-- Handle errors in before/after hooks properly
 - Send an email notification when tests fail
-- Add step prefix for before/after suite
 - Add suite and test duration
-- BUG Pressing stop causes error on linux
-- Make a nice scrolling sidebar
 - Show error message when testrun fails
 - Switch environment
 - Enter coninuous testing mode from frontend
 - Send notification on failure
 - FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - Run testbook app and server in a docker container
+- BUG (codeceptjs) No file property in before/after hook events
 
-- Use and display markdown in feature and scenario titles
 
 ## BETA 2
 
