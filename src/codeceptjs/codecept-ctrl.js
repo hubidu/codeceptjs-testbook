@@ -41,6 +41,9 @@ class CodeceptCtrl {
         },
         MetaHelper: {
           require: path.join(__dirname, './helpers/meta-helper.js').replace(/\\/g, '\\\\')
+        },
+        ErrorHelper: {
+          require: path.join(__dirname, './helpers/error-helper.js').replace(/\\/g, '\\\\')
         }
       }
     })

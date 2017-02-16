@@ -39,7 +39,7 @@ class ScreenshotHelper extends Helper {
     }
 
     Promise.all([
-      this._getI().saveScreenshot(`screenshot.${process.env.device}.png`),
+      this._getI().saveScreenshot(`screenshot.${process.env.DEVICE}.png`),
       client.getSource()
     ]).then(values => {
       // TODO: Experimental - save current html source

@@ -45,8 +45,9 @@
       },
 
       formatArgs: function (step) {
-        const withIcon = (iconHtml, fn) => {
+        const withIcon = (iconName, fn) => {
           return function (step) {
+            const iconHtml = `<i class="icon is-small fa fa-${iconName}"></i>`
             return `${iconHtml} ${step.actor} ${step.humanizedName} ${fn(step)}`
           }
         }
@@ -64,66 +65,69 @@
 
         const mapping = {
           'waitForText': {
-            1: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', stringArg),
-            2: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', stringOptionalArg),
-            3: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', stringLocatorOptionalArg)
+            1: withIcon('hourglass-o', stringArg),
+            2: withIcon('hourglass-o', stringOptionalArg),
+            3: withIcon('hourglass-o', stringLocatorOptionalArg)
           },
           'waitForElement': {
-            1: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorArg),
-            2: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorOptionalArg)
+            1: withIcon('hourglass-o', locatorArg),
+            2: withIcon('hourglass-o', locatorOptionalArg)
           },
           'waitForVisible': {
-            1: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorArg),
-            2: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorOptionalArg)
+            1: withIcon('hourglass-o', locatorArg),
+            2: withIcon('hourglass-o', locatorOptionalArg)
           },
           'waitForInvisible': {
-            1: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorArg),
-            2: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorOptionalArg)
+            1: withIcon('hourglass-o', locatorArg),
+            2: withIcon('hourglass-o', locatorOptionalArg)
           },
           'waitForEnabled': {
-            1: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorArg),
-            2: withIcon('<i class="icon is-small fa fa-hourglass-o"></i>', locatorOptionalArg)
+            1: withIcon('hourglass-o', locatorArg),
+            2: withIcon('hourglass-o', locatorOptionalArg)
           },
           'seeElement': {
-            1: withIcon('<i class="icon is-small fa fa-eye"></i>', locatorArg)
+            1: withIcon('eye', locatorArg)
           },
           'seeNumberOfElements': {
-            2: withIcon('<i class="icon is-small fa fa-eye"></i>', locatorIntegerArg)
+            2: withIcon('eye', locatorIntegerArg)
           },
           'dontSeeElement': {
-            1: withIcon('<i class="icon is-small fa fa-eye-slash"></i>', locatorArg)
+            1: withIcon('eye-slash', locatorArg)
           },
           'click': {
-            1: withIcon('<i class="icon is-small fa fa-mouse-pointer"></i>', stringArg),
-            2: withIcon('<i class="icon is-small fa fa-mouse-pointer"></i>', stringLocatorArg)
+            1: withIcon('mouse-pointer', stringArg),
+            2: withIcon('mouse-pointer', stringLocatorArg)
           },
           'see': {
-            1: withIcon('<i class="icon is-small fa fa-eye"></i>', stringArg),
-            2: withIcon('<i class="icon is-small fa fa-eye"></i>', stringLocatorArg)
+            1: withIcon('eye', stringArg),
+            2: withIcon('eye', stringLocatorArg)
           },
           'fillField': {
-            2: withIcon('<i class="icon is-small fa fa-pencil"></i>', locatorStringArg)
+            2: withIcon('pencil', locatorStringArg)
           },
           'selectOption': {
-            2: withIcon('<i class="icon is-small fa fa-question"></i>', locatorStringArg)
+            2: withIcon('question', locatorStringArg)
           },
           'pressKey': {
-            1: withIcon('<i class="icon is-small fa fa-keyboard-o"></i>', keyArg)
+            1: withIcon('keyboard-o', keyArg)
           },
           'amOnPage': {
-            1: withIcon('<i class="icon is-small fa fa-file-o"></i>', stringArg)
+            1: withIcon('file-o', stringArg)
           },
           'saveScreenshot': {
-            1: withIcon('<i class="icon is-small fa fa-floppy-o"></i>', stringArg)
+            1: withIcon('floppy-o', stringArg)
           },
           'switchTo': {
-            1: withIcon('<i class="icon is-small fa fa-code-fork"></i>', stringArg)
+            1: withIcon('code-fork', stringArg)
           },
           'resizeWindow': {
-            1: withIcon('<i class="icon is-small fa fa-expand"></i>', stringArg)
+            1: withIcon('expand', stringArg)
           },
           'clearCookie': {
-            0: withIcon('<i class="icon is-small fa fa-eraser"></i>', noArg)
+            0: withIcon('eraser', noArg)
+          },
+          'grabAttributeFrom': {
+            2: withIcon('hand-rock-o', locatorStringArg)
           }
         }
 
@@ -139,6 +143,9 @@
 </script>
 <style lang="scss">
   @import '~bulma/sass/utilities/variables';
+  .icon {
+    color: $grey-light;
+  }
 
   .Step--argString {
     color: $blue;

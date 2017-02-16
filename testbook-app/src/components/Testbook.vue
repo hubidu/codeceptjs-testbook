@@ -28,11 +28,16 @@
             </blockquote>
 
             <aside>
-              <div class="Testbook-feature box content" v-for="suite in suites[selectedDevice]">
+
+              <div class="TestbookFeature box content"
+                  v-bind:class="{'TestbookFeature--passed': suite.state === 'passed', 'TestbookFeature--failed': suite.state === 'failed'}"
+                  v-for="suite in suites[selectedDevice]"
+              >
                 <span class="TestbookSuite-lastRun">{{ suite.t | toTime }}</span>
                 <button class="button is-primary is-small is-outlined pull-right" v-on:click="runSuite(suite)">Run</button>
-                <h5 class="title" v-html="formatMarkdown(suite.title)">
-                </h5>
+
+                <h5 class="title" v-html="formatMarkdown(suite.title)"></h5>
+
                 <ul v-for="test in suite.tests">
                   <li>
                     <div class="TestbookTest" v-bind:class="{ 'is-active': isSelectedTest(test) }" v-on:click="selectTest(test)">
@@ -58,7 +63,7 @@
                       <ul class="Testbook-steps" v-if="isSelectedTest(test)">
                         <li>
                           <div class="Testbook-step_cmdbar">
-                            {{ selectedTest.file }}
+                            {{ test.file }}
 
                             <button class="button is-primary is-outlined is-small pull-right" v-on:click="runSingleTest(test)">
                               Run
@@ -66,23 +71,23 @@
                           </div>
                         </li>
 
-                        <li v-if="selectedTest.errorMessage">
+                        <li v-if="test.errorMessage">
                           <div class="notification is-danger">
-                            {{ selectedTest.errorMessage }}
+                            {{ test.errorMessage }}
                           </div>
 
-                          <div v-if="selectedTest.err && selectedTest.err.message">
+                          <div v-if="test.err && test.err.message">
 
-                            <div class="u-expected" v-if="selectedTest.err.expected">
+                            <div class="u-expected" v-if="test.err.expected">
 
                                 <strong class="u-expected">Expected</strong>
-                                {{ selectedTest.err.expected }}
+                                {{ test.err.expected }}
 
                             </div>
-                            <div class="u-actual" v-if="selectedTest.err.actual">
+                            <div class="u-actual" v-if="test.err.actual">
 
                                 <strong class="u-actual">Actual</strong>
-                                {{ selectedTest.err.actual }}
+                                {{ test.err.actual }}
 
                             </div>
 
@@ -91,7 +96,7 @@
 
                         <li class="Step"
                           v-bind:class="{ 'Step--active': isSelectedStep(step), 'Step--failed': step.state === 'failed', 'Step--inprogress': step.state === undefined, 'Step--passed': step.state === 'passed' && step.name !== 'comment' }"
-                          v-for="step in selectedTest.stepsReverse"
+                          v-for="step in test.stepsReverse"
                           v-on:click="selectStep(step)"
                         >
                           <step :step="step" :is-selected="isSelectedStep(step)" ></Step>
@@ -107,19 +112,14 @@
     </div>
 
     <div class="Step-preview">
+
       <section class="TestbookDeviceSelection" v-if="suites[selectedDevice].length > 0">
       <div class="tabs is-centered is-boxed">
         <ul>
-          <li v-bind:class="{ 'is-active': selectedDevice === 'desktop' }">
-            <a v-on:click="selectDevice('desktop')">
+          <li v-for="(device, deviceName) in config.devices" v-bind:class="{ 'is-active': selectedDevice === device }">
+            <a v-on:click="selectDevice(deviceName)">
               <span class="icon is-small"><i class="fa fa-desktop"></i></span>
-              <span>Desktop</span>
-            </a>
-          </li>
-          <li v-bind:class="{ 'is-active': selectedDevice === 'mobile' }">
-            <a v-on:click="selectDevice('mobile')">
-              <span class="icon is-small"><i class="fa fa-mobile"></i></span>
-              <span>Mobile</span>
+              <span>{{ deviceName }}</span>
             </a>
           </li>
         </ul>
@@ -127,31 +127,31 @@
       </section>
 
 
-      <div v-if="selectedStep">
-        <h2 class="title">{{selectedStep.pageTitle}}</h2>
+      <div v-if="foo() !== undefined">
+        <h2 class="title">{{foo().pageTitle}}</h2>
         <div>
-          <a target="_blank" v-if="selectedStep.htmlSource" v-bind:href="htmlSourceUrl(selectedStep)">
+          <a target="_blank" v-show="foo().htmlSource" v-bind:href="htmlSourceUrl(foo())">
             View HTML
           </a>
         </div>
 
         <a
           target="_blank"
-          v-if="selectedStep.pageUrl"
-          v-bind:href="selectedStep.pageUrl">
-          <input class="input" type="text" placeholder="The url" v-bind:value="selectedStep.pageUrl" disabled>
+          v-show="foo().pageUrl"
+          v-bind:href="foo().pageUrl">
+          <input class="input" type="text" placeholder="The url" v-bind:value="foo().pageUrl" disabled>
         </a>
 
         <hr>
         <img
-          v-if="selectedStep.screenshot"
+          v-show="foo().screenshot"
           class="Step-screenshot"
-          v-bind:src="screenshotUrl(selectedStep.screenshot)"
+          v-bind:src="screenshotUrl(foo().screenshot)"
           alt="step screenshot">
 
         <pre>
           <code>
-            {{selectedStep.pageSource}}
+            {{foo().pageSource}}
           </code>
         </pre>
       </div>
@@ -182,18 +182,14 @@ export default {
       // TODO Store connection status so we can display in UI
       console.log('socket connected')
     },
+    'testbook.config': function (evt) {
+      this.config = Object.assign(this.config, evt)
+    },
     'codecept.start_run': function (evt) {
       evt.type = 'codecept.start_run'
       // this.suiteName = evt.name
       suiteService.startTestRun(evt)
     },
-    /*
-    'codecept.start': function (evt) {
-      evt.type = 'codecept.start'
-      this.suiteName = evt.name
-      suiteService.startTestRun(evt)
-    },
-    */
     'codecept.suite': function (evt) {
       evt.type = 'codecept.suite'
       suiteService.addSuiteFromEvent(evt)
@@ -225,9 +221,22 @@ export default {
   },
   data () {
     return {
+      config: {},
+      selection: {
+        desktop: {
+          steps: [],
+          tests: []
+        },
+        mobile: {
+          steps: [],
+          tests: []
+        },
+        tablet: {
+          steps: [],
+          tests: []
+        }
+      },
       selectedDevice: 'desktop',
-      selectedStep: undefined,
-      selectedTest: undefined,
       suiteName: undefined,
 
       state: suiteService.state(),
@@ -244,30 +253,43 @@ export default {
     relativeTime: function (test, step) {
       return ((step.t - test.t) / 1000).toFixed(3)
     },
-    selectStep: function (step) {
-      if (this.isSelectedStep(step)) {
-        this.selectedStep = undefined
-      } else {
-        this.selectedStep = step
-      }
-    },
+
     selectDevice: function (deviceName) {
       this.selectedDevice = deviceName
     },
+    selectStep: function (step) {
+      const selectedSteps = this.selection[this.selectedDevice].steps
+      if (this.isSelectedStep(step)) {
+        selectedSteps.splice(selectedSteps.indexOf(step), 1)
+      } else {
+        selectedSteps.push(step)
+      }
+    },
     isSelectedStep: function (step) {
-      return step === this.selectedStep
+      const selectedSteps = this.selection[this.selectedDevice].steps
+      return selectedSteps.indexOf(step) >= 0
+    },
+    foo: function () {
+      const selectedSteps = this.selection[this.selectedDevice].steps
+      if (selectedSteps.length > 0) {
+        return selectedSteps[selectedSteps.length - 1]
+      } else {
+        return undefined
+      }
     },
     selectTest: function (test) {
+      const selectedTests = this.selection[this.selectedDevice].tests
       if (this.isSelectedTest(test)) {
-        this.selectedTest = undefined
-        this.selectedStep = undefined
+        selectedTests.splice(selectedTests.indexOf(test), 1)
       } else {
-        this.selectedTest = test
+        selectedTests.push(test)
       }
     },
     isSelectedTest: function (test) {
-      return test === this.selectedTest
+      const selectedTests = this.selection[this.selectedDevice].tests
+      return selectedTests.indexOf(test) >= 0
     },
+
     runContinuously: function () {
       suiteService.reset()
       this.$socket.emit('cmd.run-continuously', {})
@@ -279,10 +301,14 @@ export default {
     },
     runSuite: function (suite) {
       this.stopTestrun()
+
+      suite.state = undefined
       this.$socket.emit('cmd.run', { suite: suite.title })
     },
     runSingleTest: function (test) {
       this.stopTestrun()
+
+      test.state = undefined
       this.$socket.emit('cmd.run', { grep: test.title })
     },
     stopTestrun: function () {
@@ -339,11 +365,19 @@ export default {
     margin-top: 50%;
   }
 
-  .Testbook-feature {
+  .TestbookFeature {
     > ul {
       list-style-type: none;
       margin-left: 0;
     }
+  }
+
+  .TestbookFeature--passed {
+    border-top: 3px solid $green;
+  }
+
+  .TestbookFeature--failed {
+    border-top: 3px solid $red;
   }
 
   .TestbookSuite-lastRun {

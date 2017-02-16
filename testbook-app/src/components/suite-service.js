@@ -36,7 +36,11 @@ export default {
 
   addSuiteFromEvent: (evt) => {
     const suite = suites[evt._device].find(suite => suite.id === evt.id)
-    if (suite) return
+    if (suite) {
+      // rerun suite -> state is undefined
+      suite.state = undefined
+      return
+    }
 
     const unfinishedSuites = suites[evt._device].filter(suite => suite.state === undefined)
     // Finish running suites
@@ -122,11 +126,14 @@ export default {
       return
     }
 
+    // TODO This is a HACK. Use test type property to distinguish hooks from real steps
     const step = {
       t: evt.t,
-      actor: '---',
+      actor: '>>> Before',
       name: '',
-      args: ''
+      args: '',
+      humanizedArgs: '',
+      humanizedName: ''
     }
     test.steps.push(step)
     test.stepsReverse.splice(0, 0, step)

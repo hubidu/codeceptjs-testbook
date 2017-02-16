@@ -42,6 +42,9 @@ Visually manage your codeceptjs tests.
 - DONE Make phantom ports dynamic
 - DONE Use and display markdown in feature and scenario titles
 
+- DONE BUG Screenshots not showing
+- Mark suite as passed/failed
+- DONE Try browser.on('error') events
 - BUG STOP Testrun does not work properly
 - Record test success/failure statistics server side
 - BUG UI Show only configured devices
@@ -49,6 +52,7 @@ Visually manage your codeceptjs tests.
 - Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - Write a decent readme
 - Record an awesome screencast
+- Display BeforeSuite/AfterSuite events
 - Show tags on tests
 - UI Allow to expand more than one test
 - UI Keep selected tests when switching between devices
@@ -77,6 +81,7 @@ Visually manage your codeceptjs tests.
 
 ## BETA 2
 
+- BUG Correctly distinguish hook events from step events
 - Implement support for within
 - BIG IDEA: test tracking pixel and affiliate stuff
 - Automatic cleanup of screenshots would be nice
@@ -86,6 +91,7 @@ Visually manage your codeceptjs tests.
 - Group steps by page object methods
 
 ## BACKLOG
+- Fire debug events (would require equipping output.log/debug with events )
 - IDEA Implement a 'linter' for codeceptjs tests and recommend best practices (e. g. dont use timeouts in wait functions, use waitForText with context, use see instead of grab/assert)
 - For better readability of steps: Make method templates which specify parameters. E. g. I.see => I see {text} in {element}
 - When a test fails show possibly related changes in source code (e. g. using a correlation service which uses the tags to find changes in related projects)

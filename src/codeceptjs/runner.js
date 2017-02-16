@@ -104,14 +104,9 @@ class CodeceptRunner {
 
     this.isRunning = true
 
-    // Set environment variable defaults
-    // if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production'
-
     this._fireEvent('codecept.start_run',
       Object.assign({
         id: shortid.generate()
-        // environment: process.env.NODE_ENV,
-        // device: process.env.DEVICE
       }, this.options))
 
     const cmdOpts = this.codeceptCtrl.cmd_opts
