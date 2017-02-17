@@ -39,6 +39,8 @@ export default {
     if (suite) {
       // rerun suite -> state is undefined
       suite.state = undefined
+      suite.t = evt.t
+      suite.tags = evt.tags
       return
     }
 

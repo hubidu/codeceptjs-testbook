@@ -41,11 +41,12 @@ Visually manage your codeceptjs tests.
 - DONE Create a testbook config file
 - DONE Make phantom ports dynamic
 - DONE Use and display markdown in feature and scenario titles
-
 - DONE BUG Screenshots not showing
-- Mark suite as passed/failed
+- DONE Mark suite as passed/failed
 - DONE Try browser.on('error') events
-- BUG STOP Testrun does not work properly
+
+- DONE BUG STOP Testrun does not work properly
+- Count retried tests
 - Record test success/failure statistics server side
 - BUG UI Show only configured devices
 - UI Get environments/devices from server

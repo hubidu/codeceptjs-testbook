@@ -128,6 +128,9 @@
           },
           'grabAttributeFrom': {
             2: withIcon('hand-rock-o', locatorStringArg)
+          },
+          'grabValueFrom': {
+            1: withIcon('hand-rock-o', locatorArg)
           }
         }
 
