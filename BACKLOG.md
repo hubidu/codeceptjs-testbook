@@ -44,21 +44,23 @@ Visually manage your codeceptjs tests.
 - DONE BUG Screenshots not showing
 - DONE Mark suite as passed/failed
 - DONE Try browser.on('error') events
-
+- DONE UI Keep selected tests when switching between devices
 - DONE BUG STOP Testrun does not work properly
+
+- BUG Update suite time stamps
+- BUG Exception running testbook server the first time because config file does not exist
+- Persist features/scenarios in order to show something when page is reloaded
 - Count retried tests
 - Record test success/failure statistics server side
 - BUG UI Show only configured devices
 - UI Get environments/devices from server
-- Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - Write a decent readme
 - Record an awesome screencast
+- Only allow to select one step at a time
 - Display BeforeSuite/AfterSuite events
-- Show tags on tests
+- Simple client side search in features, scenarios and tags
+- Show a tag bar on the left
 - UI Allow to expand more than one test
-- UI Keep selected tests when switching between devices
-- SHOULD BE FIXED 'Failed to find test' console error when running yahoo test
-- Are phantomjs instances terminated?
 - Start phantom only if webdriverio is configured for phantom
 - Fire an end_run event when all parallel runs have finished
 - Keep statistics per device
@@ -66,22 +68,22 @@ Visually manage your codeceptjs tests.
 - Mark tags which have failed tests
 - SHOULD BE FIXED Sometimes seeing a mobile screenshot in steps
 - BUG Failed to resolve filter truncate
-- Restore continuous run mode
-- Stop continous testing mode
+- Enter/Leave continuous run mode
+- Would be nice to specify a tag for continuous mode
 - Switch environment
 - Send an email notification when tests fail
 - Add suite and test duration
 - Show error message when testrun fails
 - Switch environment
-- Enter coninuous testing mode from frontend
 - Send notification on failure
-- FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - Run testbook app and server in a docker container
 - BUG (codeceptjs) No file property in before/after hook events
 
 
 ## BETA 2
 
+- FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
+- Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - BUG Correctly distinguish hook events from step events
 - Implement support for within
 - BIG IDEA: test tracking pixel and affiliate stuff
