@@ -30,6 +30,11 @@ const updateStats = (device) => {
 }
 
 export default {
+
+  init: (initialSuites) => {
+    Object.assign(suites, initialSuites)
+  },
+
   suites: () => {
     return suites
   },

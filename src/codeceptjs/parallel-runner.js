@@ -1,7 +1,7 @@
 const EventEmitter = require('events')
 const CodeceptRunner = require('./runner')
-const config = require('./config')
 
+const config = require('../config')
 const phantomjsCtrl = require('../phantom-ctrl')
 
 const PORTS = ['4444', '4445', '4446', '4447', '4448', '4449']

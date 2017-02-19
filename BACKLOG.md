@@ -41,49 +41,49 @@ Visually manage your codeceptjs tests.
 - DONE Create a testbook config file
 - DONE Make phantom ports dynamic
 - DONE Use and display markdown in feature and scenario titles
+
 - DONE BUG Screenshots not showing
 - DONE Mark suite as passed/failed
 - DONE Try browser.on('error') events
-- DONE UI Keep selected tests when switching between devices
 - DONE BUG STOP Testrun does not work properly
-
-- BUG Update suite time stamps
-- BUG Exception running testbook server the first time because config file does not exist
-- Persist features/scenarios in order to show something when page is reloaded
-- Count retried tests
+- DONE 'Failed to find test' console error when running yahoo test
+- DONE UI Allow to expand more than one test
+- DONE Are phantomjs instances terminated?
+- DONE UI Keep selected tests when switching between devices
+- DONE Fire an end_run event when all parallel runs have finished
+- Sort features lexicographically
+- Yahoo test does not complete in UI
+- Run continous mode with tag(s)
 - Record test success/failure statistics server side
 - BUG UI Show only configured devices
 - UI Get environments/devices from server
+- Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - Write a decent readme
 - Record an awesome screencast
-- Only allow to select one step at a time
 - Display BeforeSuite/AfterSuite events
-- Simple client side search in features, scenarios and tags
-- Show a tag bar on the left
-- UI Allow to expand more than one test
+- Show tags on tests
 - Start phantom only if webdriverio is configured for phantom
-- Fire an end_run event when all parallel runs have finished
 - Keep statistics per device
 - Fix email reporter to support multiple devices
 - Mark tags which have failed tests
 - SHOULD BE FIXED Sometimes seeing a mobile screenshot in steps
 - BUG Failed to resolve filter truncate
-- Enter/Leave continuous run mode
-- Would be nice to specify a tag for continuous mode
+- Restore continuous run mode
+- Stop continous testing mode
 - Switch environment
 - Send an email notification when tests fail
 - Add suite and test duration
 - Show error message when testrun fails
 - Switch environment
+- Enter coninuous testing mode from frontend
 - Send notification on failure
 - Run testbook app and server in a docker container
-- BUG (codeceptjs) No file property in before/after hook events
 
 
 ## BETA 2
 
+- BUG (codeceptjs) No file property in before/after hook events
 - FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
-- Show per device test passed/fail status (e. g. as green/red mobile, tablet desktop icon)
 - BUG Correctly distinguish hook events from step events
 - Implement support for within
 - BIG IDEA: test tracking pixel and affiliate stuff

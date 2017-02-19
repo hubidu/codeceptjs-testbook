@@ -57,6 +57,7 @@
         const keyArg = (step) => `<span class="Step--argKey">${step.args[0]}</span>`
         const noArg = (step) => ``
         const stringLocatorArg = (step) => `<span class="Step--argString">"${step.args[0]}"</span> <span class="Step--argLocator">${step.args[1]}</span>`
+        const stringStringArg = (step) => `<span class="Step--argString">"${step.args[0]}"</span> <span class="Step--argString">"${step.args[1]}"</span>`
         const locatorStringArg = (step) => `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argString">"${step.args[1]}"</span>`
         const locatorIntegerArg = (step) => `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argString">${step.args[1]}</span>`
         const locatorOptionalArg = (step) => `<span class="Step--argLocator">${step.args[0]}</span> <span class="Step--argOptional">${step.args[1]}s`
@@ -121,7 +122,8 @@
             1: withIcon('code-fork', stringArg)
           },
           'resizeWindow': {
-            1: withIcon('expand', stringArg)
+            1: withIcon('expand', stringArg),
+            2: withIcon('expand', stringStringArg)
           },
           'clearCookie': {
             0: withIcon('eraser', noArg)

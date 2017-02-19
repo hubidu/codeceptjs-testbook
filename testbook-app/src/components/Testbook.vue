@@ -185,6 +185,9 @@ export default {
     'testbook.config': function (evt) {
       this.config = Object.assign(this.config, evt)
     },
+    'testbook.suites': function (evt) {
+      suiteService.init(evt)
+    },
     'codecept.start_run': function (evt) {
       evt.type = 'codecept.start_run'
       // this.suiteName = evt.name
@@ -291,12 +294,10 @@ export default {
     },
 
     runContinuously: function () {
-      suiteService.reset()
       this.$socket.emit('cmd.run-continuously', {})
     },
     startTestrun: function () {
       this.selectedStep = undefined
-      suiteService.reset()
       this.$socket.emit('cmd.run', {})
     },
     runSuite: function (suite) {

@@ -1,4 +1,5 @@
-const path = require('path')
+const sendInitialState = require('./send-initial-state')
+
 const codeceptRunner = require('../codeceptjs/parallel-runner')
 
 const cmdRunTests = (options) => {
@@ -11,13 +12,6 @@ const cmdStopTests = () => {
 
 const cmdRunContinuously = () => {
   codeceptRunner.run({ continuous: true, interval: 60000 })
-}
-
-const sendInitialState = (socket) => {
-  const cwd = process.cwd()
-
-  const config = require(path.join(cwd, '.testbook', 'testbook.config.js'))
-  socket.emit('testbook.config', config)
 }
 
 module.exports = {
