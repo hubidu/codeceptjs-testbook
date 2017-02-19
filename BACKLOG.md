@@ -41,7 +41,6 @@ Visually manage your codeceptjs tests.
 - DONE Create a testbook config file
 - DONE Make phantom ports dynamic
 - DONE Use and display markdown in feature and scenario titles
-
 - DONE BUG Screenshots not showing
 - DONE Mark suite as passed/failed
 - DONE Try browser.on('error') events
@@ -51,8 +50,10 @@ Visually manage your codeceptjs tests.
 - DONE Are phantomjs instances terminated?
 - DONE UI Keep selected tests when switching between devices
 - DONE Fire an end_run event when all parallel runs have finished
-- Sort features lexicographically
-- Yahoo test does not complete in UI
+- DONE Extract tags from parsed features/scenarios
+- DONE Yahoo test does not complete in UI
+- DONE Sometimes seeing a mobile screenshot in steps
+
 - Run continous mode with tag(s)
 - Record test success/failure statistics server side
 - BUG UI Show only configured devices
@@ -66,7 +67,6 @@ Visually manage your codeceptjs tests.
 - Keep statistics per device
 - Fix email reporter to support multiple devices
 - Mark tags which have failed tests
-- SHOULD BE FIXED Sometimes seeing a mobile screenshot in steps
 - BUG Failed to resolve filter truncate
 - Restore continuous run mode
 - Stop continous testing mode

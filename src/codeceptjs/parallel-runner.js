@@ -31,6 +31,9 @@ module.exports = {
     const devices = Object.keys(cfg.devices)
     const ports = PORTS.slice(0, devices.length)
 
+    console.log('DEVICES', devices)
+    console.log('PORTS', ports)
+
     phantomjsCtrl.start(ports).then(() => {
       const defaultEnvironment = Object.keys(cfg.environments)[0]
 

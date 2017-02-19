@@ -40,7 +40,14 @@ export default {
   },
 
   addSuiteFromEvent: (evt) => {
+    // Finish any running suites now
+    // TODO Implement this correctly (last suite will not be finished)
+    const unfinishedSuites = suites[evt._device].filter(suite => suite.state === undefined)
+    // Finish running suites
+    unfinishedSuites.map(suite => (suite.state = 'passed'))
+
     const suite = suites[evt._device].find(suite => suite.id === evt.id)
+    // Suite usually already exists
     if (suite) {
       // rerun suite -> state is undefined
       suite.state = undefined
@@ -48,10 +55,6 @@ export default {
       suite.tags = evt.tags
       return
     }
-
-    const unfinishedSuites = suites[evt._device].filter(suite => suite.state === undefined)
-    // Finish running suites
-    unfinishedSuites.map(suite => (suite.state = 'passed'))
 
     suites[evt._device].push({
       t: evt.t,

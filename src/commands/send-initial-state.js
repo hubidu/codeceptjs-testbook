@@ -1,8 +1,8 @@
 const config = require('../config')
 
+const parser = require('../codeceptjs/parser')
 const getConfig = require('codeceptjs/lib/command/utils').getConfig
 const getTestRoot = require('codeceptjs/lib/command/utils').getTestRoot
-const parser = require('./parser')
 
 function _hash (str) {
   var crypto = require('crypto')
@@ -16,22 +16,27 @@ const getSuitesAndTests = () => {
   return parser.parseFeatureFiles(codeceptjsConfig.tests)
     .then(parsedFiles => {
       const suitesAndTests = parsedFiles.map(f => {
-        const features = f.parsed.filter(item => item.name === 'Feature')
+        // TODO There could be multiple features/scenarios in a feature file
+        const features = f.parsed.filter(item => item.type === 'Feature')
         if (features.length === 0) throw new Error(`No feature in file ${f.file}`)
         const feature = features[0]
 
-        const scenarios = f.parsed.filter(item => item.name === 'Scenario')
+        const scenarios = f.parsed.filter(item => item.type === 'Scenario')
         if (scenarios.length === 0) throw new Error(`No scenarios in file ${f.file}`)
 
         return {
-          id: _hash(feature.arg),
-          title: feature.arg,
+          t: Date.now(),
+          id: _hash(feature.originalTitle),
+          title: feature.title,
+          originalTitle: feature.originalTitle,
           state: 'not-run',
-          tags: [],
+          tags: feature.tags,
           tests: scenarios.map(scenario => ({
-            id: _hash(scenario.arg),
-            title: scenario.arg,
-            tags: [],
+            id: _hash(scenario.originalTitle),
+            t: Date.now(),
+            title: scenario.title,
+            originalTitle: scenario.originalTitle,
+            tags: scenario.tags,
             file: f.file,
             state: 'not-run'
           }))

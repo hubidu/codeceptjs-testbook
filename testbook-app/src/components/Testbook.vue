@@ -24,7 +24,7 @@
 
             <blockquote class="TestbookFeatures--emptyState has-text-centered" v-if="suites[selectedDevice].length === 0">
               No test results are yet available.
-              <a href="#" v-on:click="startTestrun()">Start a test run now!</a>
+              <a v-on:click="startTestrun()">Start a test run now!</a>
             </blockquote>
 
             <aside>
@@ -33,10 +33,19 @@
                   v-bind:class="{'TestbookFeature--passed': suite.state === 'passed', 'TestbookFeature--failed': suite.state === 'failed'}"
                   v-for="suite in suites[selectedDevice]"
               >
-                <span class="TestbookSuite-lastRun">{{ suite.t | toTime }}</span>
-                <button class="button is-primary is-small is-outlined pull-right" v-on:click="runSuite(suite)">Run</button>
+                <div class="TestbookFeatureInfo">
+                  <span class="TestbookFeatureInfo-lastRun">{{ suite.t | toTime }}</span>
+                  &middot;
+                  <a
+                    v-on:click="runSuite(suite)"
+                  >
+                    Run
+                  </a>
+                </div>
 
-                <h5 class="title" v-html="formatMarkdown(suite.title)"></h5>
+
+                <h5 class="title" v-html="formatMarkdown(suite.title)">
+                </h5>
 
                 <ul v-for="test in suite.tests">
                   <li>
@@ -65,9 +74,11 @@
                           <div class="Testbook-step_cmdbar">
                             {{ test.file }}
 
-                            <button class="button is-primary is-outlined is-small pull-right" v-on:click="runSingleTest(test)">
+                            <a class="pull-right" v-on:click="runSingleTest(test)">
                               Run
-                            </button>
+                            </a>
+
+                            <span class="pull-right">{{ test.t | toTime }}&middot; </span>
                           </div>
                         </li>
 
@@ -367,9 +378,14 @@ export default {
   }
 
   .TestbookFeature {
+    padding-top: 2px;
+  }
+
+
+  .TestbookFeature {
     > ul {
       list-style-type: none;
-      margin-left: 0;
+      margin: 0;
     }
   }
 
@@ -381,9 +397,12 @@ export default {
     border-top: 3px solid $red;
   }
 
-  .TestbookSuite-lastRun {
-    float: right;
-    margin-left: .5em;
+  .TestbookFeatureInfo {
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  .TestbookFeatureInfo-lastRun {
     color: $grey_light;
   }
 
@@ -405,6 +424,7 @@ export default {
 
   .Testbook-steps {
     list-style-type: none;
+    margin-right: 0;
   }
 
   .Testbook-step_cmdbar {

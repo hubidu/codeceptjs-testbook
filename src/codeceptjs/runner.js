@@ -22,6 +22,7 @@ const EVENT_TYPES = [
 class CodeceptRunner {
   constructor (options) {
     this.options = options
+    this.id = undefined
     this.isRunning = false
     this.proc = undefined
 
@@ -35,8 +36,11 @@ class CodeceptRunner {
   }
 
   _fireEvent (type, payload = {}) {
+    if (!this.isRunning) return
+
     // Always add device and environment to events
     this.eventEmitter.emit(type, Object.assign({
+      _id: this.id,
       _device: this.options.device,
       _environment: this.options.environment
     }, payload))
@@ -85,6 +89,10 @@ class CodeceptRunner {
     })
   }
 
+  generateId () {
+    this.id = shortid.generate()
+  }
+
   subscribe (listener) {
     EVENT_TYPES.forEach(event => {
       this.eventEmitter.on(event, (payload) => {
@@ -106,7 +114,7 @@ class CodeceptRunner {
 
     this._fireEvent('codecept.start_run',
       Object.assign({
-        id: shortid.generate()
+        id: this.generateId()
       }, this.options))
 
     const cmdOpts = this.codeceptCtrl.cmd_opts
