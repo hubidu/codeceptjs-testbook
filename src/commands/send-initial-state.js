@@ -18,11 +18,14 @@ const getSuitesAndTests = () => {
       const suitesAndTests = parsedFiles.map(f => {
         // TODO There could be multiple features/scenarios in a feature file
         const features = f.parsed.filter(item => item.type === 'Feature')
-        if (features.length === 0) throw new Error(`No feature in file ${f.file}`)
+        if (features.length === 0) {
+          console.log(`No feature in file ${f.file}`)
+          return undefined
+        }
         const feature = features[0]
 
         const scenarios = f.parsed.filter(item => item.type === 'Scenario')
-        if (scenarios.length === 0) throw new Error(`No scenarios in file ${f.file}`)
+        if (scenarios.length === 0) console.log(`No scenarios in file ${f.file}`)
 
         return {
           t: Date.now(),
@@ -41,7 +44,7 @@ const getSuitesAndTests = () => {
             state: 'not-run'
           }))
         }
-      })
+      }).filter(item => !!item)
 
       return {
         mobile: suitesAndTests,

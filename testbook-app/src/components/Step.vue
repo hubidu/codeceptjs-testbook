@@ -70,6 +70,9 @@
             2: withIcon('hourglass-o', stringOptionalArg),
             3: withIcon('hourglass-o', stringLocatorOptionalArg)
           },
+          'wait': {
+            1: withIcon('hourglass-o', stringArg)
+          },
           'waitForElement': {
             1: withIcon('hourglass-o', locatorArg),
             2: withIcon('hourglass-o', locatorOptionalArg)
@@ -88,6 +91,12 @@
           },
           'seeElement': {
             1: withIcon('eye', locatorArg)
+          },
+          'seeInCurrentUrl': {
+            1: withIcon('eye', stringArg)
+          },
+          'seeInField': {
+            2: withIcon('eye', locatorStringArg)
           },
           'seeNumberOfElements': {
             2: withIcon('eye', locatorIntegerArg)
@@ -133,6 +142,9 @@
           },
           'grabValueFrom': {
             1: withIcon('hand-rock-o', locatorArg)
+          },
+          'scrollTo': {
+            1: withIcon('arrows-v', locatorArg)
           }
         }
 

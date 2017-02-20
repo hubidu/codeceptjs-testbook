@@ -54,6 +54,10 @@ Visually manage your codeceptjs tests.
 - DONE Yahoo test does not complete in UI
 - DONE Sometimes seeing a mobile screenshot in steps
 
+- Steps should be updated in realtime
+- Should see the currently running step if no step is selected
+- Feature/Scenario parsing: Ignore duplicate features/scenarios (when if is used)
+- Feature/Scenario parsing: Parse
 - Run continous mode with tag(s)
 - Record test success/failure statistics server side
 - BUG UI Show only configured devices

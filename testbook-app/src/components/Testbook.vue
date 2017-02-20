@@ -9,19 +9,9 @@
     >
     </navigation>
 
-
-    <!--
-    <div>
-      <span class="TestbookTag" v-for="(suites, tag) in stats.tags">
-          {{tag}}
-          &nbsp;
-          {{suites.length}}
-      </span>
-    </div>
-    -->
+    <tags :tags="stats.tags"></tags>
 
     <div class="Testbook-features">
-
             <blockquote class="TestbookFeatures--emptyState has-text-centered" v-if="suites[selectedDevice].length === 0">
               No test results are yet available.
               <a v-on:click="startTestrun()">Start a test run now!</a>
@@ -63,9 +53,11 @@
                         <span v-if="test.state === undefined">
                           <i class="fa fa-refresh fa-spin"></i>
                         </span>
+                        <span v-if="test.state === 'not-run'">
+                          <i class="fa fa-square-o"></i>
+                        </span>
                       </span>
-                      <h6 class="TestbookTest-title" v-html="formatMarkdown(test.title)">
-                      </h6>
+                      <h6 class="TestbookTest-title" v-html="formatMarkdown(test.title)"></h6>
 
                     </div>
 
@@ -78,7 +70,7 @@
                               Run
                             </a>
 
-                            <span class="pull-right">{{ test.t | toTime }}&middot; </span>
+                            <span class="pull-right">{{ test.t | toTime }}&nbsp;&middot;&nbsp;</span>
                           </div>
                         </li>
 
@@ -168,9 +160,6 @@
       </div>
     </div>
 
-
-
-
   </div>
 </template>
 
@@ -181,12 +170,14 @@ import urlHelpers from './url-helpers'
 
 import Navigation from './Navigation.vue'
 import Step from './Step.vue'
+import Tags from './Tags.vue'
 
 export default {
   name: 'testbook',
   components: {
     Navigation,
-    Step
+    Step,
+    Tags
   },
   sockets: {
     connect: function () {
@@ -238,15 +229,15 @@ export default {
       config: {},
       selection: {
         desktop: {
-          steps: [],
+          selectedStep: undefined,
           tests: []
         },
         mobile: {
-          steps: [],
+          selectedStep: undefined,
           tests: []
         },
         tablet: {
-          steps: [],
+          selectedStep: undefined,
           tests: []
         }
       },
@@ -272,24 +263,14 @@ export default {
       this.selectedDevice = deviceName
     },
     selectStep: function (step) {
-      const selectedSteps = this.selection[this.selectedDevice].steps
-      if (this.isSelectedStep(step)) {
-        selectedSteps.splice(selectedSteps.indexOf(step), 1)
-      } else {
-        selectedSteps.push(step)
-      }
+      this.selection[this.selectedDevice].selectedStep = step
     },
     isSelectedStep: function (step) {
-      const selectedSteps = this.selection[this.selectedDevice].steps
-      return selectedSteps.indexOf(step) >= 0
+      return this.selection[this.selectedDevice].selectedStep === step
     },
     foo: function () {
-      const selectedSteps = this.selection[this.selectedDevice].steps
-      if (selectedSteps.length > 0) {
-        return selectedSteps[selectedSteps.length - 1]
-      } else {
-        return undefined
-      }
+      const selectedStep = this.selection[this.selectedDevice].selectedStep
+      return selectedStep
     },
     selectTest: function (test) {
       const selectedTests = this.selection[this.selectedDevice].tests
@@ -367,9 +348,10 @@ export default {
   .Testbook-features {
     position: fixed;
     padding: 10px;
-    width: 33%;
+    width: 30%;
     overflow-y: scroll;
     top: 55px;
+    left: 10em;
     bottom: 0;
   }
 
@@ -408,6 +390,8 @@ export default {
 
   .TestbookTest {
     cursor: pointer;
+    margin-top: .5em;
+    clear: both;
   }
 
   .TestbookTest-icon {
@@ -428,6 +412,7 @@ export default {
   }
 
   .Testbook-step_cmdbar {
+    font-size: 0.8em;
     color: $grey_light;
     padding-bottom: 20px;
   }
@@ -469,9 +454,9 @@ export default {
 
   .Step-preview {
     float: right;
-    padding: 10px;
-    // margin-left: 33%;
-    width: 66%
+    padding: 2px;
+
+    width: 60%
   }
 
   .Step-screenshot {
