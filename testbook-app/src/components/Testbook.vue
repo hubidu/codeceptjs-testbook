@@ -33,6 +33,7 @@
                   </a>
                 </div>
 
+                <suite-tags :tags="suite.tags" />
 
                 <h5 class="title" v-html="formatMarkdown(suite.title)">
                 </h5>
@@ -58,54 +59,53 @@
                         </span>
                       </span>
                       <h6 class="TestbookTest-title" v-html="formatMarkdown(test.title)"></h6>
-
                     </div>
 
-                      <ul class="Testbook-steps" v-if="isSelectedTest(test)">
-                        <li>
-                          <div class="Testbook-step_cmdbar">
-                            {{ test.file }}
+                    <ul class="Testbook-steps" v-if="isSelectedTest(test)">
+                      <li>
+                        <div class="Testbook-step_cmdbar">
+                          {{ test.file }}
 
-                            <a class="pull-right" v-on:click="runSingleTest(test)">
-                              Run
-                            </a>
+                          <a class="pull-right" v-on:click="runSingleTest(test)">
+                            Run
+                          </a>
 
-                            <span class="pull-right">{{ test.t | toTime }}&nbsp;&middot;&nbsp;</span>
-                          </div>
-                        </li>
+                          <span class="pull-right">{{ test.t | toTime }}&nbsp;&middot;&nbsp;</span>
+                        </div>
+                      </li>
 
-                        <li v-if="test.errorMessage">
-                          <div class="notification is-danger">
-                            {{ test.errorMessage }}
-                          </div>
+                      <li v-if="test.errorMessage">
+                        <div class="notification is-danger">
+                          {{ test.errorMessage }}
+                        </div>
 
-                          <div v-if="test.err && test.err.message">
+                        <div v-if="test.err && test.err.message">
 
-                            <div class="u-expected" v-if="test.err.expected">
+                          <div class="u-expected" v-if="test.err.expected">
 
-                                <strong class="u-expected">Expected</strong>
-                                {{ test.err.expected }}
-
-                            </div>
-                            <div class="u-actual" v-if="test.err.actual">
-
-                                <strong class="u-actual">Actual</strong>
-                                {{ test.err.actual }}
-
-                            </div>
+                              <strong class="u-expected">Expected</strong>
+                              {{ test.err.expected }}
 
                           </div>
-                        </li>
+                          <div class="u-actual" v-if="test.err.actual">
 
-                        <li class="Step"
-                          v-bind:class="{ 'Step--active': isSelectedStep(step), 'Step--failed': step.state === 'failed', 'Step--inprogress': step.state === undefined, 'Step--passed': step.state === 'passed' && step.name !== 'comment' }"
-                          v-for="step in test.stepsReverse"
-                          v-on:click="selectStep(step)"
-                        >
-                          <step :step="step" :is-selected="isSelectedStep(step)" ></Step>
-                        </li>
+                              <strong class="u-actual">Actual</strong>
+                              {{ test.err.actual }}
 
-                      </ul>
+                          </div>
+
+                        </div>
+                      </li>
+
+                      <li class="Step"
+                        v-bind:class="{ 'Step--active': isSelectedStep(step), 'Step--failed': step.state === 'failed', 'Step--inprogress': step.state === undefined, 'Step--passed': step.state === 'passed' && step.name !== 'comment' }"
+                        v-for="step in test.stepsReverse"
+                        v-on:click="selectStep(step)"
+                      >
+                        <step :step="step" :is-selected="isSelectedStep(step)" ></Step>
+                      </li>
+
+                    </ul>
 
                   </li>
                 </ul>
@@ -171,13 +171,15 @@ import urlHelpers from './url-helpers'
 import Navigation from './Navigation.vue'
 import Step from './Step.vue'
 import Tags from './Tags.vue'
+import SuiteTags from './SuiteTags.vue'
 
 export default {
   name: 'testbook',
   components: {
     Navigation,
     Step,
-    Tags
+    Tags,
+    SuiteTags
   },
   sockets: {
     connect: function () {
@@ -372,11 +374,11 @@ export default {
   }
 
   .TestbookFeature--passed {
-    border-top: 3px solid $green;
+    border-left: 3px solid $green;
   }
 
   .TestbookFeature--failed {
-    border-top: 3px solid $red;
+    border-left: 3px solid $red;
   }
 
   .TestbookFeatureInfo {

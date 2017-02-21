@@ -4,7 +4,7 @@ const CodeceptRunner = require('./runner')
 const config = require('../config')
 const phantomjsCtrl = require('../phantom-ctrl')
 
-const PORTS = ['4444', '4445', '4446', '4447', '4448', '4449']
+const PORTS = ['5444', '5445', '5446', '5447', '5448', '5449']
 
 let runnerInstances
 
@@ -25,7 +25,7 @@ module.exports = {
     if (runnerInstances) {
       module.exports.stop()
     }
-    if (options.continuous) throw new Error('Continuous mode currently not supported, please implement')
+    if (!options.continuous) throw new Error('Use this runner only in continuous mode')
 
     const cfg = config.get()
     const devices = Object.keys(cfg.devices)

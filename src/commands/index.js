@@ -1,6 +1,7 @@
 const sendInitialState = require('./send-initial-state')
 
 const codeceptRunner = require('../codeceptjs/parallel-runner')
+const continuousRunner = require('../codeceptjs/continuous-runner')
 
 const cmdRunTests = (options) => {
   codeceptRunner.run(options)
@@ -11,7 +12,7 @@ const cmdStopTests = () => {
 }
 
 const cmdRunContinuously = () => {
-  codeceptRunner.run({ continuous: true, interval: 60000 })
+  continuousRunner.run({ continuous: true })
 }
 
 module.exports = {

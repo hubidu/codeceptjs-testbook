@@ -74,6 +74,7 @@ export default {
       t: evt.t,
       id: evt.id,
       title: evt.title,
+      tags: evt.tags,
       state: undefined,
       errorMessage: undefined,
       err: undefined,

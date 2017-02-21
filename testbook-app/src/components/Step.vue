@@ -101,6 +101,9 @@
           'seeNumberOfElements': {
             2: withIcon('eye', locatorIntegerArg)
           },
+          'dontSee': {
+            1: withIcon('eye-slash', stringArg)
+          },
           'dontSeeElement': {
             1: withIcon('eye-slash', locatorArg)
           },

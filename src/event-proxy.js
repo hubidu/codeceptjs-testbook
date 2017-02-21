@@ -1,4 +1,5 @@
 const codeceptRunner = require('./codeceptjs/parallel-runner')
+const continuousRunner = require('./codeceptjs/continuous-runner')
 
 function proxyEvents (sockets) {
   const EventTypes = codeceptRunner.eventTypes()
@@ -15,6 +16,7 @@ function proxyEvents (sockets) {
 
     // TODO: Should also remove event listeners
     codeceptRunner.events().on(eventType, payload => emitSocketEvent(eventType, payload))
+    continuousRunner.events().on(eventType, payload => emitSocketEvent(eventType, payload))
   })
 }
 
