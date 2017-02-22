@@ -54,11 +54,14 @@ Visually manage your codeceptjs tests.
 - DONE Yahoo test does not complete in UI
 - DONE Sometimes seeing a mobile screenshot in steps
 
-- Show step tags
+- DONE Show suite tags
+- UI: fix tag/aside layout
+- config option: how many testrun directories to keep
 - Steps should be updated in realtime
 - Should see the currently running step if no step is selected
 - Feature/Scenario parsing: Ignore duplicate features/scenarios (when if is used)
 - Feature/Scenario parsing: Parse
+- Can I put a link in a suite/scenario description (what if step fails?)
 - Run continous mode with tag(s)
 - Record test success/failure statistics server side
 - BUG UI Show only configured devices
@@ -67,7 +70,6 @@ Visually manage your codeceptjs tests.
 - Write a decent readme
 - Record an awesome screencast
 - Display BeforeSuite/AfterSuite events
-- Show tags on tests
 - Start phantom only if webdriverio is configured for phantom
 - Keep statistics per device
 - Fix email reporter to support multiple devices
@@ -87,6 +89,7 @@ Visually manage your codeceptjs tests.
 
 ## BETA 2
 
+- Show tags on tests
 - BUG (codeceptjs) No file property in before/after hook events
 - FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - BUG Correctly distinguish hook events from step events
