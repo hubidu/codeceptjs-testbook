@@ -17,7 +17,7 @@ module.exports = {
 
     const runDir = path.join(OUTPUT_DIR, runId)
     mkdirp(runDir)
-    return runDir
+    return runId
   },
 
   outputDir: () => {

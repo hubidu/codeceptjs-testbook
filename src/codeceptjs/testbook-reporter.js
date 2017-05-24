@@ -101,6 +101,7 @@ function reporterFactoryFn (runner, opts) {
     currentSuite = undefined
     currentTest = undefined
 
+    // TODO Use the same id as in runner
     testrun.startRun()
 
     utils.log('codecept.start', Object.assign({}, {

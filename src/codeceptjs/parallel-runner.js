@@ -42,7 +42,7 @@ module.exports = {
       }, options)))
 
       runnerInstances.forEach(runner => runner.subscribe(eventEmitter))
-      runnerInstances.forEach(runner => runner.run())
+      runnerInstances.forEach(runner => runner.run(cfg))
     }).catch(err => {
       runnerInstances = undefined
       console.log('Failed to start phantomjs', err)

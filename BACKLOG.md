@@ -54,8 +54,9 @@ Visually manage your codeceptjs tests.
 - DONE Yahoo test does not complete in UI
 - DONE Sometimes seeing a mobile screenshot in steps
 
-- Show step tags
+- Keep onlylast n testrun directories
 - Steps should be updated in realtime
+- Show step tags
 - Should see the currently running step if no step is selected
 - Feature/Scenario parsing: Ignore duplicate features/scenarios (when if is used)
 - Feature/Scenario parsing: Parse
@@ -87,6 +88,7 @@ Visually manage your codeceptjs tests.
 
 ## BETA 2
 
+- Show phantomjs console output for each scenario
 - BUG (codeceptjs) No file property in before/after hook events
 - FIX Codeceptjs grep does not work if test title contains () (same for / and I think quotes)
 - BUG Correctly distinguish hook events from step events

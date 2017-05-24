@@ -4,6 +4,13 @@ const path = require('path')
 
 const CONFIG_FILE = path.join(process.cwd(), `/.testbook/testbook.config.js`)
 const DEFAULT_CONFIG = {
+  settings: {
+    outputDir: './.testbook',
+
+    // Keep last n testrun directories
+    keepLast: 3
+  },
+
   /**
    * Values will be set as NODE_ENV environment variable
    */

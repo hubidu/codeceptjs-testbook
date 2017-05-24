@@ -1,6 +1,9 @@
+const fs = require('fs')
+const path = require('path')
+const del = require('del')
 const EventEmitter = require('events')
 const CodeceptCtrl = require('./codecept-ctrl')
-const shortid = require('shortid')
+const testrun = require('./testrun')
 
 class TestbookEventEmitter extends EventEmitter {}
 
@@ -8,9 +11,19 @@ function escapeRegExp (str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') // eslint-disable-line
 }
 
-// function capitalize (str) {
-//   return str.charAt(0).toUpperCase() + str.slice(1)
-// }
+function cleanupDirs (outputDir, keepLast) {
+  function getDirectories (srcpath) {
+    return fs.readdirSync(srcpath).filter(file => fs.statSync(path.join(srcpath, file)).isDirectory())
+  }
+
+  const dirs = getDirectories(outputDir)
+  while (dirs.length > keepLast) {
+    const dir = dirs.pop()
+    const testrunDirectory = path.join(outputDir, dir)
+    console.log('Deleting', testrunDirectory)
+    del.sync([testrunDirectory])
+  }
+}
 
 const EVENT_TYPES = [
   'codecept.start_run', 'codecept.finish_run',
@@ -33,6 +46,13 @@ class CodeceptRunner {
 
   get events () {
     return this.eventEmitter
+  }
+
+  _beforeStart (config) {
+    // Cleanup testrun directories
+    const keepLast = (config.settings && config.settings.keepLast) || 2
+    const outputDir = (config.settings && config.settings.outputDir) || './.testbook'
+    cleanupDirs(outputDir, keepLast)
   }
 
   _fireEvent (type, payload = {}) {
@@ -89,8 +109,8 @@ class CodeceptRunner {
     })
   }
 
-  generateId () {
-    this.id = shortid.generate()
+  startTestRun () {
+    this.id = testrun.startRun()
   }
 
   subscribe (listener) {
@@ -107,14 +127,17 @@ class CodeceptRunner {
     })
   }
 
-  run () {
+  run (config) {
     if (this.isRunning) return
 
     this.isRunning = true
 
+    this._beforeStart(config)
+
+    // TODO: Fix this: There is no correlation between testruns here and in testbook-reporter
     this._fireEvent('codecept.start_run',
       Object.assign({
-        id: this.generateId()
+        id: this.startTestRun()
       }, this.options))
 
     const cmdOpts = this.codeceptCtrl.cmd_opts
