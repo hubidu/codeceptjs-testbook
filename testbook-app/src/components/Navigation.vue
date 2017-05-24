@@ -39,9 +39,11 @@
       </div>
 
       <div class="nav-right">
+        <!--
         <a class="nav-item">
           <button class="button is-secondary" type="button" v-on:click="runContinuosly()">Continuous Mode</button>
         </a>
+        -->
         <a class="nav-item" v-if="state.state === undefined">
           <button class="button is-primary" type="button" v-on:click="runAllTests()">Run All</button>
         </a>

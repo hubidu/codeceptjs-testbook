@@ -32,7 +32,12 @@ const updateStats = (device) => {
 export default {
 
   init: (initialSuites) => {
-    Object.assign(suites, initialSuites)
+    Object.keys(initialSuites).forEach(k => {
+      if (suites[k]) {
+        suites[k].push.apply(suites[k], initialSuites[k])
+      }
+    })
+    return suites
   },
 
   suites: () => {

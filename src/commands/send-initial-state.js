@@ -41,7 +41,9 @@ const getSuitesAndTests = () => {
             originalTitle: scenario.originalTitle,
             tags: scenario.tags,
             file: f.file,
-            state: 'not-run'
+            state: 'not-run',
+            steps: [],
+            stepsReverse: []
           }))
         }
       }).filter(item => !!item)

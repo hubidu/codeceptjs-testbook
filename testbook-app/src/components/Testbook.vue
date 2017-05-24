@@ -130,31 +130,31 @@
       </section>
 
 
-      <div v-if="foo() !== undefined">
-        <h2 class="title">{{foo().pageTitle}}</h2>
+      <div v-if="selection[selectedDevice].selectedStep !== undefined">
+        <h2 class="title">{{selection[selectedDevice].selectedStep.pageTitle}}</h2>
         <div>
-          <a target="_blank" v-show="foo().htmlSource" v-bind:href="htmlSourceUrl(foo())">
+          <a target="_blank" v-show="selection[selectedDevice].selectedStep.htmlSource" v-bind:href="htmlSourceUrl(selection[selectedDevice].selectedStep)">
             View HTML
           </a>
         </div>
 
         <a
           target="_blank"
-          v-show="foo().pageUrl"
-          v-bind:href="foo().pageUrl">
-          <input class="input" type="text" placeholder="The url" v-bind:value="foo().pageUrl" disabled>
+          v-show="selection[selectedDevice].selectedStep.pageUrl"
+          v-bind:href="selection[selectedDevice].selectedStep.pageUrl">
+          <input class="input" type="text" placeholder="The url" v-bind:value="selection[selectedDevice].selectedStep.pageUrl" disabled>
         </a>
 
         <hr>
         <img
-          v-show="foo().screenshot"
+          v-show="selection[selectedDevice].selectedStep.screenshot"
           class="Step-screenshot"
-          v-bind:src="screenshotUrl(foo().screenshot)"
+          v-bind:src="screenshotUrl(selection[selectedDevice].selectedStep.screenshot)"
           alt="step screenshot">
 
         <pre>
           <code>
-            {{foo().pageSource}}
+            {{selection[selectedDevice].selectedStep.pageSource}}
           </code>
         </pre>
       </div>
@@ -232,15 +232,15 @@ export default {
       selection: {
         desktop: {
           selectedStep: undefined,
-          tests: []
+          selectedTest: undefined
         },
         mobile: {
           selectedStep: undefined,
-          tests: []
+          selectedTest: undefined
         },
         tablet: {
           selectedStep: undefined,
-          tests: []
+          selectedTest: undefined
         }
       },
       selectedDevice: 'desktop',
@@ -270,21 +270,15 @@ export default {
     isSelectedStep: function (step) {
       return this.selection[this.selectedDevice].selectedStep === step
     },
-    foo: function () {
-      const selectedStep = this.selection[this.selectedDevice].selectedStep
-      return selectedStep
-    },
     selectTest: function (test) {
-      const selectedTests = this.selection[this.selectedDevice].tests
       if (this.isSelectedTest(test)) {
-        selectedTests.splice(selectedTests.indexOf(test), 1)
+        this.selection[this.selectedDevice].selectedTest = undefined
       } else {
-        selectedTests.push(test)
+        this.selection[this.selectedDevice].selectedTest = test
       }
     },
     isSelectedTest: function (test) {
-      const selectedTests = this.selection[this.selectedDevice].tests
-      return selectedTests.indexOf(test) >= 0
+      return this.selection[this.selectedDevice].selectedTest === test
     },
 
     runContinuously: function () {
