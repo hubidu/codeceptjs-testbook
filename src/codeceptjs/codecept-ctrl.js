@@ -16,6 +16,8 @@ class CodeceptCtrl {
       './node_modules/codeceptjs/bin/codecept.js',
       'run',
       '--reporter', path.join(__dirname, './testbook-reporter.js').replace(/\\/g, '\\\\'),
+      '-c',
+      'codecept.conf.js',
       '-o',
       this.codeceptOptions,
       '--sort',

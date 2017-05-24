@@ -10,8 +10,10 @@ function _hash (str) {
 }
 
 const getSuitesAndTests = () => {
-  const testRoot = getTestRoot(undefined)
-  const codeceptjsConfig = getConfig(testRoot, undefined)
+  // const testRoot = getTestRoot(process.cwd())
+  const testRoot = process.cwd()
+  console.log(`Parsing tests in ${process.cwd()}/${testRoot}`)
+  const codeceptjsConfig = getConfig(testRoot)
 
   return parser.parseFeatureFiles(codeceptjsConfig.tests)
     .then(parsedFiles => {
